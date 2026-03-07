@@ -5,8 +5,11 @@
 .Ruserdata
 
 # data files
-.csv
+*.csv
+data/
+
 
 #system files
 .DS_Store
 
+# environmental variables
