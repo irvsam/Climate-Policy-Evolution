@@ -9,9 +9,9 @@ This repository contains the code for a small data mining project developed as p
 
 University of Lucerne
 
-Student Name: Samantha Irving
-Course: Data Mining for the Social Sciences using R
-Term: Spring 2026
+- Student Name: Samantha Irving
+- Course: Data Mining for the Social Sciences using R
+- Term: Spring 2026
 
 ## Project Goal
 
@@ -51,11 +51,11 @@ ND GAIN (Notre Dame Global Adaptation Initiative) provides data on countries' vu
 
 ## Repository Structure
 
-/scripts     scripts used to collect/process data
-/data     output datasets (not tracked/pushed by git)
-README.md   project description
-/report     final report and visualizations
-/output   final outputs (e.g., tables, figures)
+- /scripts     scripts used to collect/process data
+- /data     output datasets (not tracked/pushed by git)
+- README.md   project description
+- /report     final report and visualizations
+- /output   final outputs (e.g., tables, figures)
 
 
 
