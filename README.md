@@ -51,11 +51,11 @@ ND GAIN (Notre Dame Global Adaptation Initiative) provides data on countries' vu
 
 ## Repository Structure
 
-- /scripts     scripts used to collect/process data
-- /data     output datasets (not tracked/pushed by git)
+- scripts/     scripts used to collect/process data
+- data/     output datasets (not tracked/pushed by git)
 - README.md   project description
-- /report     final report and visualizations
-- /output   final outputs (e.g., tables, figures)
+- report/     final report and visualizations
+- output/   final outputs (e.g., tables, figures)
 
 
 
