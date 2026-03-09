@@ -56,7 +56,6 @@ head(oecd_df)
 # CPDB API: for this one I will need to use the reticulate pakage
 
 
-install.packages("reticulate")
 library(reticulate)
 
 # Install the Python package 

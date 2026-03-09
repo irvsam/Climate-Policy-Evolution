@@ -1,0 +1,59 @@
+
+---
+title: "Climate Resilience: Comparing the Evolution of Integrated Climate Policies"
+author: "Samantha Irving"
+format: 
+  pdf:
+    toc: true
+    number-sections: true
+---
+
+```{r setup, include=FALSE}
+# Load libraries and run your master pipeline
+# Make sure main.R is in the project root (one level up)
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
+library(knitr)
+source("main.R")
+
+```
+
+# Introduction
+
+
+# Data & Methodology
+
+The project integrates data from the Climate Policy Database (CPDB), OECD CAPMF, ND-GAIN, and UNFCCC NDCs. The workflow is orchestrated by a master script (`main.R`) to ensure end-to-end reproducibility.
+
+```{r}
+#| label: fig-workflow
+#| fig-cap: "Project Data Pipeline"
+#| out.width: "100%"
+# include_graphics("../output/workflow_diagram.png")
+
+```
+
+# Results: Policy Adoption Trends
+
+The following figure illustrates the cumulative climate policy stock for the seven analyzed countries from 2015 to 2026.
+
+```{r}
+#| label: fig-policy-trend
+#| fig-cap: "Cumulative Climate Policy Stock"
+#| fig-dpi: 300
+#| fig-format: pdf
+
+print(Cumulative_pol_adoption)
+
+```
+
+# Discussion
+
+
+
+# Limitations
+
+
+# Conclusion
+
+
+```
