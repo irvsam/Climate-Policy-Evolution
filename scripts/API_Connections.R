@@ -11,7 +11,7 @@ country_list <- c(
   "JPN", # Japan: Vulnerable North (Unitary, Technology-led Adaptation)
   "CAN"  # Canada: Federal Resource Exporter (Federal, Mitigation/Adaptation tension)
 )
-# I will be using the following APIs:
+# I will be using the following APIs: OECD CAPMF AND CPDB
 
 # OECD CAPMF API
 # This one requires using their api online and applying filters to get the data I need. 
@@ -54,6 +54,8 @@ head(oecd_df)
 
 
 # CPDB API: for this one I will need to use the reticulate pakage
+
+
 install.packages("reticulate")
 library(reticulate)
 
@@ -63,19 +65,54 @@ py_install("cpdb-api")
 # Import the Python library
 cpdb <- import("cpdb_api")
 
-# Initialize the request object
-r <- cpdb$request$Request()
+# # Initialize the request object
+# r <- cpdb$request$Request()
+# 
+# # # Apply filters (using the example from the api docs for now)
+# # r$set_country("IND")
+# # r$set_decision_date(2010)
+# # r$set_policy_status("In force")
+# # r$add_sector("Electricity and heat")
+# # r$add_sector("Coal")
+# # r$add_policy_instrument("Energy and other taxes")
+# # r$add_mitigation_area("Renewables")
+# 
+# # Issue the request
+# cpdb_df <- r$issue()
+# 
+# print(head(cpdb_df))
 
-# Apply filters (using the example from the api docs for now)
-r$set_country("IND")
-r$set_decision_date(2010)
-r$set_policy_status("In force")
-r$add_sector("Electricity and heat")
-r$add_sector("Coal")
-r$add_policy_instrument("Energy and other taxes")
-r$add_mitigation_area("Renewables")
 
-# Issue the request
-cpdb_df <- r$issue()
+# Now let's try get a full df with all the countries we are interested in
 
-print(head(cpdb_df))
+library(purrr) # Useful for iterating over combinations of countries and years
+
+year_list <- 2015:2026
+
+# Create a grid of all combinations (e.g., DEU-2015, DEU-2016, ...)
+search_grid <- expand.grid(country = country_list, year = year_list)
+
+# Function for getting data from each entry in country-year grid
+fetch_cpdb_data <- function(country, year) {
+  cat("Fetching data for:", country, "| Year:", year, "\n")
+  
+  r <- cpdb$request$Request()
+  r$set_country(country)
+  r$set_decision_date(as.integer(year)) # Ensure it's an integer
+  r$set_policy_status("In force")
+  
+  tryCatch({
+    df <- r$issue()
+    # Add columns so we know which year/country this data belongs to later
+    if (!is.null(df)) {
+      df$query_year <- year
+      return(df)
+    }
+  }, error = function(e) return(NULL))
+}
+
+# Iterate over the grid
+cpdb_master_df <- pmap_dfr(search_grid, fetch_cpdb_data)
+
+# Check the results
+head(cpdb_master_df)
