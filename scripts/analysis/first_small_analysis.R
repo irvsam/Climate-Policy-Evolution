@@ -35,3 +35,12 @@ Cumulative_pol_adoption <- ggplot(policy_growth, aes(x = decision_date, y = cumu
   theme(legend.position = "right")
 print(Cumulative_pol_adoption)
 
+
+
+# Save the plot
+todays_date <- Sys.Date()
+date_formatted <- format(todays_date, "%Y-%m-%d")
+filename <- paste0("cumulative_policy_adoption_", todays_date, ".png")
+folder_path <- paste0("output/", filename)
+ggsave(folder_path, plot = Cumulative_pol_adoption, width = 10, height = 6, dpi = 300)
+
