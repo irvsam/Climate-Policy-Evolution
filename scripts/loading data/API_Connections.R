@@ -11,7 +11,7 @@ country_list <- c(
   "JPN", # Japan: Vulnerable North (Unitary, Technology-led Adaptation)
   "CAN"  # Canada: Federal Resource Exporter (Federal, Mitigation/Adaptation tension)
 )
-# I will be using the following APIs: OECD CAPMF AND CPDB
+# I will be using the following APIs: OECD CAPMF, CPDB, ND-GAIN, UNFCCC NDCs
 
 # OECD CAPMF API
 # This one requires using their api online and applying filters to get the data I need. 

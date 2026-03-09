@@ -49,6 +49,10 @@ ND GAIN (Notre Dame Global Adaptation Initiative) provides data on countries' vu
 - Link: https://gain.nd.edu/our-work/country-index/
 - Access Methods: Download CSV and process in R
 
+UNFCCC NDCs
+- API: there is no API, but data can be downloaded as CSV from open climate data's github
+- Link: https://github.com/openclimatedata/ndcs/blob/main/data/ndcs.csv
+
 ## Repository Structure
 
 - 'scripts/'     scripts used to collect/process data
