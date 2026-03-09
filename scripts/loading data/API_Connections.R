@@ -87,7 +87,7 @@ cpdb <- import("cpdb_api")
 
 library(purrr) # Useful for iterating over combinations of countries and years
 
-year_list <- 2015:2026
+year_list <- 2012:2026
 
 # Create a grid of all combinations (e.g., DEU-2015, DEU-2016, ...)
 search_grid <- expand.grid(country = country_list, year = year_list)
