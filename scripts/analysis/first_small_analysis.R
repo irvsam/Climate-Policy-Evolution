@@ -4,18 +4,34 @@ library(ggplot2)
 library(dplyr)
 library(tidyr)
 
+# First, I need to change the format of the data to get the cumulative number of policies adopted by each country over time.
+policy_growth <- cpdb_master_df %>%
+  # Turning decision_date into numeric for easier handling
+  mutate(decision_date = as.numeric(decision_date)) %>% 
+  # Filter for valid decision years
+  filter(!is.na(decision_date)) %>%
+  # Count new policies per country per year
+  group_by(country_iso, decision_date) %>%
+  summarise(new_policies = n(), .groups = 'drop') %>%
+  # Now full_seq will work because decision_date is numeric
+  complete(country_iso, decision_date = full_seq(decision_date, 1), fill = list(new_policies = 0)) %>%
+  # Calculate cumulative sum
+  group_by(country_iso) %>%
+  mutate(cumulative_policies = cumsum(new_policies)) %>%
+  ungroup()
 
-# Summarize CPDB data by year and country
-trend_data <- cpdb_master_df %>%
-  group_by(country_iso, query_year) %>%
-  summarise(policy_count = n(), .groups = 'drop')
 
-# Plot
-ggplot(trend_data, aes(x = query_year, y = policy_count, color = country_iso)) +
-  geom_line(size = 1) +
-  geom_point() +
+# Create a single plot with all countries
+Cumulative_pol_adoption <- ggplot(policy_growth, aes(x = decision_date, y = cumulative_policies, color = country_iso, group = country_iso)) +
+  geom_line(size = 0.8, alpha = 0.7) +
+  labs(
+    title = "Evolution of Cumulative Climate Policy Adoption (Global)",
+    x = "Year of Decision",
+    y = "Total Cumulative Policies",
+    color = "Country (ISO-3)"
+  ) +
   theme_minimal() +
-  labs(title = "Climate Policy Adoption Trend (2015-2026)",
-       x = "Year",
-       y = "Number of Policies 'In Force'",
-       color = "Country")
+  # Adding a legend if the number of countries is small
+  theme(legend.position = "right")
+print(Cumulative_pol_adoption)
+
