@@ -115,3 +115,7 @@ cpdb_master_df <- pmap_dfr(search_grid, fetch_cpdb_data)
 
 # Check the results
 head(cpdb_master_df)
+
+# Now save these dataframes to our data folder
+write_csv(oecd_df, "data/data-preprocessed/oecd_capmf_data.csv")
+write_csv(cpdb_master_df, "data/data-preprocessed/cpdb_data.csv")

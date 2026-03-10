@@ -20,6 +20,8 @@ policy_growth <- cpdb_master_df %>%
   mutate(cumulative_policies = cumsum(new_policies)) %>%
   ungroup()
 
+# Save this intermediate data frame for later use
+write.csv(policy_growth, "data/data-preprocessed/policy_growth_data.csv", row.names = FALSE)
 
 # Create a single plot with all countries
 Cumulative_pol_adoption <- ggplot(policy_growth, aes(x = decision_date, y = cumulative_policies, color = country_iso, group = country_iso)) +
