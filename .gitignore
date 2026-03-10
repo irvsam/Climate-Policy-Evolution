@@ -6,7 +6,7 @@
 
 # data files
 *.csv
-data/
+02.data/
 
 
 #system files

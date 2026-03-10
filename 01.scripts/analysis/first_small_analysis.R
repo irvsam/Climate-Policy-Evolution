@@ -46,3 +46,10 @@ filename <- paste0("cumulative_policy_adoption_", todays_date, ".png")
 folder_path <- paste0("output/", filename)
 ggsave(folder_path, plot = Cumulative_pol_adoption, width = 10, height = 6, dpi = 300)
 
+
+# Now I want to see the number of mitigation vs adaptation strategies adopted per country per year (not time series)
+# The policy_objective variable has the information about whether a policy is mitigation or adaptation, so I can use that to create a new data frame with the counts of each type of policy per country per year.
+# I just want to list the different possibilities we have in this variable first
+unique(cpdb_master_df$policy_objective)
+
+
