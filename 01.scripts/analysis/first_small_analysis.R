@@ -23,7 +23,7 @@ policy_growth <- cpdb_master_df %>%
   ungroup()
 
 # Save this intermediate data frame for later use
-write.csv(policy_growth, "data/data-preprocessed/policy_growth_data.csv", row.names = FALSE)
+write.csv(policy_growth, "02.data/data-preprocessed/policy_growth_data.csv", row.names = FALSE)
 
 # Create a single plot with all countries
 Cumulative_pol_adoption <- ggplot(policy_growth, aes(x = decision_date, y = cumulative_policies, color = country_iso, group = country_iso)) +
@@ -45,7 +45,7 @@ print(Cumulative_pol_adoption)
 todays_date <- Sys.Date()
 date_formatted <- format(todays_date, "%Y-%m-%d")
 filename <- paste0("cumulative_policy_adoption_", todays_date, ".png")
-folder_path <- paste0("output/", filename)
+folder_path <- paste0("03.output/", filename)
 ggsave(folder_path, plot = Cumulative_pol_adoption, width = 10, height = 6, dpi = 300)
 
 # ==================================== Policy Objectives ====================================================================================

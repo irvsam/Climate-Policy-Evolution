@@ -13,7 +13,7 @@ country_list <- c(
 )
 # I will be using the following APIs: OECD CAPMF, CPDB, ND-GAIN, UNFCCC NDCs
 
-# OECD CAPMF API
+# =============================== OECD CAPMF API ====================================================================================
 # This one requires using their api online and applying filters to get the data I need. 
 # I will be using the following filters: 
 
@@ -36,6 +36,11 @@ library(readr)
 # Use the new OECD SDMX endpoint directly
 url <- "https://sdmx.oecd.org/public/rest/data/OECD.ENV.EPI,DSD_CAPMF@DF_CAPMF,1.0/DEU+ZAF+IND+BRA+JPN+CAN.A.POL_COUNT+POL_STRINGENCY.LEV1_SEC.0_TO_10+PL?startPeriod=2015&endPeriod=2023&dimensionAtObservation=AllDimensions"
 
+# I want to cut this up into chunks
+base_url <- "https://sdmx.oecd.org/public/rest/data/OECD.ENV.EPI,DSD_CAPMF@DF_CAPMF,1.0/DEU+ZAF+IND+BRA+JPN+CAN"
+measures <- "A.POL_COUNT+POL_STRINGENCY"
+policies <- "LEV1_SEC.0_TO_10+PL"
+
 req <- request("https://sdmx.oecd.org/public/rest/data/OECD.ENV.EPI,DSD_CAPMF@DF_CAPMF,1.0/DEU+ZAF+IND+BRA+JPN+CAN.A.POL_COUNT+POL_STRINGENCY.LEV1_SEC.0_TO_10+PL") %>%
   req_url_query(
     startPeriod = "2015",
@@ -52,8 +57,8 @@ oecd_df <- resp_body_string(resp) %>%
 
 head(oecd_df)
 
-
-# CPDB API: for this one I will need to use the reticulate pakage
+# ====================================== CPDB API: =====================================================================================
+#for this one I will need to use the reticulate pakage
 
 
 library(reticulate)
@@ -93,7 +98,7 @@ search_grid <- expand.grid(country = country_list, year = year_list)
 
 # Function for getting data from each entry in country-year grid
 fetch_cpdb_data <- function(country, year) {
-  cat("Fetching data for:", country, "| Year:", year, "\n")
+  cat("Fetching data for:", as.character(country), "| Year:", as.character(year), "\n")
   
   r <- cpdb$request$Request()
   r$set_country(country)
@@ -116,6 +121,4 @@ cpdb_master_df <- pmap_dfr(search_grid, fetch_cpdb_data)
 # Check the results
 head(cpdb_master_df)
 
-# Now save these dataframes to our data folder
-write_csv(oecd_df, "data/data-preprocessed/oecd_capmf_data.csv")
-write_csv(cpdb_master_df, "data/data-preprocessed/cpdb_data.csv")
+
