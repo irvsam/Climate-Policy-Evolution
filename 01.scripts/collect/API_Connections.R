@@ -53,35 +53,26 @@ py_install("cpdb-api")
 # Import the Python library
 cpdb <- import("cpdb_api")
 
-# Now let's try get a full df with all the countries we are interested in
-
-library(purrr) # Useful for iterating over combinations of countries and years
-
-year_list <- 2012:2026
-
-# Create a grid of all combinations (e.g., DEU-2015, DEU-2016, ...)
-search_grid <- expand.grid(country = country_list, year = year_list)
-
-# Function for getting data from each entry in country-year grid
-fetch_cpdb_data <- function(country, year) {
-  cat("Fetching data for:", as.character(country), "| Year:", as.character(year), "\n")
+# Previously I was getting country year pairs but it was inefficient, now just get all info and will filter later
+fetch_country_bulk <- function(country) {
+  cat("Fetching full history for:", country, "\n")
   
   r <- cpdb$request$Request()
   r$set_country(country)
-  r$set_decision_date(as.integer(year)) # Ensure it's an integer
-  # r$set_policy_status("In force")
+  # Do NOT set_decision_date or set_policy_status here 
+  # Get everything and filter locally
   
   tryCatch({
     df <- r$issue()
-    # Add columns so we know which year/country this data belongs to later
-    if (!is.null(df)) {
-      df$query_year <- year
-      df$query_country <- country # Added this to make sure we know which country the data is from
-      return(df)
-    }
-  }, error = function(e) return(NULL))
+    return(df)
+  }, error = function(e) {
+    message("Failed for ", country)
+    return(NULL)
+  })
 }
 
-# Iterate over the grid
-cpdb_master_df <- pmap_dfr(search_grid, fetch_cpdb_data)
+# This only makes 7 API calls instead of 105
+cpdb_master_df <- map_dfr(country_list, fetch_country_bulk)
+
+
 
