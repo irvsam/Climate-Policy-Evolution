@@ -2,7 +2,7 @@
 
 library(vctrs)
 library(dplyr)
-
+library(reticulate)
 library(httr2)
 library(readr)
 
@@ -42,39 +42,16 @@ resp <- req_perform(req)
 oecd_df_granular <- resp_body_string(resp) %>%
   read_csv(show_col_types = FALSE)
 
-# Now check the unique values 
-unique(oecd_df_granular$CLIM_ACT_POL)
-
 
 # ====================================== CPDB API: =====================================================================================
 #for this one I will need to use the reticulate pakage
 
-
-library(reticulate)
 
 # Install the Python package 
 py_install("cpdb-api")
 
 # Import the Python library
 cpdb <- import("cpdb_api")
-
-# # Initialize the request object
-# r <- cpdb$request$Request()
-# 
-# # # Apply filters (using the example from the api docs for now)
-# # r$set_country("IND")
-# # r$set_decision_date(2010)
-# # r$set_policy_status("In force")
-# # r$add_sector("Electricity and heat")
-# # r$add_sector("Coal")
-# # r$add_policy_instrument("Energy and other taxes")
-# # r$add_mitigation_area("Renewables")
-# 
-# # Issue the request
-# cpdb_df <- r$issue()
-# 
-# print(head(cpdb_df))
-
 
 # Now let's try get a full df with all the countries we are interested in
 
@@ -92,13 +69,14 @@ fetch_cpdb_data <- function(country, year) {
   r <- cpdb$request$Request()
   r$set_country(country)
   r$set_decision_date(as.integer(year)) # Ensure it's an integer
-  r$set_policy_status("In force")
+  # r$set_policy_status("In force")
   
   tryCatch({
     df <- r$issue()
     # Add columns so we know which year/country this data belongs to later
     if (!is.null(df)) {
       df$query_year <- year
+      df$query_country <- country # Added this to make sure we know which country the data is from
       return(df)
     }
   }, error = function(e) return(NULL))
@@ -107,5 +85,3 @@ fetch_cpdb_data <- function(country, year) {
 # Iterate over the grid
 cpdb_master_df <- pmap_dfr(search_grid, fetch_cpdb_data)
 
-# Check the results
-head(cpdb_master_df)
