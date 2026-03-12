@@ -1,8 +1,8 @@
 # main.R
 
 # Define file paths
-oecd_path <- "02.data/data-preprocessed/oecd_capmf_data.csv"
-cpdb_path <- "02.data/data-preprocessed/cpdb_data.csv"
+oecd_path <- "02.data/data-raw/oecd_capmf_data.csv"
+cpdb_path <- "02.data/data-raw/cpdb_data.csv"
 
 # ========================= CREATE DATA DIRECTORY IF NOT EXISTS =========================
 

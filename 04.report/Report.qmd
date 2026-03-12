@@ -32,6 +32,14 @@ The project integrates data from the Climate Policy Database (CPDB), OECD CAPMF,
 
 ```
 
+about the CAPMF, there is a hierarchical structure for categorizing policies. The levels are as follows:
+
+Level | Scale | Example Code |  What it represents 
+Level 1 Building Block LEV1_SEC Total Sectoral Policies (Aggregated)
+Level 2 Module LEV2_SEC_E_MBI Market-based instruments in the Energy sector 
+Level 3 Instrument LEV3_CARBONTAX_E The actual Carbon Tax policy in Energy 
+Level 4 Variable LEV4_CARBONTAX_E_PR The specific price/rate of that tax
+
 # Results: Policy Adoption Trends
 
 The following figure illustrates the cumulative climate policy stock for the seven analyzed countries from 2015 to 2026.
