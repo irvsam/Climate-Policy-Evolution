@@ -13,3 +13,4 @@ oecd_final_clean %>%
   labs(title = "Climate Policy Ambition Trends (2012-2023)",
        subtitle = "Higher scores indicate more stringent policy frameworks",
        x = "Year", y = "Policy Sector")
+

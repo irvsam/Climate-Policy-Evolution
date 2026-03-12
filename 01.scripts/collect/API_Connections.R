@@ -16,6 +16,10 @@ country_list <- c(
   "JPN", # Japan: Vulnerable North (Unitary, Technology-led Adaptation)
   "CAN"  # Canada: Federal Resource Exporter (Federal, Mitigation/Adaptation tension)
 )
+
+# Added: DNK (Leader), GBR (G20 Leader), CHL (Reg. Leader), COL (Dev. Leader), USA (Underperformer), SAU (Underperformer)
+
+target_countries <- c("CAN", "DEU", "JPN", "IND", "ZAF", "DNK", "GBR", "CHL", "COL", "USA", "SAU")
 # I will be using the following APIs: OECD CAPMF, CPDB, ND-GAIN, UNFCCC NDCs
 
 # =============================== OECD CAPMF API ====================================================================================
@@ -28,7 +32,7 @@ country_list <- c(
 # I am collecting data on all the policies so this will not be a filter
 # Unit of measure: policies and 0-10
 
-refined_url <- "https://sdmx.oecd.org/public/rest/data/OECD.ENV.EPI,DSD_CAPMF@DF_CAPMF,1.0/DEU+ZAF+IND+BRA+JPN+CAN.A.POL_COUNT+POL_STRINGENCY..0_TO_10+PL"
+refined_url <- "https://sdmx.oecd.org/public/rest/data/OECD.ENV.EPI,DSD_CAPMF@DF_CAPMF,1.0/DEU+ZAF+IND+JPN+CAN+SAU+COL+DNK+CHL.A.POL_COUNT+POL_STRINGENCY..0_TO_10+PL"
 
 req <- request(refined_url) %>%
   req_url_query(
