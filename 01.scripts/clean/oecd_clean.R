@@ -130,6 +130,9 @@ oecd_final_clean <- oecd_final %>%
     Policy_Name, Policy_Description, stringency, count
   )
 
+oecd_final_clean <- oecd_final_clean %>%
+  filter(iso3 != "BRA")
+
 # Verify the result
 head(oecd_final_clean)
 
