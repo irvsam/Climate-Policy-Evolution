@@ -1,40 +1,31 @@
 # main.R
 
 # Define file paths
-oecd_path <- "02.data/data-raw/oecd_capmf_data.csv"
-cpdb_path <- "02.data/data-raw/cpdb_data.csv"
+oecd_path <- "02.data/data-raw/oecd_raw.rds"
+cpdb_path <- "02.data/data-raw/cpdb_raw.rds"
 
-# ========================= CREATE DATA DIRECTORY IF NOT EXISTS =========================
+# ========================= DATA COLLECTION =========================
 
 # =============================== OECD CAPMF DATA ===============================
-if (!file.exists(oecd_path)) {
-  message("OECD data not found locally. Fetching from API...")
-  
-  
-  source("01.scripts/loading data/API_Connections.R")
-  
-  write_csv(oecd_df, oecd_path)
+# Check if RAW data exists
+if (!file.exists("02.data/data-raw/oecd_raw.rds")) {
+  message("Fetching from API...")
+  source("01.scripts/collect/API_Connections.R") 
+  saveRDS(cpdb_master_df, "02.data/data-raw/oecd_raw.rds") # Saving as rds for better performance and to preserve data types
 } else {
-  message("Loading OECD data from local cache.")
-  oecd_df <- read_csv(oecd_path, show_col_types = FALSE)
+  message("Loading from memory...")
+  cpdb_master_df <- readRDS("02.data/data-raw/oecd_raw.rds")
 }
 
 # =============================== CPDB DATA =====================================
-if (!file.exists(cpdb_path)) {
-  message("CPDB data not found locally. Fetching from API (this may take a while)...")
-  
-  source("01.scripts/loading data/Other_data.R")
-  
-  write_csv(cpdb_master_df, cpdb_path)
+# Check if RAW data exists
+if (!file.exists("02.data/data-raw/cpdb_raw.rds")) {
+  message("Fetching from API...")
+  source("01.scripts/collect/API_Connections.R") 
+  saveRDS(cpdb_master_df, "02.data/data-raw/cpdb_raw.rds") # Saving as rds for better performance and to preserve data types
 } else {
-  message("Loading CPDB data from local cache.")
-  cpdb_master_df <- read_csv(cpdb_path, show_col_types = FALSE)
+  message("Loading from memory...")
+  cpdb_master_df <- readRDS("02.data/data-raw/cpdb_raw.rds")
 }
 
-
-
 # =============================== DATA CLEANING ==============================
-
-
-# Do some initial analysis
-source("01.scripts/analysis/first_small_analysis.R")

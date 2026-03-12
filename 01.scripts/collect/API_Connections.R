@@ -43,8 +43,9 @@ oecd_df_granular <- resp_body_string(resp) %>%
   read_csv(show_col_types = FALSE)
 
 
+
 # ====================================== CPDB API: =====================================================================================
-#for this one I will need to use the reticulate pakage
+#for this one I will need to use the reticulate package
 
 
 # Install the Python package 
