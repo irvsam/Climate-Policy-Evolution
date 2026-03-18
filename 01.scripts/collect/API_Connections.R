@@ -80,4 +80,42 @@ fetch_country_bulk <- function(country) {
 cpdb_master_df <- map_dfr(country_list, fetch_country_bulk)
 
 
+# ============================== cpdc without country filters ====================================================================================
+
+library(reticulate)
+library(dplyr)
+
+# Setup
+cpdb <- import("cpdb_api")
+
+fetch_global_time_range <- function(start_year, end_year) {
+  cat("Fetching global policies from", start_year, "to", end_year, "...\n")
+  
+  r <- cpdb$request$Request()
+  
+  # By NOT calling r$set_country(), the API defaults to all available countries.
+  
+  years <- seq(start_year, end_year)
+  
+  all_data <- lapply(years, function(yr) {
+    cat("  Processing year:", yr, "\n")
+    r_yr <- cpdb$request$Request()
+    r_yr$set_decision_date(as.integer(yr))
+    
+    tryCatch({
+      return(r_yr$issue())
+    }, error = function(e) {
+      message("  No data or error for year ", yr)
+      return(NULL)
+    })
+  })
+  
+  # Combine the list of dataframes into one master dataframe
+  return(bind_rows(all_data))
+}
+
+#Get global data for the last decade
+global_policy_df <- fetch_global_time_range(2013, 2025)
+
+
 

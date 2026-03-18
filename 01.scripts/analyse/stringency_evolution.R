@@ -14,3 +14,12 @@ oecd_final_clean %>%
        subtitle = "Higher scores indicate more stringent policy frameworks",
        x = "Year", y = "Policy Sector")
 
+
+ggplot(ndgain_clean, aes(x = year, y = score, color = iso3)) +
+  geom_line(size = 1) +
+  geom_point() +
+  theme_minimal() +
+  labs(title = "ND-GAIN Vulnerability Trends",
+       subtitle = "Tracking progress across target 14 countries",
+       y = "Vulnerability Score (Lower is better)",
+       x = "Year")
