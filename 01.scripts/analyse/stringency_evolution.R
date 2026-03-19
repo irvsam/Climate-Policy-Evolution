@@ -23,3 +23,16 @@ ggplot(ndgain_clean, aes(x = year, y = score, color = iso3)) +
        subtitle = "Tracking progress across target 14 countries",
        y = "Vulnerability Score (Lower is better)",
        x = "Year")
+
+
+# Now that we have the ndc text data we can actually see some promises vs actual measures being mapped
+
+# Get average stringency from OECD data
+oecd_summary <- oecd_final_clean %>%
+  group_by(iso3) %>%
+  summarise(avg_stringency = mean(stringency, na.rm = TRUE))
+
+# Join them
+comparison_df <- ndc_final %>%
+  inner_join(oecd_summary, by = "iso3")
+
