@@ -18,7 +18,9 @@ ndc_labeled <- ndc_raw_clean %>%
     party = ...1, 
     region = ...2, 
     mitigation_text = ...10, 
-    adaptation_text = ...11
+    adaptation_text = ...11,
+    mit_fin_text = ...33,
+    adapt_fin_text = ...34
   ) %>%
   # Just in case there are empty rows at the bottom
   filter(!is.na(party))
