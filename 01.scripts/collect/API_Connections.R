@@ -49,36 +49,6 @@ oecd_df_granular <- resp_body_string(resp) %>%
 
 
 # ====================================== CPDB API: =====================================================================================
-#for this one I will need to use the reticulate package
-
-
-# Install the Python package 
-py_install("cpdb-api")
-
-# Import the Python library
-cpdb <- import("cpdb_api")
-
-# Previously I was getting country year pairs but it was inefficient, now just get all info and will filter later
-fetch_country_bulk <- function(country) {
-  cat("Fetching full history for:", country, "\n")
-  
-  r <- cpdb$request$Request()
-  r$set_country(country)
-  # Do NOT set_decision_date or set_policy_status here 
-  # Get everything and filter locally
-  
-  tryCatch({
-    df <- r$issue()
-    return(df)
-  }, error = function(e) {
-    message("Failed for ", country)
-    return(NULL)
-  })
-}
-
-# This only makes 7 API calls instead of 105
-cpdb_master_df <- map_dfr(country_list, fetch_country_bulk)
-
 
 # ============================== cpdc without country filters ====================================================================================
 

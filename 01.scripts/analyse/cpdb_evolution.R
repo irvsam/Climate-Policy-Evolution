@@ -90,3 +90,4 @@ average_vulnerability <- country_totals %>%
 print(average_vulnerability)
 
 
+
