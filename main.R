@@ -4,6 +4,9 @@
 # Purpose: Orchestration script to run the full pipeline.
 # ==============================================================================
 
+# Global Toggles
+FORCE_RECLEAN <- FALSE  # Set to TRUE if scripts have been edited
+
 # Setup & Global Variables -------------------------------------------------
 
 # Load Libraries 
@@ -32,7 +35,7 @@ if (!dir.exists("02.data/data-preprocessed")) dir.create("02.data/data-preproces
 # Data Collection Logic ----------------------------------------------------
 
 # --- OECD CAPMF Data ---
-if (!file.exists("02.data/data-raw/oecd_raw.rds")) {
+if (!file.exists("02.data/data-raw/oecd_raw.rds")| FORCE_RECLEAN) {
   message("--- Fetching OECD CAPMF from API ---")
   source("01.scripts/collect/API_Connections.R") 
   saveRDS(oecd_df_collected, "02.data/data-raw/oecd_raw.rds")
@@ -43,7 +46,7 @@ if (!file.exists("02.data/data-raw/oecd_raw.rds")) {
 }
 
 # --- CPDB Data ---
-if (!file.exists("02.data/data-raw/cpdb_raw.rds")) {
+if (!file.exists("02.data/data-raw/cpdb_raw.rds")| FORCE_RECLEAN) {
   message("--- Fetching CPDB from API ---")
   source("01.scripts/collect/API_Connections.R") 
   saveRDS(cpdb_df_collected, "02.data/data-raw/cpdb_raw.rds")
@@ -58,7 +61,7 @@ if (!file.exists("02.data/data-raw/cpdb_raw.rds")) {
 # --- OECD CLEANING ---
 oecd_clean_path <- "02.data/data-preprocessed/oecd_clean.rds"
 
-if (!file.exists(oecd_clean_path)) {
+if (!file.exists(oecd_clean_path)| FORCE_RECLEAN) {
   message("Clean OECD data not found. Processing raw data...")
   
   # Ensure raw data is in memory
@@ -78,7 +81,7 @@ if (!file.exists(oecd_clean_path)) {
 # --- CPDB CLEANING ---
 cpdb_clean_path <- "02.data/data-preprocessed/cpdb_clean.rds"
 
-if (!file.exists(cpdb_clean_path)) {
+if (!file.exists(cpdb_clean_path)| FORCE_RECLEAN) {
   message("Clean CPDB data not found. Processing raw data...")
   
   if (!exists("cpdb_raw")) cpdb_raw <- readRDS("02.data/data-raw/cpdb_raw.rds")
@@ -98,7 +101,7 @@ message("--- Main Pipeline Finished ---")
 # --- NDGAIN CLEANING ---
 ndgain_clean_path <- "02.data/data-preprocessed/ndgain_clean.rds"
 
-if (!file.exists(ndgain_clean_path)) {
+if (!file.exists(ndgain_clean_path)| FORCE_RECLEAN) {
   message("Clean ndgain data not found. Processing raw data...")
   
   if (!exists("ndgain_raw")) ndgain_raw <- read_csv("02.data/data-raw/gain.csv") 
@@ -109,14 +112,14 @@ if (!file.exists(ndgain_clean_path)) {
   message("Saved: ndgain_clean.rds")
 } else {
   message("Loading pre-processed ndgain data...")
-  ndgain_final_clean <- read_csv(ndgain_clean_path)
+  ndgain_final_clean <- readRDS(ndgain_clean_path)
 }
 
 
 # --- NDC CLEANING ---
 ndc_clean_path <- "02.data/data-preprocessed/ndc_clean.rds"
 
-if (!file.exists(ndc_clean_path)) {
+if (!file.exists(ndc_clean_path)| FORCE_RECLEAN) {
   message("Clean ndc data not found. Processing raw data...")
   
   if (!exists("ndc_raw")) ndc_raw <- read_excel("02.data/data-raw/IGESNDC.xlsx", 
@@ -130,6 +133,31 @@ if (!file.exists(ndc_clean_path)) {
   message("Saved: ndc_clean.rds")
 } else {
   message("Loading pre-processed ndc data...")
-  ndc_final_clean <- read_csv(ndc_clean_path)
+  ndc_final_clean <- readRDS(ndc_clean_path)
 }
+
+
+# ==============================================================================
+# 4. Housekeeping & Environment Cleanup
+# ==============================================================================
+message("--- Cleaning up Environment ---")
+
+# Define objects to keep
+objects_to_keep <- c(
+  "oecd_final_clean", 
+  "cpdb_final_clean", 
+  "ndgain_final_clean", 
+  "ndc_final_clean",
+  "TARGET_ISO3", 
+  "START_YEAR", 
+  "END_YEAR"
+)
+
+# Remove everything else
+rm(list = setdiff(ls(), objects_to_keep))
+
+# Run garbage collection to free up system RAM
+gc()
+
+message("Cleanup complete. Only analysis-ready dataframes remain in memory.")
 
