@@ -1,19 +1,6 @@
-library(readxl)
-library(dplyr)
-library(tidyr)
-library(janitor)
-
-path <- "02.data/data-raw/IGESNDC.xlsx" 
-
-# Read the file starting from the first actual data row (Afghanistan)
-ndc_raw_clean <- read_excel(path, 
-                            sheet = "NDC MASTER SHEET", 
-                            skip = 4, 
-                            col_names = FALSE)
 
 # Now I need to manually code column names
-
-ndc_labeled <- ndc_raw_clean %>%
+ndc_labeled <- ndc_raw %>%
   select(
     party = ...1, 
     region = ...2, 
@@ -24,8 +11,6 @@ ndc_labeled <- ndc_raw_clean %>%
   ) %>%
   # Just in case there are empty rows at the bottom
   filter(!is.na(party))
-
-library(countrycode)
 
 ndc_final <- ndc_labeled %>%
   mutate(
@@ -38,9 +23,7 @@ ndc_final <- ndc_labeled %>%
 
 # Calculating the focus score... this is a bit of a funny method
 
-library(stringr)
-
-ndc_final <- ndc_final %>%
+ndc_final_clean <- ndc_final %>%
   mutate(
     # Count words (sequences of characters separated by spaces)
     # Using coalesce to treat NA as 0 words
@@ -53,6 +36,6 @@ ndc_final <- ndc_final %>%
   )
 
 # Check the results for target countries
-ndc_final %>% 
+ndc_final_clean %>% 
   filter(iso3 %in% c("CAN", "DEU", "JPN", "ZAF", "IND", "RWA")) %>%
   select(iso3, mitig_word_count, adapt_word_count, adapt_focus_score)

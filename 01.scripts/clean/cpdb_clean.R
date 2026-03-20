@@ -1,9 +1,8 @@
 # Cleaning up the global df from cpdb
 # Just need to keep the necessary columns
 
-library(dplyr)
 
-cpdb_clean <- global_policy_df %>%
+cpdb_clean <- cpdb_raw %>%
   select(policy_id, country_iso, policy_status, policy_objective, decision_date )
 
 
@@ -20,8 +19,7 @@ cpdb_clean <- cpdb_clean %>%
   )
 
 # drop original policy_objective column
-cpdb_clean <- cpdb_clean %>%
+cpdb_final_clean <- cpdb_clean %>%
   select(-policy_objective)
 
-# save cpdb_clean for later use
-saveRDS(cpdb_clean, file = "02.data/data-preprocessed/cpdb_clean.rds")
+message("--- CPDB Cleaning Complete ---")
