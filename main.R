@@ -6,7 +6,7 @@
 
 # Setup & Global Variables -------------------------------------------------
 
-# Load Libraries -----------------------------------------------------------
+# Load Libraries 
 library(dplyr)
 library(httr2)
 library(readr)
@@ -20,7 +20,6 @@ library(readxl)
 library(janitor)
 
 
-
 # Countries and years
 TARGET_ISO3 <- c("CAN", "DEU", "JPN", "IND", "ZAF", "DNK", "GBR", "CHL", "COL", "USA", "SAU", "RWA")
 START_YEAR <- 2012
@@ -31,6 +30,7 @@ if (!dir.exists("02.data/data-raw")) dir.create("02.data/data-raw", recursive = 
 if (!dir.exists("02.data/data-preprocessed")) dir.create("02.data/data-preprocessed")
 
 # Data Collection Logic ----------------------------------------------------
+
 # --- OECD CAPMF Data ---
 if (!file.exists("02.data/data-raw/oecd_raw.rds")) {
   message("--- Fetching OECD CAPMF from API ---")
@@ -52,6 +52,7 @@ if (!file.exists("02.data/data-raw/cpdb_raw.rds")) {
   message("--- Loading CPDB from local RDS ---")
   cpdb_raw <- readRDS("02.data/data-raw/cpdb_raw.rds")
 }
+
 
 # Data Cleaning & Integration ----------------------------------------------
 # --- OECD CLEANING ---

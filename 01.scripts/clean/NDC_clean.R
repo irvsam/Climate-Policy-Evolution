@@ -23,6 +23,8 @@ ndc_final <- ndc_labeled %>%
 
 # Calculating the focus score... this is a bit of a funny method
 
+# NB to remember: the european countries submitted one joint ndc, 
+
 ndc_final_clean <- ndc_final %>%
   mutate(
     # Count words (sequences of characters separated by spaces)
