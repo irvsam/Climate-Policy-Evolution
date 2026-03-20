@@ -1,10 +1,11 @@
 # Here I am going to set up the connections to the APIs that I will be using in this project. 
 
-library(vctrs)
+# Load Libraries -----------------------------------------------------------
 library(dplyr)
-library(reticulate)
 library(httr2)
 library(readr)
+library(reticulate)
+library(purrr)
 
 # List of countries I think will be most relevant to my project, based on the criteria I outlined in my proposal. 
 country_list <- c(
