@@ -1,14 +1,7 @@
 # I now have the clean dataset ready to analyze the evolution of policies over time.
 
-library(dplyr)
-library(ggplot2)
-library(tidyr)
-
-# Load the cleaned CPDB data
-cpdb_clean <- readRDS("02.data/data-preprocessed/cpdb_clean.rds")
-
 # Define adaptation-inclusive policies and calculate cumulative counts
-adaptation_growth <- cpdb_clean %>%
+adaptation_growth <- cpdb_final_clean %>%
   filter(!is.na(decision_date)) %>%
   # Flag anything that is 'adaptation' or 'both'
   mutate(has_adaptation = ifelse(policy_type %in% c("adaptation", "both"), 1, 0)) %>%
@@ -19,7 +12,7 @@ adaptation_growth <- cpdb_clean %>%
 
 
 # Do the same for Mitigation for a baseline comparison
-mitigation_growth <- cpdb_clean %>%
+mitigation_growth <- cpdb_final_clean %>%
   filter(!is.na(decision_date)) %>%
   mutate(has_mitigation = ifelse(policy_type %in% c("mitigation", "both"), 1, 0)) %>%
   group_by(decision_date) %>%
@@ -51,7 +44,7 @@ ggplot(adaptation_growth, aes(x = decision_date, y = cumulative_adaptation)) +
 # See which countries have the most adaptation policies
 
 # Calculate total unique adaptation-related policies per country (2013-2025)
-country_totals <- cpdb_clean %>%
+country_totals <- cpdb_final_clean %>%
   filter(policy_type %in% c("adaptation", "both")) %>%
   group_by(country_iso) %>%
   summarise(total_policies = n_distinct(policy_id), .groups = 'drop') %>%
@@ -60,7 +53,6 @@ country_totals <- cpdb_clean %>%
   mutate(rank = row_number())
 
 
-library(readr)
 
 # Load ND-GAIN data (only have the 2023 index)
 
