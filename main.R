@@ -5,7 +5,7 @@
 # ==============================================================================
 
 # Global Toggles
-FORCE_RECLEAN <- TRUE  # Set to TRUE if scripts have been edited
+FORCE_RECLEAN <- FALSE # Set to TRUE if scripts have been edited
 
 # Setup & Global Variables -------------------------------------------------
 
