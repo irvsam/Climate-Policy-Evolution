@@ -5,7 +5,7 @@
 # ==============================================================================
 
 # Global Toggles
-FORCE_RECLEAN <- FALSE  # Set to TRUE if scripts have been edited
+FORCE_RECLEAN <- TRUE  # Set to TRUE if scripts have been edited
 
 # Setup & Global Variables -------------------------------------------------
 
@@ -122,8 +122,9 @@ if (!file.exists(ndgain_clean_path)| FORCE_RECLEAN) {
 
 # --- NDC CLEANING ---
 ndc_clean_path <- "02.data/data-preprocessed/ndc_clean.rds"
+ndc_text_path  <- "02.data/data-preprocessed/ndc_extracted_text.rds"
 
-if (!file.exists(ndc_clean_path)| FORCE_RECLEAN) {
+if (!file.exists(ndc_clean_path)| FORCE_RECLEAN) { # If the ndc clean data doesnt exist nor will the extracted text list
   message("Clean ndc data not found. Processing raw data...")
   
   if (!exists("ndc_raw")) ndc_raw <- read_excel("02.data/data-raw/IGESNDC.xlsx", 
@@ -132,12 +133,15 @@ if (!file.exists(ndc_clean_path)| FORCE_RECLEAN) {
                                                       col_names = FALSE)
   
   source("01.scripts/clean/ndc_clean.R")
-  
   saveRDS(ndc_final_clean, ndc_clean_path)
-  message("Saved: ndc_clean.rds")
+  
+  # Also need to save the extracted text list for the NDC scoring script
+  saveRDS(extracted_text_list, ndc_text_path)
+  message("Saved: ndc_clean.rds and ndc_extracted_text.rds")
 } else {
   message("Loading pre-processed ndc data...")
   ndc_final_clean <- readRDS(ndc_clean_path)
+  ndc_extracted_text_list <- readRDS(ndc_text_path)
 }
 
 
@@ -152,6 +156,7 @@ objects_to_keep <- c(
   "cpdb_final_clean", 
   "ndgain_final_clean", 
   "ndc_final_clean",
+  "ndc_extracted_text_list",
   "TARGET_ISO3", 
   "START_YEAR", 
   "END_YEAR"
