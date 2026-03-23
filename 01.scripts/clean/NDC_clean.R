@@ -1,5 +1,57 @@
+# ==================== This is for the NDC csv dataset with the liinks to the actual pdfs ====================
+library(pdftools)
+library(dplyr)
+library(purrr)
+library(readr)
 
-# Now I need to manually code column names
+path_csv <- "02.data/data-raw/ndcs.csv"
+
+# Read the CSV file
+ndc_csv_raw <- read_csv(path_csv)
+urls <- ndc_csv_raw$'EncodedAbsUrl'
+
+country_list  = TARGET_ISO3
+
+targets <- ndc_csv_raw %>% 
+  filter(Code %in% country_list)
+
+# Create an empty list to store the text results
+extracted_text_list <- list()
+
+for (i in 1:nrow(targets)) {
+  # Get the ISO code and the URL for this row
+  country <- targets$Code[i]
+  url     <- targets$EncodedAbsUrl[i]
+  
+  # Define where to save the file
+  file_destination <- paste0("02.data/data-raw/ndc_pdfs/", country, ".pdf")
+  
+  # Download the file
+  download.file(url, file_destination, mode = "wb", quiet = TRUE)
+  
+  # Extract the text
+  # pdf_text() gives us a vector where every item is a page
+  raw_text <- pdf_text(file_destination)
+  
+  # Combine all pages into one big block of text
+  clean_text <- paste(raw_text, collapse = " ")
+  
+  # Save it into list with the country name
+  extracted_text_list[[country]] <- clean_text
+  
+  message("Finished: ", country)
+}
+
+ndc_text_df <- data.frame(
+  iso3 = names(extracted_text_list),
+  full_text = unlist(extracted_text_list),
+  stringsAsFactors = FALSE
+)
+
+
+
+# ==================== This is for the IGES NDC dataset ====================
+# I need to manually code column names
 ndc_labeled <- ndc_raw %>%
   select(
     party = ...1, 
