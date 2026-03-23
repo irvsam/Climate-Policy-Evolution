@@ -9,7 +9,7 @@ path_csv <- "02.data/data-raw/ndcs.csv"
 # Read the CSV file
 ndc_csv_raw <- read_csv(path_csv)
 urls <- ndc_csv_raw$'EncodedAbsUrl'
-dir.create("ndc_downloads", recursive = TRUE, showWarnings = FALSE)
+dir.create("02.data/data-preprocessed/ndc_downloads", recursive = TRUE, showWarnings = FALSE)
 country_list  = TARGET_ISO3
 
 targets <- ndc_csv_raw %>% 
@@ -34,7 +34,7 @@ targets <- targets %>%
 for (i in 1:nrow(targets)) {
   url <- targets$EncodedAbsUrl[i]
   country_code <- targets$Code[i]
-  file_path <- paste0("ndc_downloads/", country_code, ".pdf")
+  file_path <- paste0("02.data/data-preprocessed/ndc_downloads/", country_code, ".pdf")
   
   # Download directly to the disk
   response <- GET(url, 
