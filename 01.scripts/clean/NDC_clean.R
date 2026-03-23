@@ -3,9 +3,9 @@ library(pdftools)
 library(dplyr)
 library(purrr)
 library(readr)
+library(httr)
 
 path_csv <- "02.data/data-raw/ndcs.csv"
-
 # Read the CSV file
 ndc_csv_raw <- read_csv(path_csv)
 urls <- ndc_csv_raw$'EncodedAbsUrl'
