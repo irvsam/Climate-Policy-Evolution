@@ -1,4 +1,4 @@
-# ==================== This is for the NDC csv dataset with the liinks to the actual pdfs ====================
+# ==================== This is for the NDC csv dataset with the links to the actual pdfs ====================
 library(pdftools)
 library(dplyr)
 library(purrr)
@@ -9,7 +9,7 @@ path_csv <- "02.data/data-raw/ndcs.csv"
 # Read the CSV file
 ndc_csv_raw <- read_csv(path_csv)
 urls <- ndc_csv_raw$'EncodedAbsUrl'
-
+dir.create("ndc_downloads", recursive = TRUE, showWarnings = FALSE)
 country_list  = TARGET_ISO3
 
 targets <- ndc_csv_raw %>% 
@@ -27,6 +27,36 @@ targets <- targets %>%
   group_by(Code) %>%
   slice_min(order_by = `SubmissionDate`, n = 1) %>%
   ungroup()
+
+
+# Let's just try see how to get the url and open it... i think we need to use httr to get the content and then pass it to pdftools
+
+for (i in 1:nrow(targets)) {
+  url <- targets$EncodedAbsUrl[i]
+  country_code <- targets$Code[i]
+  file_path <- paste0("ndc_downloads/", country_code, ".pdf")
+  
+  # Download directly to the disk
+  response <- GET(url, 
+                  write_disk(file_path, overwrite = TRUE),
+                  user_agent("Mozilla/5.0"))
+  
+  if (status_code(response) == 200) {
+    # Try to extract text
+    txt <- try(pdf_text(file_path), silent = TRUE)
+    
+    if (class(txt) != "try-error") {
+      # Combine pages and save
+      extracted_text_list[[country_code]] <- paste(txt, collapse = " ")
+      message("Success: ", country_code)
+    } else {
+      message("Extraction failed for: ", country_code)
+    }
+  } else {
+    message("Download failed for: ", country_code, " Code: ", status_code(response))
+  }
+}
+
 
 
 # ==================== This is for the IGES NDC dataset ====================
