@@ -4,7 +4,7 @@ library(tidyr)
 # Turning extracted list into a df
 ndc_results_df <- data.frame(
   iso3 = names(ndc_extracted_text_list),
-  full_text = unlist(extracted_text_list),
+  full_text = unlist(ndc_extracted_text_list),
   stringsAsFactors = FALSE
 )
 
