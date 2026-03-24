@@ -1,6 +1,6 @@
 
 # Heatmap of Average Stringency by Country and Sector (Level 2)
-oecd_final_clean %>%
+stringency_plot <- oecd_final_clean %>%
   filter(Level == "LEV2") %>%
   group_by(iso3, Sector, year) %>%
   summarise(avg_stringency = mean(stringency, na.rm = TRUE), .groups = "drop") %>%
@@ -14,7 +14,9 @@ oecd_final_clean %>%
        x = "Year", y = "Policy Sector")
 
 
-ggplot(ndgain_final_clean, aes(x = year, y = score, color = iso3)) +
+
+
+vuln_score <- ggplot(ndgain_final_clean, aes(x = year, y = score, color = iso3)) +
   geom_line(size = 1) +
   geom_point() +
   theme_minimal() +

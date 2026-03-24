@@ -24,9 +24,6 @@ library(janitor)
 library(ggplot2)
 
 
-
-
-
 # Countries and years
 TARGET_ISO3 <- c("CAN", "DEU", "JPN", "IND", "ZAF", "DNK", "GBR", "CHL", "COL", "USA", "SAU", "RWA")
 START_YEAR <- 2012
@@ -62,6 +59,7 @@ if (!file.exists("02.data/data-raw/cpdb_raw.rds")| FORCE_RECLEAN) {
 
 
 # Data Cleaning & Integration ----------------------------------------------
+
 # --- OECD CLEANING ---
 oecd_clean_path <- "02.data/data-preprocessed/oecd_clean.rds"
 
@@ -145,8 +143,16 @@ if (!file.exists(ndc_clean_path)| FORCE_RECLEAN) { # If the ndc clean data doesn
 }
 
 
+# Analysis and Visualization ----------------------------------------------
+
+# Creating cumulative policy adoption graph
+source("01.scripts/analyse/first_small_analysis.R")
+
+# stringency plot and vulnerability score
+source("01.scripts/analyse/stringency_evolution.R")
+
 # ==============================================================================
-# 4. Housekeeping & Environment Cleanup
+# Housekeeping & Environment Cleanup
 # ==============================================================================
 message("--- Cleaning up Environment ---")
 
@@ -159,7 +165,10 @@ objects_to_keep <- c(
   "ndc_extracted_text_list",
   "TARGET_ISO3", 
   "START_YEAR", 
-  "END_YEAR"
+  "END_YEAR",
+  "Cumulative_pol_adoption",
+  "stringency_plot",
+  "vuln_score"  
 )
 
 # Remove everything else
