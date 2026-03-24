@@ -22,7 +22,7 @@ stringency_plot <- oecd_final_clean %>%
        x = "Year", y = "Policy Sector",
        caption = stringency_plot_note)
 
-print(stringency_plot)
+
 
 
 vuln_score <- ggplot(ndgain_final_clean, aes(x = year, y = score, color = iso3)) +
@@ -33,4 +33,4 @@ vuln_score <- ggplot(ndgain_final_clean, aes(x = year, y = score, color = iso3))
        subtitle = "Tracking progress across target 12 countries",
        y = "Vulnerability Score (Lower is better)",
        x = "Year")
-print(vuln_score)
+

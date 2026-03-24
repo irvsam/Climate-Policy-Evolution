@@ -1,5 +1,7 @@
 library(stringr)
 library(tidyr)
+library(tidytext)
+library(ggrepel)
 
 # Turning extracted list into a df
 ndc_results_df <- data.frame(
@@ -67,7 +69,7 @@ print(final_map_df %>% filter(iso3 == "IND"))
 
 # Instead of focusing on how much they are adaptation or mitigation I want to just focus on how much adaptation has been brought into their language relative to the others
 
-ggplot(final_map_df, aes(x = reorder(iso3, relative_adapt_focus), y = relative_adapt_focus)) +
+ndc_adaptation_leaderboard <- ggplot(final_map_df, aes(x = reorder(iso3, relative_adapt_focus), y = relative_adapt_focus)) +
   geom_col(fill = "steelblue") +
   coord_flip() +
   scale_y_continuous(labels = scales::percent) +
@@ -76,7 +78,7 @@ ggplot(final_map_df, aes(x = reorder(iso3, relative_adapt_focus), y = relative_a
        x = "Country", y = "Relative Adaptation Focus") +
   theme_minimal()
 
-ggplot(final_map_df, aes(x = relative_adapt_focus, y = ambition_score, label = iso3)) +
+ndc_ambition_vs_focus <- ggplot(final_map_df, aes(x = relative_adapt_focus, y = ambition_score, label = iso3)) +
   # Add shaded areas to show 'Strategic Zones'
   annotate("rect", xmin=0.5, xmax=1, ymin=0.5, ymax=1, fill="blue", alpha=0.1) + # Adaptation Leaders
   annotate("rect", xmin=0, xmax=0.5, ymin=0.5, ymax=1, fill="green", alpha=0.1) + # Mitigation Leaders

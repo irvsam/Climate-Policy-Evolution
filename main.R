@@ -151,6 +151,14 @@ source("01.scripts/analyse/first_small_analysis.R")
 # stringency plot and vulnerability score
 source("01.scripts/analyse/stringency_evolution.R")
 
+source("01.scripts/analyse/cpdb_evolution.R")
+
+source("01.scripts/analyse/ndc_scoring.R")
+
+source("01.scripts/analyse/ndc_adapt_focus.R")
+
+
+
 # ==============================================================================
 # Housekeeping & Environment Cleanup
 # ==============================================================================
@@ -168,7 +176,14 @@ objects_to_keep <- c(
   "END_YEAR",
   "Cumulative_pol_adoption",
   "stringency_plot",
-  "vuln_score"  
+  "vuln_score",
+  "cumulative_adaptation_growth",
+  "adaptation_mix_plot",
+  "ndc_adaptation_leaderboard",
+  "ndc_ambition_vs_focus",
+  "ndc_adaptation_focus"
+  
+  
 )
 
 # Remove everything else

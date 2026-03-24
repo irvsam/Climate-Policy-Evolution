@@ -37,7 +37,7 @@ Cumulative_pol_adoption <- ggplot(policy_growth, aes(x = decision_date, y = cumu
   theme_minimal() +
   # Adding a legend if the number of countries is small
   theme(legend.position = "right")
-print(Cumulative_pol_adoption)
+
 
 
 
