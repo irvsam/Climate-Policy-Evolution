@@ -26,7 +26,7 @@ adaptation_growth <- adaptation_growth %>%
 mitigation_growth <- mitigation_growth %>%
   mutate(decision_date = as.integer(as.character(decision_date)))
 
-ggplot(adaptation_growth, aes(x = decision_date, y = cumulative_adaptation)) +
+cumulative_adaptation_growth <- ggplot(adaptation_growth, aes(x = decision_date, y = cumulative_adaptation)) +
   geom_line(color = "#e67e22", size = 1.2) +
   geom_point(color = "#e67e22", size = 2, alpha = 0.5) +
   labs(
@@ -69,6 +69,8 @@ vulnerability_report <- country_totals %>%
   filter(!is.na(vulnerability_index)) %>%
   arrange(desc(vulnerability_index)) # Sort by most vulnerable first
 
+# Maybe it's better to instead compare their adaptation mix instead of absolute count of adaptation policies
+
 # View the list
 print(vulnerability_report)
 
@@ -82,4 +84,35 @@ average_vulnerability <- country_totals %>%
 print(average_vulnerability)
 
 
+# =============== Better way of doing things? ================
 
+# Calculate the ratio of Adaptation vs. Mitigation per country
+adaptation_mix <- cpdb_final_clean %>%
+  filter(country_iso %in% TARGET_ISO3) %>%
+  # Categorize each policy
+  mutate(has_adaptation_focus = ifelse(policy_type %in% c("adaptation", "both"), 1, 0),
+         is_purely_mitigation = ifelse(policy_type %in% c("mitigation"), 1, 0)) %>%
+  group_by(country_iso) %>%
+  summarise(
+    total_count = n(),
+    adapt_count = sum(has_adaptation_focus),
+    mitig_count = sum(is_purely_mitigation),
+    # The Ratio: What % of their total portfolio includes adaptation?
+    adapt_ratio = (adapt_count / total_count) * 100
+  ) %>%
+  left_join(ndgain_data, by = "country_iso") %>%
+  arrange(desc(adapt_ratio))
+
+
+adaptation_mix_plot <- ggplot(adaptation_mix, aes(x = reorder(country_iso, adapt_ratio), y = adapt_ratio, fill = vulnerability_index)) +
+  geom_col() +
+  coord_flip() +
+  scale_fill_viridis_c(option = "plasma", name = "Vulnerability (ND-GAIN)") +
+  labs(
+    title = "Climate Policy Mix: Adaptation Priority",
+    subtitle = "Percentage of total policy portfolio dedicated to Adaptation",
+    x = "Country",
+    y = "Adaptation Share of Portfolio (%)"
+  ) +
+  theme_minimal()
+print(adaptation_mix_plot)

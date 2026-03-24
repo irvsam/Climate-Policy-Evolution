@@ -16,6 +16,7 @@ policy_growth <- cpdb_final_clean_targeted %>%
   # Count new policies per country per year
   group_by(country_iso, decision_date) %>%
   summarise(new_policies = n(), .groups = 'drop') %>%
+  # Ensure every year from START_YEAR to END_YEAR is represented for each country
   complete(country_iso, decision_date = full_seq(decision_date, 1), fill = list(new_policies = 0)) %>%
   # Calculate cumulative sum
   group_by(country_iso) %>%
@@ -28,6 +29,7 @@ Cumulative_pol_adoption <- ggplot(policy_growth, aes(x = decision_date, y = cumu
   geom_line(size = 0.8, alpha = 0.7) +
   labs(
     title = "Evolution of Cumulative Climate Policy Adoption (Global)",
+    subtitle = "Data from CPDB for Target Countries",
     x = "Year of Decision",
     y = "Total Cumulative Policies",
     color = "Country (ISO-3)"
