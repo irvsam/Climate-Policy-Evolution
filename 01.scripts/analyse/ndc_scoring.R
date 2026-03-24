@@ -1,7 +1,3 @@
-library(stringr)
-library(tidyr)
-library(tidytext)
-library(ggrepel)
 
 # Turning extracted list into a df
 ndc_results_df <- data.frame(

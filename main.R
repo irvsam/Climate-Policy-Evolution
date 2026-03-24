@@ -22,6 +22,9 @@ library(countrycode)
 library(readxl)
 library(janitor)
 library(ggplot2)
+library(tidytext)
+library(ggrepel)
+
 
 
 # Countries and years
