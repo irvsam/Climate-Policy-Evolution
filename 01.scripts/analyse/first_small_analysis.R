@@ -25,7 +25,7 @@ policy_growth <- cpdb_final_clean_targeted %>%
 
 
 # Create a single plot with all countries
-Cumulative_pol_adoption <- ggplot(policy_growth, aes(x = decision_date, y = cumulative_policies, color = country_iso, group = country_iso)) +
+cpdb_cumulative_pol_adoption <- ggplot(policy_growth, aes(x = decision_date, y = cumulative_policies, color = country_iso, group = country_iso)) +
   geom_line(size = 0.8, alpha = 0.7) +
   labs(
     title = "Evolution of Cumulative Climate Policy Adoption (Global)",

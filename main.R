@@ -25,8 +25,6 @@ library(ggplot2)
 library(tidytext)
 library(ggrepel)
 
-
-
 # Countries and years
 TARGET_ISO3 <- c("CAN", "DEU", "JPN", "IND", "ZAF", "DNK", "GBR", "CHL", "COL", "USA", "SAU", "RWA")
 START_YEAR <- 2012
@@ -177,17 +175,15 @@ objects_to_keep <- c(
   "TARGET_ISO3", 
   "START_YEAR", 
   "END_YEAR",
-  "Cumulative_pol_adoption",
-  "stringency_plot",
-  "vuln_score",
-  "cumulative_adaptation_growth",
-  "adaptation_mix_plot",
+  "cpdb_cumulative_pol_adoption",
+  "oecd_stringency_plot",
+  "ndgain_vuln_score",
+  "cpdb_cumulative_adaptation_growth",
+  "cpdb_adaptation_mix_plot",
   "ndc_adaptation_leaderboard",
   "ndc_ambition_vs_focus",
   "ndc_adaptation_focus"
-  
-  
-)
+  )
 
 # Remove everything else
 rm(list = setdiff(ls(), objects_to_keep))

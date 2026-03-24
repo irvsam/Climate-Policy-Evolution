@@ -26,7 +26,7 @@ adaptation_growth <- adaptation_growth %>%
 mitigation_growth <- mitigation_growth %>%
   mutate(decision_date = as.integer(as.character(decision_date)))
 
-cumulative_adaptation_growth <- ggplot(adaptation_growth, aes(x = decision_date, y = cumulative_adaptation)) +
+cpdb_cumulative_adaptation_growth <- ggplot(adaptation_growth, aes(x = decision_date, y = cumulative_adaptation)) +
   geom_line(color = "#e67e22", size = 1.2) +
   geom_point(color = "#e67e22", size = 2, alpha = 0.5) +
   labs(
@@ -104,7 +104,7 @@ adaptation_mix <- cpdb_final_clean %>%
   arrange(desc(adapt_ratio))
 
 
-adaptation_mix_plot <- ggplot(adaptation_mix, aes(x = reorder(country_iso, adapt_ratio), y = adapt_ratio, fill = vulnerability_index)) +
+cpdb_adaptation_mix_plot <- ggplot(adaptation_mix, aes(x = reorder(country_iso, adapt_ratio), y = adapt_ratio, fill = vulnerability_index)) +
   geom_col() +
   coord_flip() +
   scale_fill_viridis_c(option = "plasma", name = "Vulnerability (ND-GAIN)") +
@@ -115,4 +115,4 @@ adaptation_mix_plot <- ggplot(adaptation_mix, aes(x = reorder(country_iso, adapt
     y = "Adaptation Share of Portfolio (%)"
   ) +
   theme_minimal()
-print(adaptation_mix_plot)
+

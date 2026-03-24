@@ -8,7 +8,7 @@ oecd_final_clean <- oecd_final_clean %>%
 stringency_plot_note <- "Note: Data for Rwanda and USA is missing."
 
 # Heatmap of Average Stringency by Country and Sector (Level 2)
-stringency_plot <- oecd_final_clean %>%
+oecd_stringency_plot <- oecd_final_clean %>%
   filter(Level == "LEV2") %>%
   group_by(iso3, Sector, year) %>%
   summarise(avg_stringency = mean(stringency, na.rm = TRUE), .groups = "drop") %>%
@@ -25,7 +25,7 @@ stringency_plot <- oecd_final_clean %>%
 
 
 
-vuln_score <- ggplot(ndgain_final_clean, aes(x = year, y = score, color = iso3)) +
+ndgain_vuln_score <- ggplot(ndgain_final_clean, aes(x = year, y = score, color = iso3)) +
   geom_line(size = 1) +
   geom_point() +
   theme_minimal() +
