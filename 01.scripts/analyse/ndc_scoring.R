@@ -9,12 +9,16 @@ ndc_results_df <- data.frame(
 # Let's re think this logic 
 
 # Action Dictionaries
+
+# Creating a subset of words to focus on
 adaptation_lexicon <- c("resilience", "vulnerability", "irrigation", "flood", "drought", 
                         "agriculture", "disaster", "infrastructure", "coastal")
 
 mitigation_lexicon <- c("emissions", "carbon", "renewable", "solar", "wind", 
                         "methane", "decarbonization", "energy", "efficiency")
 
+
+# For ambition, I am going to create a simple lexicon of "hard" vs. "soft" commitment words. This is a very basic approach but gives a good starting point
 ambition_lexicon <- tribble(
   ~word, ~type,
   "must", "hard", "mandatory", "hard", "legally", "hard", "shall", "hard", "commit", "hard",
@@ -22,29 +26,43 @@ ambition_lexicon <- tribble(
 )
 
 # Tokenization and Scoring
+# Remove stop words to focus on meaningful content.
+# Stop words comes from the tidytext (e.g., "the", "is", "and").
 ndc_tokens <- ndc_results_df %>%
   unnest_tokens(word, full_text) %>%
   filter(!word %in% stop_words$word)
 
-#Focus score
+# Focus score
+# Important logic: I want to see how much of the text is focused on adaptation vs. mitigation. So I will count the number of adaptation and mitigation words, and then calculate the relative focus on adaptation as a percentage of the total (adaptation + mitigation). 
+# This gives a clear metric to compare countries on their relative emphasis on adaptation in their NDCs.
+
 focus_score <- ndc_tokens %>%
+  # Categorize each word as adaptation, mitigation, or neither based on the lexicons
+  # cat = category
   mutate(cat = case_when(
     word %in% adaptation_lexicon ~ "Adaptation",
     word %in% mitigation_lexicon ~ "Mitigation",
     TRUE ~ NA_character_
   )) %>%
   filter(!is.na(cat)) %>%
+  # Group by country and category, then count the occurrences
   group_by(iso3, cat) %>%
+  # This line counts the number of words in each category for each country
   summarise(n = n(), .groups = "drop") %>%
+  # Reshape the data to have separate columns for Adaptation and Mitigation counts
   pivot_wider(names_from = cat, values_from = n, values_fill = 0) %>%
   mutate(relative_adapt_focus = Adaptation / (Adaptation + Mitigation))
 
 # Ambition Scoring
+# For ambition, I want to see how much "hard" language vs. "soft" language is used in the NDCs. So I will count the number of hard and soft words, and then calculate an ambition score as the ratio of hard words to total (hard + soft)
 ambition_score <- ndc_tokens %>%
+  # Join with the ambition lexicon to categorize words as hard or soft
   inner_join(ambition_lexicon, by = "word") %>%
   group_by(iso3, type) %>%
+  # Count the number of hard and soft words for each country
   summarise(count = n(), .groups = "drop") %>%
   pivot_wider(names_from = type, values_from = count, values_fill = 0) %>%
+  # Adding a small constant to the denominator to avoid division by zero.
   mutate(ambition_score = hard / (hard + soft + 0.001))
 
 # Join
@@ -90,3 +108,11 @@ ndc_ambition_vs_focus <- ggplot(final_map_df, aes(x = relative_adapt_focus, y = 
     y = "Ambition Score (Hard vs. Soft Language)"
   ) +
   theme_minimal()
+
+print(ndc_adaptation_leaderboard)
+print(ndc_ambition_vs_focus)
+
+# Which countries got dropped from the graph?
+countries_in_graph <- final_map_df$iso3
+countries_dropped <- setdiff(TARGET_ISO3, countries_in_graph)
+print(countries_dropped)
