@@ -43,7 +43,7 @@ oecd_wide <- oecd_processed %>%
     stringency = any_of("POL_STRINGENCY")
   )
 
-# Fetch Official Metadata Labels --------------------------------------------
+# Fetch Official Metadata Labels from DSD--------------------------------------------
 message("Fetching OECD Metadata (DSD)...")
 
 

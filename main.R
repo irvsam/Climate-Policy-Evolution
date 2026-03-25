@@ -9,23 +9,25 @@ FORCE_RECLEAN <- FALSE # Set to TRUE if scripts have been edited
 
 # Setup & Global Variables -------------------------------------------------
 
-# Load Libraries 
-library(dplyr)
-library(httr2)
-library(readr)
-library(reticulate)
-library(purrr)
-library(stringr)
-library(tidyr)
-library(OECD)
-library(countrycode)
-library(readxl)
-library(janitor)
-library(ggplot2)
-library(tidytext)
-library(ggrepel)
-library(pdftools)
-library(httr)
+# Code to install packages if they do not exist
+required_packages <- c(
+  "dplyr", "httr2", "readr", "reticulate", "purrr", "stringr", 
+  "tidyr", "OECD", "countrycode", "readxl", "janitor", 
+  "ggplot2", "tidytext", "ggrepel", "pdftools", "httr"
+)
+
+# Only install if it isnt already installed
+new_packages <- required_packages[!(required_packages %in% installed.packages()[,"Package"])]
+if(length(new_packages)) {
+  install.packages(new_packages)
+}
+
+
+
+# Load all required libraries
+for (pkg in required_packages) {
+  library(pkg, character.only = TRUE)
+}
 
 # Countries and years
 TARGET_ISO3 <- c("CAN", "DEU", "JPN", "IND", "ZAF", "DNK", "GBR", "CHL", "COL", "USA", "SAU", "RWA")
@@ -37,6 +39,21 @@ if (!dir.exists("02.data/data-raw")) dir.create("02.data/data-raw", recursive = 
 if (!dir.exists("02.data/data-preprocessed")) dir.create("02.data/data-preprocessed")
 
 # Data Collection Logic ----------------------------------------------------
+
+# Online databases
+
+url_ndcs_index <- "https://raw.githubusercontent.com/openclimatedata/ndcs/main/data/ndcs.csv"
+
+# Download function
+smart_download <- function(url, dest) {
+  if (!file.exists(dest)) {
+    message("Downloading: ", dest)
+    download.file(url, dest, mode = "wb")
+  } else {
+    message("File already exists: ", dest)
+  }
+}
+smart_download(url_ndcs_index, "02.data/data-raw/ndcs.csv")
 
 # --- OECD CAPMF Data ---
 if (!file.exists("02.data/data-raw/oecd_raw.rds")| FORCE_RECLEAN) {
@@ -166,6 +183,7 @@ source("01.scripts/analyse/ndc_adapt_focus.R")
 # Housekeeping & Environment Cleanup
 # ==============================================================================
 message("--- Cleaning up Environment ---")
+message("If you are wanting to run any sub scripts then remove this section")
 
 # Define objects to keep
 objects_to_keep <- c(
