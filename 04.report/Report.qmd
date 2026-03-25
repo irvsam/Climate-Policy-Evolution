@@ -1,13 +1,18 @@
-
 ---
 title: "Climate Resilience: A Multi-Source Analysis of Climate Policy Evolution Post-Paris Agreement (2013–2025)"
 author: "Samantha Irving"
+date: "`r Sys.Date()`"
+abstract: "This report analyzes the shift from mitigation to adaptation in global climate policy portfolios. Using a multi-source pipeline (OECD, CPDB, ND-GAIN, and NDC text mining), we explore the 'Commitment Gap' between Global North and Global South nations."
 format: 
   pdf:
     toc: true
     toc-depth: 1
+    
     number-sections: true
     colorlinks: true
+    include-before-body:
+      text: |
+        \newpage
 ---
 
 ```{r "knitr config", include=FALSE}
@@ -33,9 +38,9 @@ source(here("main.R"))
 
 The Paris Agreement, an international treaty reached at COP 21 on December 12th 2015 is a global effort to bring all countries together under a common cause. The agreement requires all Parties to submit "nationally determined contributions" (NDCs), which are individual country plans for combating Climate Change. 
 
-This project is aimed at exploring the evolution of climate policies before, during and after the signing of the Paris agreement which entered into force on the 4th of November 2016.
+This project is aimed at exploring the evolution of climate policies since the signing of the Paris agreement on the 4th of November 2016.
 
-The Paris agreement addresses several crucial areas in the climate policy landscape, including adaptation and mitigation efforts. Mitigation policies are those that aim to reduce or prevent the emission of greenhouse gases, while adaptation policies focus on adjusting to the current and expected impacts of climate change. 
+The Paris agreement mentions adaptation in several key articles, signaling its importance alongside mitigation in the global climate effort:
 
 > Adaptation (Art. 7) – The Paris Agreement establishes a global goal on adaptation – of enhancing adaptive capacity, strengthening resilience and reducing vulnerability to climate change in the context of the temperature goal of the Agreement. It aims to significantly strengthen national adaptation efforts, including through support and international cooperation. It recognizes that adaptation is a global challenge faced by all. All Parties should engage in adaptation, including by formulating and implementing National Adaptation Plans, and should submit and periodically update an adaptation communication describing their priorities, needs, plans and actions. The adaptation efforts of developing countries should be recognized
 
@@ -50,7 +55,7 @@ The need for adaptation is becoming increasingly urgent as the effects of climat
 
 # Data & Methodology WIP
 
-A primary goal of this project was to demonstrate a robust, reproducible data mining infrastructure. To do this, I have structured the repository so that everything is managed by a single master script (`main.R`) that orchestrates the entire workflow, from data collection to analysis and visualization. This ensures that anyone can run the full pipeline with a single command and that all steps are transparent and reproducible.
+I have structured the repository so that everything is managed by a single master script (`main.R`) that orchestrates the entire workflow, from data collection to analysis and visualization. This ensures that anyone can run the full pipeline with a single command and that all steps are transparent and reproducible.
 
 The pipeline pulls from four distinct data environments:
 
@@ -68,6 +73,9 @@ The pipeline pulls from four distinct data environments:
 The cumulative policy adoption plot (Figure 1) confirms the "Paris Effect." There is a visible acceleration in policy output for countries immediately following 2015.
 
 ```{r}
+#| echo: false
+#| warning: false
+#| message: false
 #| label: fig-cumulative-stock
 #| fig-cap: "Cumulative Climate Policy Adoption by Target Country (2012-2026)"
 #| fig-width: 9
@@ -83,6 +91,9 @@ Finding: Vulnerability (ND-GAIN) is a strong predictor of adaptation priority. A
 Limitation: CPDB has much higher coverage for Global North countries, which may bias the analysis. The adaptation mix for some Global South countries may be underrepresented due to data gaps.
 
 ```{r}
+#| echo: false
+#| warning: false
+#| message: false
 #| label: fig-adaptation-mix
 #| fig-cap: "The Adaptation Mix: Percentage of Portfolio dedicated to Resilience"
 print(cpdb_adaptation_mix_plot)
@@ -93,6 +104,9 @@ print(cpdb_adaptation_mix_plot)
 
 The Ambition Matrix is the main part of this project and consists of majority of the data work. By mapping Relative Adaptation Focus against Lexical Hardness (the ratio of "must/shall" vs "aim/should"), we see that:
 ```{r}
+#| echo: false
+#| warning: false
+#| message: false
 #| label: fig-ambition-matrix
 #| fig-cap: "Climate Ambition Matrix: Lexical Hardness vs. Adaptation Focus"
 print(ndc_ambition_vs_focus)
@@ -115,4 +129,14 @@ OECD (2025), The Climate Action Monitor 2025, OECD Publishing, Paris, https://do
 # LLM Declaration WIP
 
 
+**Word Count:** 
 
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+# Calculate word count for the report
+report_text <- readLines(here("04.report/Report.qmd"))
+total_words <- sum(sapply(strsplit(report_text, "\\s+"), length))
+cat("Total Word Count:", total_words)
+```

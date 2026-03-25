@@ -178,12 +178,12 @@ source("01.scripts/analyse/ndc_scoring.R")
 source("01.scripts/analyse/ndc_adapt_focus.R")
 
 
-
 # ==============================================================================
 # Housekeeping & Environment Cleanup
 # ==============================================================================
 message("--- Cleaning up Environment ---")
 message("If you are wanting to run any sub scripts then remove this section")
+
 
 # Define objects to keep
 objects_to_keep <- c(
