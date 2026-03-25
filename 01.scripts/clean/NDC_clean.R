@@ -100,3 +100,5 @@ ndc_final_clean <- ndc_final %>%
 ndc_final_clean %>% 
   filter(iso3 %in% c("CAN", "DEU", "JPN", "ZAF", "IND", "RWA")) %>%
   select(iso3, mitig_word_count, adapt_word_count, adapt_focus_score)
+
+message("--- NDC Cleaning Complete ---")

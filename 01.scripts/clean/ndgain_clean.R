@@ -12,3 +12,4 @@ ndgain_final_clean <- ndgain_raw %>%
   ) %>%
   mutate(year = as.numeric(year))
 
+message("--- NDGAIN Cleaning Complete ---")
