@@ -24,6 +24,8 @@ library(janitor)
 library(ggplot2)
 library(tidytext)
 library(ggrepel)
+library(pdftools)
+library(httr)
 
 # Countries and years
 TARGET_ISO3 <- c("CAN", "DEU", "JPN", "IND", "ZAF", "DNK", "GBR", "CHL", "COL", "USA", "SAU", "RWA")

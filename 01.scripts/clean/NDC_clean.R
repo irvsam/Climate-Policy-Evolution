@@ -1,9 +1,5 @@
 # ==================== This is for the NDC csv dataset with the links to the actual pdfs ====================
-library(pdftools)
-library(dplyr)
-library(purrr)
-library(readr)
-library(httr)
+
 
 path_csv <- "02.data/data-raw/ndcs.csv"
 # Read the CSV file
@@ -19,8 +15,10 @@ targets <- ndc_csv_raw %>%
 extracted_text_list <- list()
 
 # Need to clean up the targets so we only looking at the ones that are active, in english
+# COL only has an archived one in english so we need to keep that one
+# Need to make sure columbia is not removed
 targets <- targets %>%
-  filter(Language == "English", Status == "Active")
+  filter(Language == "English", Status == "Active" | (Code == "COL" & Status == "Archived"))
 
 # Now also just keep the earliest submission date
 targets <- targets %>%
