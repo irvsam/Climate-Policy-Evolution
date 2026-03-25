@@ -137,7 +137,7 @@ if (!file.exists(ndc_clean_path)| FORCE_RECLEAN) { # If the ndc clean data doesn
   saveRDS(ndc_final_clean, ndc_clean_path)
   
   # Also need to save the extracted text list for the NDC scoring script
-  saveRDS(extracted_text_list, ndc_text_path)
+  saveRDS(ndc_extracted_text_list, ndc_text_path)
   message("Saved: ndc_clean.rds and ndc_extracted_text.rds")
 } else {
   message("Loading pre-processed ndc data...")

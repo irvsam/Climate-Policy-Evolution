@@ -12,7 +12,7 @@ targets <- ndc_csv_raw %>%
   filter(Code %in% country_list)
 
 # Create an empty list to store the text results
-extracted_text_list <- list()
+ndc_extracted_text_list <- list()
 
 # Need to clean up the targets so we only looking at the ones that are active, in english
 # COL only has an archived one in english so we need to keep that one
@@ -45,7 +45,7 @@ for (i in 1:nrow(targets)) {
     
     if (class(txt) != "try-error") {
       # Combine pages and save
-      extracted_text_list[[country_code]] <- paste(txt, collapse = " ")
+      ndc_extracted_text_list[[country_code]] <- paste(txt, collapse = " ")
       message("Success: ", country_code)
     } else {
       message("Extraction failed for: ", country_code)
