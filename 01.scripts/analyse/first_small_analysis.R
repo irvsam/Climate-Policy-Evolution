@@ -38,6 +38,9 @@ cpdb_cumulative_pol_adoption <- ggplot(policy_growth, aes(x = decision_date, y =
   # Adding a legend if the number of countries is small
   theme(legend.position = "right")
 
+# Lets add a line around when the paris agreement came into effect
+cpdb_cumulative_pol_adoption <- cpdb_cumulative_pol_adoption +
+  geom_vline(xintercept = 2015, linetype = "dashed", color = "grey50") +
+  annotate("text", x = 2015, y = max(policy_growth$cumulative_policies) * 0.9, label = "Paris Agreement (2015)", angle = 90, vjust = -0.5, size = 3)
 
-
-
+print(cpdb_cumulative_pol_adoption)
