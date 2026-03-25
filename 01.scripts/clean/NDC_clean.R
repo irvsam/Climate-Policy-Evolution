@@ -81,7 +81,7 @@ ndc_final <- ndc_labeled %>%
 
 
 # NB to remember: the european countries submitted one joint ndc, 
-ndc_final_clean <- ndc_final %>%
+ndc_iges_final_clean <- ndc_final %>%
   mutate(
     # Count words (sequences of characters separated by spaces)
     # Using coalesce to treat NA as 0 words
