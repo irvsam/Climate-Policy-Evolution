@@ -1,5 +1,5 @@
 # First need to change ndc final into targeted ndc
-ndc_targeted <- ndc_final_clean %>%
+ndc_targeted <- ndc_iges_final_clean %>%
   filter(iso3 %in% TARGET_ISO3)
 
 
@@ -22,7 +22,7 @@ ndc_adaptation_focus <- ggplot(adaptation_focus_df, aes(x = reorder(iso3, adapt_
                                "Low Vulnerability" = "#2980b9")) +
   labs(
     title = "National Adaptation Focus in Climate Pledges",
-    subtitle = "% of NDC Document dedicated to Adaptation vs. Vulnerability Level",
+    subtitle = "% of NDC Document dedicated to Adaptation vs. Vulnerability Level From NDC IGES Dataset",
     x = "Country",
     y = "Adaptation 'Mindshare' (Text Ratio)",
     fill = "Climate Need"

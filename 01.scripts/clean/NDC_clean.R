@@ -80,10 +80,7 @@ ndc_final <- ndc_labeled %>%
   select(iso3, everything())
 
 
-# Calculating the focus score... this is a bit of a funny method
-
 # NB to remember: the european countries submitted one joint ndc, 
-
 ndc_final_clean <- ndc_final %>%
   mutate(
     # Count words (sequences of characters separated by spaces)
@@ -97,7 +94,7 @@ ndc_final_clean <- ndc_final %>%
   )
 
 # Check the results for target countries
-ndc_final_clean %>% 
+ndc_iges_final_clean %>% 
   filter(iso3 %in% c("CAN", "DEU", "JPN", "ZAF", "IND", "RWA")) %>%
   select(iso3, mitig_word_count, adapt_word_count, adapt_focus_score)
 
