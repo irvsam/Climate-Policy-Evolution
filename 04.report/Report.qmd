@@ -1,6 +1,6 @@
 
 ---
-title: "Climate Resilience: Comparing the Evolution of Integrated Climate Policies"
+title: "Climate Resilience: A Multi-Source Analysis of Climate Policy Evolution Post-Paris Agreement (2013–2025)"
 author: "Samantha Irving"
 format: 
   pdf:
@@ -31,17 +31,15 @@ source(here("main.R"))
 
 # Introduction WIP
 
-The Paris Agreement, an international treaty reached at COP 21 on December 12th 2015 is a global effort to bring all countries together under a common cause. The primary objective is to strengthen the global response to climate change by keeping the rise in global temperatures "well below 2 degrees Celsius" above pre-industrial levels, while actively pursuing efforts to limit that increase to 1.5 degrees.
-
-The agreement requires all Parties to submit "nationally determined contributions" (NDCs), which are individual country plans that must be updated and strengthened every five years. 
+The Paris Agreement, an international treaty reached at COP 21 on December 12th 2015 is a global effort to bring all countries together under a common cause. The agreement requires all Parties to submit "nationally determined contributions" (NDCs), which are individual country plans for combating Climate Change. 
 
 This project is aimed at exploring the evolution of climate policies before, during and after the signing of the Paris agreement which entered into force on the 4th of November 2016.
 
-The Paris agreement addresses several crucial areas in the climate policy landscape, including adaptation and mitigation efforts. Mitigation policies are those that aim to reduce or prevent the emission of greenhouse gases, while adaptation policies focus on adjusting to the current and expected impacts of climate change. The need for adaptation is becoming increasingly urgent as the effects of climate change become more pronounced and it is essential to understand how countries are integrating adaptation into their policy portfolios alongside mitigation efforts.
+The Paris agreement addresses several crucial areas in the climate policy landscape, including adaptation and mitigation efforts. Mitigation policies are those that aim to reduce or prevent the emission of greenhouse gases, while adaptation policies focus on adjusting to the current and expected impacts of climate change. 
 
 > Adaptation (Art. 7) – The Paris Agreement establishes a global goal on adaptation – of enhancing adaptive capacity, strengthening resilience and reducing vulnerability to climate change in the context of the temperature goal of the Agreement. It aims to significantly strengthen national adaptation efforts, including through support and international cooperation. It recognizes that adaptation is a global challenge faced by all. All Parties should engage in adaptation, including by formulating and implementing National Adaptation Plans, and should submit and periodically update an adaptation communication describing their priorities, needs, plans and actions. The adaptation efforts of developing countries should be recognized
 
-The goal of this project is to analyze the evolution of climate policies in a selection of countries, with a particular focus on the integration of adaptation measures alongside mitigation efforts. By examining the cumulative stock of climate policies over time, the aim is to identify trends and patterns in policy adoption, and to assess how the Paris Agreement has influenced national policy trajectories.
+The need for adaptation is becoming increasingly urgent as the effects of climate change become more pronounced. The goal of this project is to analyze the evolution of climate policies in a selection of countries, with a particular focus on the integration of adaptation measures alongside mitigation efforts. 
 
 # Research Question WIP
 
@@ -52,19 +50,23 @@ The goal of this project is to analyze the evolution of climate policies in a se
 
 # Data & Methodology WIP
 
-The project integrates data from the Climate Policy Database (CPDB), OECD CAPMF, ND-GAIN, and UNFCCC NDCs. The workflow is orchestrated by a master script (`main.R`) to ensure end-to-end reproducibility.
+A primary goal of this project was to demonstrate a robust, reproducible data mining infrastructure. To do this, I have structured the repository so that everything is managed by a single master script (`main.R`) that orchestrates the entire workflow, from data collection to analysis and visualization. This ensures that anyone can run the full pipeline with a single command and that all steps are transparent and reproducible.
 
-about the CAPMF, there is a hierarchical structure for categorizing policies. The levels are as follows:
+The pipeline pulls from four distinct data environments:
 
-Level | Scale | Example Code |  What it represents 
-Level 1 Building Block LEV1_SEC Total Sectoral Policies (Aggregated)
-Level 2 Module LEV2_SEC_E_MBI Market-based instruments in the Energy sector 
-Level 3 Instrument LEV3_CARBONTAX_E The actual Carbon Tax policy in Energy 
-Level 4 Variable LEV4_CARBONTAX_E_PR The specific price/rate of that tax
+- OECD CAPMF (API): Accessing standardized stringency indicators via the OECD R package.
+- CPDB (Python Bridge): Utilizing reticulate to access the Climate Policy Database's unique policy-level data.
+- UNFCCC NDCs (Web Scraping): An automated loop (documented in Issue #12) that identifies active English-language PDFs, downloads them to a local cache, and extracts raw text using pdftools.
+- ND-GAIN (Manual/Hybrid): Due to dynamic web barriers on the Notre Dame site (Issue #19), this was handled as a manual download to ensure data integrity.
 
 
 
 # Results WIP
+
+## cpdb Cumulative Policy Adoption Over Time
+
+The cumulative policy adoption plot (Figure 1) confirms the "Paris Effect." There is a visible acceleration in policy output for countries immediately following 2015.
+
 ```{r}
 #| label: fig-cumulative-stock
 #| fig-cap: "Cumulative Climate Policy Adoption by Target Country (2012-2026)"
@@ -72,18 +74,24 @@ Level 4 Variable LEV4_CARBONTAX_E_PR The specific price/rate of that tax
 #| fig-height: 6
 print(cpdb_cumulative_pol_adoption)
 ```
+
+## The cpdb Adaptation Mix: Portfolio Composition Shifts
+By calculating the Adaptation Mix, we see a striking North-South divide. Rwanda (RWA) and South Africa (ZAF) allocate a much higher percentage of their policy portfolio to adaptation than Germany (DEU) or Denmark (DNK).
+
+Finding: Vulnerability (ND-GAIN) is a strong predictor of adaptation priority. As countries move into higher "Vulnerability Tiers," their legislative "Mindshare" shifts toward survival over emissions reduction.
+
+Limitation: CPDB has much higher coverage for Global North countries, which may bias the analysis. The adaptation mix for some Global South countries may be underrepresented due to data gaps.
+
 ```{r}
 #| label: fig-adaptation-mix
 #| fig-cap: "The Adaptation Mix: Percentage of Portfolio dedicated to Resilience"
 print(cpdb_adaptation_mix_plot)
 ```
-```{r}
-#| label: fig-stringency-heatmap
-#| fig-cap: "OECD Policy Stringency Heatmap by Sector (Level 2)"
-#| fig-width: 11
-#| fig-height: 8
-print(oecd_stringency_plot)
-```
+
+
+## The ndc Ambition Matrix: Lexical Hardness vs. Adaptation Focus
+
+The Ambition Matrix is the main part of this project and consists of majority of the data work. By mapping Relative Adaptation Focus against Lexical Hardness (the ratio of "must/shall" vs "aim/should"), we see that:
 ```{r}
 #| label: fig-ambition-matrix
 #| fig-cap: "Climate Ambition Matrix: Lexical Hardness vs. Adaptation Focus"
@@ -102,6 +110,7 @@ print(ndc_ambition_vs_focus)
 # Bibliography WIP
 
 OECD (2025), The Climate Action Monitor 2025, OECD Publishing, Paris, https://doi.org/10.1787/1819c631-en.
+
 
 # LLM Declaration WIP
 
