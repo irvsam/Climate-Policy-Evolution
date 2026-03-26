@@ -40,26 +40,88 @@ Climate policy research traditionally focuses on mitigation, with an emphasis on
 
 This measurement gap has real consequences. International climate databases systematically under represent adaptation policies, particularly in the Global South where adaptation is a **survival imperative** rather than a discretionary policy choice. When adaptation is invisible in the data, it becomes invisible in policy debates, climate finance allocation and accountability mechanisms. The lack of "comparative global analysis and systematic scrutiny of national adaptation legislation and policies has hampered the ability to assess progress, identify gaps, and understand effective frameworks" [1, p.10]. This project aims to bridge the measurement gap and serves as a digital audit of climate ambition across our selection of countries. 
 
-Comparing the Global North to the Global South is a major focus of this project. The Global North has historically been responsible for the majority of emissions and has more resources to invest in both mitigation and adaptation. The Global South, whilst being less responsible for the acceleration of climate change, are the ones who bear the brunt of it. By analyzing the policy portfolios of countries from both groups, we can uncover disparities in climate ambition and identify areas where international support may be needed.
+Comparing the Global North to the Global South is a major focus of this project. The Global North has historically been responsible for the majority of emissions and has more resources to invest in both mitigation and adaptation. The Global South, whilst being less responsible for the acceleration of climate change, are the ones who bear the brunt of it. 
 
 # Research Question WIP
 
-By combining multiple data sources and methodologies, we seek to answer the question: *Have climate policy portfolios shifted from mitigation toward adaptation after the Paris Agreement, and does this shift differ between Global North and Global South countries?*
+By combining multiple data sources and methodologies, we seek to answer the question: *Have climate policy portfolios shifted from mitigation toward adaptation after the Paris Agreement, and to what extent does this shift differ between Global North and Global South countries?*
 
-# Hypothesis WIP
+*Key Terms:*
+- **Climate Policy Portfolio**: The collection of all climate-related policies enacted by a country.
+- **Mitigation**: Efforts to reduce or prevent the emission of greenhouse gases.
+- **Adaptation**: Efforts to adjust to actual or expected climate change and its effects
+- **Global North**: Generally refers to developed countries with higher income levels, often located in the Northern Hemisphere.
+- **Global South**: Generally refers to developing countries with lower income levels, often located in the Southern Hemisphere.
+- **Paris Agreement**: An international treaty adopted in 2015 that aims to limit global warming to well below 2 degrees Celsius, with efforts to limit it to 1.5 degrees Celsius.
+- **Climate Ambition**: The level of commitment and action a country demonstrates in its climate policies, often measured through the strength and scope of its mitigation and adaptation efforts.
+- **Commitment Gap**: The disparity in climate policy ambition and implementation.
+- **Responsibility Gap**: The disconnect between those who cause climate change and those who suffer its worst effects.
 
-# Data & Methodology WIP
+The research question is answerable with the described data mining approach because of the following:
+1. **Temporal dimension**: Policy databases (CPDB) provide time-stamped records spanning 2013–2025, allowing pre/post-Paris comparison.
+2. **Textual dimension**: NDC texts (publicly available PDFs) can be analyzed using NLP to quantify adaptation vs. mitigation emphasis.
+3. **Geographic dimension**: Countries can be stratified by climate vulnerability (ND-GAIN Index) and development status (Global North/South).
 
-I have structured the repository so that everything is managed by a single master script (`main.R`) that orchestrates the entire workflow, from data collection to analysis and visualization. This ensures that anyone can run the full pipeline with a single command and that all steps are transparent and reproducible.
+# The Data Ecosystem WIP
 
-The pipeline pulls from four distinct data environments:
+This project brings together four distinct data sources, each with its own strengths and limitations:
 
-- OECD CAPMF (API): Accessing standardized stringency indicators via the OECD R package.
-- CPDB (Python Bridge): Utilizing reticulate to access the Climate Policy Database's unique policy-level data.
-- UNFCCC NDCs (Web Scraping): An automated loop (documented in Issue #12) that identifies active English-language PDFs, downloads them to a local cache, and extracts raw text using pdftools.
-- ND-GAIN (Manual/Hybrid): Due to dynamic web barriers on the Notre Dame site (Issue #19), this was handled as a manual download to ensure data integrity.
+## Source 1: OECD CAPMF (Stringency Scores via API)
 
+**What it provides:** Standardized "stringency" indicators that measure the 'hardness' of policy law (e.g., mandatory regulations score higher than voluntary guidelines). These indicators are available for a subset of OECD member countries and focus primarily on mitigation policies.
 
+**Access method:** OECD R package with SDMX API queries.
+
+**Strength:** High data quality; institutional credibility.
+
+**Limitation:** Geographic bias toward OECD member countries (mostly Global North). Federal systems like the USA have reporting gaps because sub national policies aren't captured (documented in Issue #2: "Addressing Missing Data in OECD CAPMF"). The focus of this source is on mitigation policies so it doesn't capture the full picture of adaptation efforts, which are often less formalized and harder to track in standardized databases.
+
+## Source 2: NewClimate Institute's Climate Policy Database 
+
+**What it provides:** Policy-level data on the number and type of climate policies enacted by countries. 
+
+**Access method:** `cpdb-api` Python package, accessed from R via `reticulate` (R-Python bridge).
+
+**Strength:** Includes labels for policy intent; Broader geographic coverage than OECD; includes many Global South countries.
+
+**Limitation:** The data is not exhaustive. Policy coverage and information depth vary across jurisdictions, and sub national level policies are not comprehensively indexed. There is a strong bias toward Global North countries, with many Global South countries having sparse data (documented in Issue #1: "Pivot from Absolute Policy Counts to Adaptation Ratio")
+
+## Source 3: UNFCCC NDCs 
+
+**What it provides:** Official Nationally Determined Contribution (NDC) pdfs containing countries' climate commitments, including qualitative descriptions of adaptation priorities and legal language (mandatory vs. aspirational).
+
+**Access method:** Automated pipeline:
+1. Access the csv from Open Climate Data Github Repo which contains links to each pdf.
+2. Filter for our target list and access only the most recently published documents.
+3. Download to local cache.
+4. Extract text using `pdftools` R package.
+
+**Strength:** Primary source documents; unmediated access to government priorities. The NDCs are the official statements of climate ambition and are critical for understanding how countries frame their commitments. They provide rich qualitative data that can be analyzed for both content (adaptation vs. mitigation focus) and tone (the "hardness" of language used).
+
+**Limitation:** NDCs are diplomatic pledges rather than tangible laws, so they may not always reflect actual policy implementation. The language can be vague or aspirational, making it challenging to quantify. Additionally, the NDCs are updated periodically, and there may be a lag between the latest data available and the current policy landscape. The European Union's NDC is a single document that represents multiple member states, which complicates country-level analysis.
+
+## Source 4: ND-GAIN Index (Vulnerability Benchmarking via Manual CSV)
+
+**What it provides:** Composite vulnerability and readiness scores for each country, measuring exposure to climate hazards and institutional capacity to adapt.
+
+**Access method:** Manual CSV download.
+
+**Strength:** Globally comparable vulnerability metric; multidimensional assessment; major asset for classifying countries by climate risk and adaptation need.
+
+**Limitation:** Manual download reduces reproducibility; temporal lag (most recent data from 2023) 
+
+## Why Multiple Sources?
+No single data source provides a complete picture of climate policy evolution. By triangulating across multiple sources with different strengths and weaknesses, we can build a more robust and nuanced understanding of how climate policy portfolios have evolved since the Paris Agreement. The OECD CAPMF provides standardized stringency scores for mitigation policies, while the CPDB offers a broader view of policy adoption across both mitigation and adaptation. The NDCs give us direct insight into how countries frame their commitments and the ND-GAIN Index allows us to contextualize these commitments against vulnerability and readiness. 
+
+# The Technical Pipeline WIP
+
+The entire workflow is orchestrated by a single master script (`main.R`) that manages:
+1. **Dependency installation**
+2. **Data acquisition** 
+3. **Data processing** (cleaning, merging, feature engineering).
+4. **Analysis**
+5. **Output generation** (figures, tables, this report).
+6. **Environment Cleaning** (removing temporary files and data).
 
 # Results WIP
 
