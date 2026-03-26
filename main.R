@@ -206,6 +206,23 @@ objects_to_keep <- c(
   "global_adaptation_growth_plot"
   )
 
+# Save all plots to output folder
+plot_list <- list(
+  cpdb_cumulative_pol_adoption = cpdb_cumulative_pol_adoption,
+  oecd_stringency_plot = oecd_stringency_plot,
+  ndgain_vuln_score = ndgain_vuln_score,
+  cpdb_cumulative_adaptation_growth = cpdb_cumulative_adaptation_growth,
+  cpdb_adaptation_mix_plot = cpdb_adaptation_mix_plot,
+  ndc_adaptation_leaderboard = ndc_adaptation_leaderboard,
+  ndc_ambition_vs_focus = ndc_ambition_vs_focus,
+  ndc_adaptation_focus = ndc_adaptation_focus,
+  global_adaptation_growth_plot = global_adaptation_growth_plot
+)
+
+for (plot_name in names(plot_list)) {
+  ggsave(filename = paste0("03.output/", plot_name, ".png"), plot = plot_list[[plot_name]], width = 10, height = 6)
+}
+
 # Remove everything else
 rm(list = setdiff(ls(), objects_to_keep))
 

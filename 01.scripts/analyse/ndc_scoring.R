@@ -131,12 +131,9 @@ ndc_ambition_vs_focus <- ggplot(final_map_df, aes(x = relative_adapt_focus, y = 
   ) +
   theme_minimal()
 
-print(ndc_ambition_vs_focus)
 
-print(ndc_adaptation_leaderboard)
-print(ndc_ambition_vs_focus)
 
 # Which countries got dropped from the graph?
 countries_in_graph <- final_map_df$iso3
 countries_dropped <- setdiff(TARGET_ISO3, countries_in_graph)
-print(countries_dropped)
+
