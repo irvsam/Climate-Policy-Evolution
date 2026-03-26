@@ -40,6 +40,7 @@ OECD CAPMF (Climate Action) provides data on climate action policies and measure
 - Data Explorer: https://data-explorer.oecd.org/vis?lc=en&fs[0]=Topic%2C1%7CEnvironment%23ENV%23%7CEnvironmental%20policy%23ENV_POL%23&pg=0&fc=Topic&bp=true&snb=10&df[ds]=dsDisseminateFinalDMZ&df[id]=DSD_CAPMF%40DF_CAPMF&df[ag]=OECD.ENV.EPI&df[vs]=1.0&pd=2018%2C&dq=AUS.A.POL_STRINGENCY.LEV1_SEC%2BLEV2_SEC_E_MBI%2BLEV3_ETS_E%2BLEV4_ETS_E_PR%2BLEV4_ETS_E_GHG%2BLEV3_CARBONTAX_E%2BLEV3_FFS_E%2BLEV3_EXCISETAX_E%2BLEV3_FIT%2BLEV3_AUCTION%2BLEV3_RECS%2BLEV2_SEC_E_NMBI%2BLEV2_SEC_I_MBI%2BLEV2_SEC_I_NMBI%2BLEV2_SEC_B_MBI%2BLEV2_SEC_B_NMBI%2BLEV2_SEC_T_MBI%2BLEV2_SEC_T_NMBI%2BLEV1_CROSS_SEC%2BLEV1_INT.0_TO_10%2BPL&ly[cl]=TIME_PERIOD&to[TIME_PERIOD]=false
 - Access Methods: API access via R package
 - Limitations: OECD CAPMF only covers OECD countries (Not Rwanda), while CPDC includes global coverage. CPDC may have more detailed policy information, but OECD CAPMF provides standardized indicators for comparison. OECD has only mitigation coverage
+- NB: this is not included in report because I decided it did not add to the story
 
 ND GAIN (Notre Dame Global Adaptation Initiative) provides data on countries' vulnerability and readiness to adapt to climate change, including indicators on exposure, sensitivity, and adaptive capacity.
 - API: there is no API, but data can be downloaded as CSV

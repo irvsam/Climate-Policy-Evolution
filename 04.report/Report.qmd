@@ -2,7 +2,7 @@
 title: "Climate Resilience: A Multi-Source Analysis of Climate Policy Evolution Post Paris Agreement (2013–2025)"
 author: "Samantha Irving"
 date: "`r Sys.Date()`"
-abstract: "This application report documents a data mining pipeline which brings together four separate sources of climate data: the OECD CAPMF, the Climate Policy Database (CPDB), the UNFCCC NDCs and the Notre Dame Global Adaptation Initiative (ND-GAIN).The exploration analyzes the evolution of climate policy strategies since the signing of the Paris agreement on the 4th of November 2016, with a particular focus on the integration of adaptation measures alongside mitigation efforts. The focus is on a selection of 12 countries, with an effort to include members from both the Global South as well as the Global North. By combining API access, web scraping and natural language processing (NLP), the pipeline quantifies the shift from mitigation to adaptation and reveals a 'Commitment Gap' between Global North and Global South countries."
+abstract: "This application report documents a data mining pipeline which brings together three separate sources of climate data: the Climate Policy Database (CPDB), the UNFCCC NDCs and the Notre Dame Global Adaptation Initiative (ND-GAIN).The exploration analyzes the evolution of climate policy strategies since the signing of the Paris agreement on the 4th of November 2016, with a particular focus on the integration of adaptation measures alongside mitigation efforts. The focus is on a selection of 12 countries, with an effort to include members from both the Global South as well as the Global North. By combining API access, web scraping and natural language processing (NLP), the pipeline quantifies the shift from mitigation to adaptation and reveals a 'Commitment Gap' between Global North and Global South countries."
 format: 
   pdf:
     toc: true
@@ -77,33 +77,22 @@ The logic is as follows:
 | Canada  | CAN        | North  | Low                           |
 | Germany | DEU        | North  | Low                           |
 | Japan   | JPN        | North  | Low                           |
+| United States | USA    | North  | Low                       |
+| United Kingdom | GBR    | North  | Low                           |
+| Denmark | DNK        | North  | Low                           |
+| Saudi Arabia | SAU    | South  | Medium                        |
+| Chile   | CHL        | South  | Medium                        |
 | India   | IND        | South  | High                          |
 | South Africa | ZAF    | South  | High                          |
-| Denmark | DNK        | North  | Low                           |
-| United Kingdom | GBR    | North  | Low                           |
-| Chile   | CHL        | South  | Medium                        |
 | Colombia | COL       | South  | High                      |
-| United States | USA    | North  | Low                       |
-| Saudi Arabia | SAU    | South  | Medium                        |
 | Rwanda  | RWA        | South  | High                          |
-
 
 
 # The Data Ecosystem WIP
 
 This project brings together four distinct data sources, each with its own strengths and limitations:
 
-## Source 1: OECD CAPMF (Stringency Scores via API)
-
-**What it provides:** Standardized "stringency" indicators that measure the 'hardness' of policy law (e.g., mandatory regulations score higher than voluntary guidelines). These indicators are available for a subset of OECD member countries and focus primarily on mitigation policies.
-
-**Access method:** OECD R package with SDMX API queries.
-
-**Strength:** High data quality; institutional credibility.
-
-**Limitation:** Geographic bias toward OECD member countries (mostly Global North). Federal systems like the USA have reporting gaps because sub national policies aren't captured (documented in Issue #2: "Addressing Missing Data in OECD CAPMF"). The focus of this source is on mitigation policies so it doesn't capture the full picture of adaptation efforts, which are often less formalized and harder to track in standardized databases.
-
-## Source 2: NewClimate Institute's Climate Policy Database 
+## Source 1: NewClimate Institute's Climate Policy Database 
 
 **What it provides:** Policy-level data on the number and type of climate policies enacted by countries. 
 
@@ -113,7 +102,7 @@ This project brings together four distinct data sources, each with its own stren
 
 **Limitation:** The data is not exhaustive. Policy coverage and information depth vary across jurisdictions, and sub national level policies are not comprehensively indexed. There is a strong bias toward Global North countries, with many Global South countries having sparse data (documented in Issue #1: "Pivot from Absolute Policy Counts to Adaptation Ratio")
 
-## Source 3: UNFCCC NDCs 
+## Source 2: UNFCCC NDCs 
 
 **What it provides:** Official Nationally Determined Contribution (NDC) pdfs containing countries' climate commitments, including qualitative descriptions of adaptation priorities and legal language (mandatory vs. aspirational).
 
@@ -127,7 +116,7 @@ This project brings together four distinct data sources, each with its own stren
 
 **Limitation:** NDCs are diplomatic pledges rather than tangible laws, so they may not always reflect actual policy implementation. The language can be vague or aspirational, making it challenging to quantify. Additionally, the NDCs are updated periodically, and there may be a lag between the latest data available and the current policy landscape. The European Union's NDC is a single document that represents multiple member states, which complicates country-level analysis.
 
-## Source 4: ND-GAIN Index (Vulnerability Benchmarking via Manual CSV)
+## Source 3: ND-GAIN Index (Vulnerability Benchmarking via Manual CSV)
 
 **What it provides:** Composite vulnerability and readiness scores for each country, measuring exposure to climate hazards and institutional capacity to adapt.
 
