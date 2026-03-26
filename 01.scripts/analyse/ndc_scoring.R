@@ -12,17 +12,23 @@ ndc_results_df <- data.frame(
 
 # Creating a subset of words to focus on
 adaptation_lexicon <- c("resilience", "vulnerability", "irrigation", "flood", "drought", 
-                        "agriculture", "disaster", "infrastructure", "coastal")
+                        "agriculture", "disaster", "infrastructure", "coastal", "ecosystem", 
+                        "biodiversity", "health", "water", "forestry", "hazard")
 
 mitigation_lexicon <- c("emissions", "carbon", "renewable", "solar", "wind", 
-                        "methane", "decarbonization", "energy", "efficiency")
+                        "methane", "decarbonization", "energy", "efficiency", "net-zero", 
+                        "sequestration", "low-carbon", "transition")
 
 
 # For ambition, I am going to create a simple lexicon of "hard" vs. "soft" commitment words. This is a very basic approach but gives a good starting point
 ambition_lexicon <- tribble(
   ~word, ~type,
-  "must", "hard", "mandatory", "hard", "legally", "hard", "shall", "hard", "commit", "hard",
-  "should", "soft", "could", "soft", "aim", "soft", "seek", "soft", "potential", "soft"
+  "must", "hard", "shall", "hard", "mandatory", "hard", "legally", "hard", 
+  "commit", "hard", "require", "hard", "obligate", "hard", "mandate", "hard", 
+  "enforce", "hard", "binding", "hard", "law", "hard",
+  "should", "soft", "could", "soft", "aim", "soft", "seek", "soft", 
+  "potential", "soft", "intend", "soft", "aspire", "soft", "encourage", "soft", 
+  "promote", "soft", "support", "soft", "policy", "soft"
 )
 
 # Tokenization and Scoring
@@ -93,21 +99,39 @@ ndc_adaptation_leaderboard <- ggplot(final_map_df, aes(x = reorder(iso3, relativ
   theme_minimal()
 
 ndc_ambition_vs_focus <- ggplot(final_map_df, aes(x = relative_adapt_focus, y = ambition_score, label = iso3)) +
-  # Add shaded areas to show 'Strategic Zones'
-  annotate("rect", xmin=0.5, xmax=1, ymin=0.5, ymax=1, fill="blue", alpha=0.1) + # Adaptation Leaders
-  annotate("rect", xmin=0, xmax=0.5, ymin=0.5, ymax=1, fill="green", alpha=0.1) + # Mitigation Leaders
-  geom_point(size = 4, color = "#2c3e50") +
-  geom_text_repel(fontface = "bold") +
-  geom_vline(xintercept = 0.5, linetype = "dashed", alpha = 0.4) +
-  geom_hline(yintercept = 0.5, linetype = "dashed", alpha = 0.4) +
-  scale_x_continuous(labels = scales::percent) +
+  # Strategic Zones
+  annotate("rect", xmin=0.5, xmax=1.05, ymin=0.5, ymax=1.05, fill="blue", alpha=0.05) + # Potential Adaptation Leaders
+  annotate("rect", xmin=-0.05, xmax=0.5, ymin=0.5, ymax=1.05, fill="green", alpha=0.05) + # Mitigation Hardliners
+  
+  # Data Points
+  geom_point(size = 5, color = "#2c3e50", alpha = 0.8) +
+  
+  # Smart Labeling to fix clustering
+  geom_text_repel(
+    fontface = "bold", 
+    size = 4,
+    box.padding = 0.5, 
+    point.padding = 0.5,
+    force = 15,
+    segment.color = 'grey50'
+  ) +
+  
+  # Reference Lines
+  geom_vline(xintercept = 0.5, linetype = "dashed", alpha = 0.3) +
+  geom_hline(yintercept = 0.5, linetype = "dashed", alpha = 0.3) +
+  
+  # Scales and Formatting
+  scale_x_continuous(labels = scales::percent, limits = c(0, 1.05)) +
+  scale_y_continuous(limits = c(0, 1.05)) +
   labs(
-    title = "Mapping Climate Ambition & Focus",
-    subtitle = "Relative Adaptation Focus vs. Hard Commitment Score",
+    title = "Climate Ambition Matrix: Lexical Hardness vs. Focus",
+    subtitle = "Triangulating NDC Strategic Intent with Mandatory vs. Aspirational Language",
     x = "Relative Adaptation Focus (%)",
-    y = "Ambition Score (Hard vs. Soft Language)"
+    y = "Ambition Score (Ratio of Hard vs. Soft Language)",
   ) +
   theme_minimal()
+
+print(ndc_ambition_vs_focus)
 
 print(ndc_adaptation_leaderboard)
 print(ndc_ambition_vs_focus)
