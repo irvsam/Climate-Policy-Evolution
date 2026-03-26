@@ -1,8 +1,8 @@
 ---
-title: "Climate Resilience: A Multi-Source Analysis of Climate Policy Evolution Post-Paris Agreement (2013–2025)"
+title: "Climate Resilience: A Multi-Source Analysis of Climate Policy Evolution Post Paris Agreement (2013–2025)"
 author: "Samantha Irving"
 date: "`r Sys.Date()`"
-abstract: "This report analyzes the shift from mitigation to adaptation in global climate policy portfolios. Using a multi-source pipeline (OECD, CPDB, ND-GAIN, and NDC text mining), we explore the 'Commitment Gap' between Global North and Global South nations."
+abstract: "This application report documents a data mining pipeline which brings together four separate sources of climate data: the OECD CAPMF, the Climate Policy Database (CPDB), the UNFCCC NDCs and the Notre Dame Global Adaptation Initiative (ND-GAIN).The exploration analyzes the evolution of climate policy strategies since the signing of the Paris agreement on the 4th of November 2016, with a particular focus on the integration of adaptation measures alongside mitigation efforts. The focus is on a selection of 12 countries, with an effort to include members from both the Global South as well as the Global North. By combining API access, web scraping and natural language processing (NLP), the pipeline quantifies the shift from mitigation to adaptation and reveals a 'Commitment Gap' between Global North and Global South countries."
 format: 
   pdf:
     toc: true
@@ -36,20 +36,15 @@ source(here("main.R"))
 
 # Introduction WIP
 
-The Paris Agreement, an international treaty reached at COP 21 on December 12th 2015 is a global effort to bring all countries together under a common cause. The agreement requires all Parties to submit "nationally determined contributions" (NDCs), which are individual country plans for combating Climate Change. 
+Climate policy research traditionally focuses on mitigation, with an emphasis on the reduction of greenhouse gas emissions. However, the increasing frequency and severity of climate impacts has elevated the importance of adaptation measures in national policy portfolios. The Paris Agreement (2015) marked a pivotal moment in global climate governance, with its dual focus on mitigation and adaptation, but measuring adaptation is inherently challenging. As the Grantham Research Institute notes, "unlike climate mitigation, where responses like carbon pricing and emission targets are widely tracked, adaptation laws and policies have received less systematic scrutiny" [1, p.10]. 
 
-This project is aimed at exploring the evolution of climate policies since the signing of the Paris agreement on the 4th of November 2016.
+This measurement gap has real consequences. International climate databases systematically under represent adaptation policies, particularly in the Global South where adaptation is a **survival imperative** rather than a discretionary policy choice. When adaptation is invisible in the data, it becomes invisible in policy debates, climate finance allocation and accountability mechanisms. The lack of "comparative global analysis and systematic scrutiny of national adaptation legislation and policies has hampered the ability to assess progress, identify gaps, and understand effective frameworks" [1, p.10]. This project aims to bridge the measurement gap and serves as a digital audit of climate ambition across our selection of countries. 
 
-The Paris agreement mentions adaptation in several key articles, signaling its importance alongside mitigation in the global climate effort:
-
-> Adaptation (Art. 7) – The Paris Agreement establishes a global goal on adaptation – of enhancing adaptive capacity, strengthening resilience and reducing vulnerability to climate change in the context of the temperature goal of the Agreement. It aims to significantly strengthen national adaptation efforts, including through support and international cooperation. It recognizes that adaptation is a global challenge faced by all. All Parties should engage in adaptation, including by formulating and implementing National Adaptation Plans, and should submit and periodically update an adaptation communication describing their priorities, needs, plans and actions. The adaptation efforts of developing countries should be recognized
-
-The need for adaptation is becoming increasingly urgent as the effects of climate change become more pronounced. The goal of this project is to analyze the evolution of climate policies in a selection of countries, with a particular focus on the integration of adaptation measures alongside mitigation efforts. 
+Comparing the Global North to the Global South is a major focus of this project. The Global North has historically been responsible for the majority of emissions and has more resources to invest in both mitigation and adaptation. The Global South, whilst being less responsible for the acceleration of climate change, are the ones who bear the brunt of it. By analyzing the policy portfolios of countries from both groups, we can uncover disparities in climate ambition and identify areas where international support may be needed.
 
 # Research Question WIP
 
-*Have climate policy portfolios shifted from mitigation toward adaptation after the Paris Agreement, and does this shift differ between Global North and Global South countries?*
-
+By combining multiple data sources and methodologies, we seek to answer the question: *Have climate policy portfolios shifted from mitigation toward adaptation after the Paris Agreement, and does this shift differ between Global North and Global South countries?*
 
 # Hypothesis WIP
 

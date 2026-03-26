@@ -70,7 +70,7 @@ This project is designed to be fully reproducible. However, due to the lack of p
 - **R Version:** 4.x
 - **Python Version:** 3.9+ (Required for `reticulate` to access CPDB)
 - **Required R Packages:** listed in main.R (Install via `install.packages()`)
-- **Required Python Packages:** `cpdb-api` (Install via `pip install climatepolicy-database`)
+- **Required Python Packages:** `cpdb-api` (Automatically installed in main.R using `reticulate`)
 
 ### 2. Manual Data Acquisition
 Before running `main.R`, please place the following files in `02.data/data-raw/`:
