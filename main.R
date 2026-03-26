@@ -31,7 +31,7 @@ for (pkg in required_packages) {
 
 # Countries and years
 TARGET_ISO3 <- c("CAN", "DEU", "JPN", "IND", "ZAF", "DNK", "GBR", "CHL", "COL", "USA", "SAU", "RWA")
-START_YEAR <- 2012
+START_YEAR <- 2013
 END_YEAR <- 2025
 
 # Create directory structure if missing
@@ -202,7 +202,8 @@ objects_to_keep <- c(
   "cpdb_adaptation_mix_plot",
   "ndc_adaptation_leaderboard",
   "ndc_ambition_vs_focus",
-  "ndc_adaptation_focus"
+  "ndc_adaptation_focus",
+  "global_adaptation_growth_plot"
   )
 
 # Remove everything else

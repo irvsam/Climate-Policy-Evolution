@@ -28,7 +28,7 @@ policy_growth <- cpdb_final_clean_targeted %>%
 cpdb_cumulative_pol_adoption <- ggplot(policy_growth, aes(x = decision_date, y = cumulative_policies, color = country_iso, group = country_iso)) +
   geom_line(size = 0.8, alpha = 0.7) +
   labs(
-    title = "Evolution of Cumulative Climate Policy Adoption (Global)",
+    title = "Evolution of Cumulative Climate Policy Adoption",
     subtitle = "Data from CPDB for Target Countries",
     x = "Year of Decision",
     y = "Total Cumulative Policies",
@@ -54,7 +54,51 @@ cpdb_cumulative_pol_adoption <- cpdb_cumulative_pol_adoption +
             size = 2, 
             show.legend = FALSE)
 
-    
 
 
-print(cpdb_cumulative_pol_adoption)
+# How many total policies were added in 2015?
+policy_growth %>%
+  filter(decision_date >= 2015 & decision_date <= 2016) %>%
+  summarise(total_new_policies = sum(new_policies))
+
+
+# And in 2012?
+policy_growth %>%
+  filter(decision_date >= 2012 & decision_date <= 2013) %>%
+  summarise(total_new_policies = sum(new_policies))
+
+
+# What is the global evolution of climate policies titled adaptation or both?
+global_adaptation_growth <- cpdb_final_clean %>%
+  # Filter for adaptation-relevant documents globally
+  filter(policy_type %in% c("adaptation", "both")) %>%
+  mutate(decision_date = as.numeric(decision_date)) %>%
+  filter(!is.na(decision_date) & decision_date >= START_YEAR) %>%
+  
+  # Aggregate counts by year
+  group_by(decision_date) %>%
+  summarise(new_adaptation_policies = n(), .groups = 'drop') %>%
+  
+  # Calculate Cumulative Global Sum
+  complete(decision_date = full_seq(decision_date, 1), fill = list(new_adaptation_policies = 0)) %>%
+  mutate(cumulative_adaptation = cumsum(new_adaptation_policies))
+
+# Plot Global Trend
+global_adaptation_growth_plot <- ggplot(global_adaptation_growth, aes(x = decision_date, y = cumulative_adaptation)) +
+  
+  geom_line(color = "seagreen", size = 1) +
+  geom_vline(xintercept = 2015, linetype = "dashed", color = "red") +
+  annotate("text", x = 2015, y = max(global_adaptation_growth$cumulative_adaptation)*0.8, 
+           label = "Paris Agreement", angle = 90, vjust = -0.5) +
+  labs(
+    title = "Global Cumulative Growth of Adaptation-Relevant Policies",
+    x = "Year",
+    y = "Total Cumulative Global Policies"
+  ) +
+  theme_minimal()
+
+# How many new adaptation policies were implemented in 2015 globally?
+global_adaptation_growth %>%
+  filter(decision_date >= 2014 & decision_date <= 2016) %>%
+  summarise(new_adaptation_policies_2015 = sum(new_adaptation_policies))
+
