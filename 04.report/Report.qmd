@@ -72,7 +72,7 @@ Country Selection
 The selection of 12 countries is designed to provide a diverse sample that includes both Global North and Global South nations. 
 The logic is as follows:
 
-| Country | ISO-3 Code | Region | Climate Vulnerability (ND-GAIN) |
+| Country | ISO-3 Code | Region | ND-GAIN |
 |---------|------------|--------|-------------------------------|
 | Canada  | CAN        | North  | Low                           |
 | Germany | DEU        | North  | Low                           |
@@ -82,8 +82,8 @@ The logic is as follows:
 | Denmark | DNK        | North  | Low                           |
 | United Kingdom | GBR    | North  | Low                           |
 | Chile   | CHL        | South  | Medium                        |
-| Colombia | COL       | South  | Medium                        |
-| United States | USA    | North  | Medium                        |
+| Colombia | COL       | South  | High                      |
+| United States | USA    | North  | Low                       |
 | Saudi Arabia | SAU    | South  | Medium                        |
 | Rwanda  | RWA        | South  | High                          |
 
@@ -154,7 +154,7 @@ The entire workflow is orchestrated by a single master script (`main.R`) that ma
 # Results WIP
 
 
-## Finding 1.1: The Paris Inflection (Accelerated Policy Adoption)
+## Finding 1: The Paris Inflection (Accelerated Policy Adoption)
 
 I started off my analysis with a simple plot of climate policy growth to see if there has been a change in the amount of climate policies implemented by our target countries since the Paris Agreement. This is a basic starting point to understand the overall trajectory of climate policy evolution.
 
@@ -175,7 +175,7 @@ I started off my analysis with a simple plot of climate policy growth to see if 
 print(cpdb_cumulative_pol_adoption)
 ```
 
-## Finding 1.2: The Global Adaptation Growth
+## Finding 2: Global Adaptation Growth
 To understand the evolution of adaptation policies specifically, I filtered the CPDB data for policies labeled as "adaptation" or "both" (mitigation + adaptation) and plotted their cumulative growth over time. This allows us to see if there has been a similar inflection point for adaptation policies post-Paris.
 **Visualization:** Figure 2 shows the cumulative number of adaptation policies globally from 2013 to 2025.
 **Observation:** There is a clear upward trend in the number of adaptation policies, with a noticeable increase starting around 2015-2016. This suggests that the Paris Agreement may have also spurred growth in adaptation policy adoption.
@@ -195,7 +195,7 @@ print(cpdb_cumulative_adaptation_growth)
 
 
 
-## Finding 2: The Survival Ratio (Vulnerability → Adaptation)
+## Finding 3: The Survival Ratio (Vulnerability → Adaptation)
 
 This finding served as the starting point for my deeper dive into the adaptation gap. I wanted to see if there was a correlation between a country's climate vulnerability (as measured by the ND-GAIN Index) and the proportion of their climate policy portfolio dedicated to adaptation measures (the "Adaptation Mix"). I did this by collecting data on the number of adaptation policies vs. total climate policies for each country from the CPDB, and then calculating the percentage of the portfolio that is focused on adaptation. I then plotted this against the ND-GAIN vulnerability scores to see if there was a relationship.
 
@@ -215,8 +215,28 @@ This finding served as the starting point for my deeper dive into the adaptation
 print(cpdb_adaptation_mix_plot)
 ```
 
+## Finding 4: The Responsibility Gap (Global North vs. Global South)
+This finding emerged from my analysis of the NDC texts, where I used NLP techniques to quantify the focus on adaptation vs. mitigation (keyword frequency). This compares to figure 3 which is based on the CPDB policy data. The NDC analysis allows us to see how countries frame their commitments in their official climate pledges.
 
-## The Commitment Gap 
+**Visualization:** Figure 3 (the **Adaptation Leaderboard**) plots the Adaptation Focus Score (keyword frequency) for each country's NDC, sorted by ND-GAIN vulnerability score.
+**Observation:** Global South countries (e.g., Rwanda, South Africa, India) have much higher Adaptation Focus Scores compared to Global North countries (e.g., Germany, Denmark).
+**Interpretation:** This is the **Responsibility Gap**: the Global South, which is more vulnerable to climate impacts, talks about adaptation much more than the Global North. This reflects the reality that the Global South has a greater need for adaptation measures due to their higher vulnerability and lower capacity to mitigate emissions.
+
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+#| label: fig-adaptation-leaderboard
+#| fig-cap: "Adaptation Focus in NDCs: Global South vs. Global North"
+#| fig-width: 9
+#| fig-height: 6
+#| fig-subcap: "Adaptation Focus Score (Keyword Frequency) in NDCs, Sorted by ND-GAIN Vulnerability"
+
+print(ndc_adaptation_leaderboard)
+```
+
+
+## Finding 4: The Commitment Gap 
 
 The final finding is the most complex and nuanced. It emerged from my analysis of the NDC texts, where I used NLP techniques to quantify both the focus on adaptation vs. mitigation (keyword frequency) and the "hardness" of the language used (binding legal terms vs. aspirational language). I then plotted these two dimensions against each other to see if there were any patterns in how countries frame their climate commitments.
 

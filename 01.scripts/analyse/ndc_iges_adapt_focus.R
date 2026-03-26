@@ -13,7 +13,7 @@ adaptation_focus_df <- ndc_targeted %>%
     TRUE ~ "High Vulnerability"
   ))
 
-ndc_adaptation_focus <- ggplot(adaptation_focus_df, aes(x = reorder(iso3, adapt_focus_score), y = adapt_focus_score, fill = vulnerability_tier)) +
+ndc_iges_adaptation_focus <- ggplot(adaptation_focus_df, aes(x = reorder(iso3, adapt_focus_score), y = adapt_focus_score, fill = vulnerability_tier)) +
   geom_bar(stat = "identity") +
   coord_flip() + # Flip for easier reading of country codes
   scale_y_continuous(labels = scales::percent) +

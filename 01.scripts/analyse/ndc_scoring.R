@@ -89,14 +89,37 @@ print(final_map_df %>% filter(iso3 == "IND"))
 
 # Instead of focusing on how much they are adaptation or mitigation I want to just focus on how much adaptation has been brought into their language relative to the others
 
-ndc_adaptation_leaderboard <- ggplot(final_map_df, aes(x = reorder(iso3, relative_adapt_focus), y = relative_adapt_focus)) +
-  geom_col(fill = "steelblue") +
-  coord_flip() +
+leaderboard_with_vulnerability <- final_map_df %>%
+  left_join(ndgain_final_clean %>% filter(year == 2023), by = c("iso3" = "iso3")) %>%
+  mutate(vulnerability_tier = case_when(
+    score > 60 ~ "Low Vulnerability",
+    score > 50 ~ "Moderate Vulnerability",
+    TRUE ~ "High Vulnerability"
+  )) %>%
+  # Handle any NAs from the join
+  filter(!is.na(relative_adapt_focus))
+
+# Create Enhanced Leaderboard
+ndc_adaptation_leaderboard <- ggplot(leaderboard_with_vulnerability, 
+                                        aes(x = reorder(iso3, relative_adapt_focus), 
+                                            y = relative_adapt_focus, 
+                                            fill = vulnerability_tier)) +
+  geom_col() + # Use geom_col for pre-calculated values
+  coord_flip() + 
   scale_y_continuous(labels = scales::percent) +
-  labs(title = "The Adaptation Leaderboard",
-       subtitle = "Relative share of adaptation vs. mitigation keywords in NDC",
-       x = "Country", y = "Relative Adaptation Focus") +
-  theme_minimal()
+  # Using your requested color palette
+  scale_fill_manual(values = c("High Vulnerability" = "#d35400",  # Burnt Orange
+                               "Moderate Vulnerability" = "#f39c12", # Orange
+                               "Low Vulnerability" = "#2980b9")) + # Blue
+  labs(
+    title = "The Adaptation Leaderboard: Intent vs. Vulnerability",
+    subtitle = "Relative Adaptation Focus (NLP) colored by ND-GAIN Vulnerability Tier",
+    x = "Country (ISO-3)",
+    y = "Relative Adaptation Focus (% of Climate Lexicon)",
+    fill = "Climate Need"
+  ) +
+  theme_minimal() +
+  theme(legend.position = "bottom")
 
 ndc_ambition_vs_focus <- ggplot(final_map_df, aes(x = relative_adapt_focus, y = ambition_score, label = iso3)) +
   # Strategic Zones
@@ -136,4 +159,3 @@ ndc_ambition_vs_focus <- ggplot(final_map_df, aes(x = relative_adapt_focus, y = 
 # Which countries got dropped from the graph?
 countries_in_graph <- final_map_df$iso3
 countries_dropped <- setdiff(TARGET_ISO3, countries_in_graph)
-

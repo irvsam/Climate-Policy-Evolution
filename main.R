@@ -5,7 +5,7 @@
 # ==============================================================================
 
 # Global Toggles
-FORCE_RECLEAN <- TRUE # Set to TRUE if scripts have been edited
+FORCE_RECLEAN <- FALSE # Set to TRUE if scripts have been edited
 
 # Setup & Global Variables -------------------------------------------------
 
@@ -175,7 +175,6 @@ source("01.scripts/analyse/cpdb_evolution.R")
 
 source("01.scripts/analyse/ndc_scoring.R")
 
-source("01.scripts/analyse/ndc_adapt_focus.R")
 
 
 # ==============================================================================
@@ -202,7 +201,6 @@ objects_to_keep <- c(
   "cpdb_adaptation_mix_plot",
   "ndc_adaptation_leaderboard",
   "ndc_ambition_vs_focus",
-  "ndc_adaptation_focus",
   "global_adaptation_growth_plot"
   )
 
@@ -215,7 +213,6 @@ plot_list <- list(
   cpdb_adaptation_mix_plot = cpdb_adaptation_mix_plot,
   ndc_adaptation_leaderboard = ndc_adaptation_leaderboard,
   ndc_ambition_vs_focus = ndc_ambition_vs_focus,
-  ndc_adaptation_focus = ndc_adaptation_focus,
   global_adaptation_growth_plot = global_adaptation_growth_plot
 )
 
