@@ -60,16 +60,17 @@ focus_score <- ndc_tokens %>%
   mutate(relative_adapt_focus = Adaptation / (Adaptation + Mitigation))
 
 # Ambition Scoring
-# For ambition, I want to see how much "hard" language vs. "soft" language is used in the NDCs. So I will count the number of hard and soft words, and then calculate an ambition score as the ratio of hard words to total (hard + soft)
+# For ambition, I want to see how much "hard" language vs. "soft" language is used in the NDCs. 
+# So I will count the number of hard and soft words, and then calculate an ambition score as the ratio of hard words to total (hard + soft)
+# UPDATE: The scores weren't very useful so I am now also going to normalize this ambition score by the average across all countries so that I can see which countries are above or below average in their use of hard language relative to soft language. 
 ambition_score <- ndc_tokens %>%
-  # Join with the ambition lexicon to categorize words as hard or soft
   inner_join(ambition_lexicon, by = "word") %>%
   group_by(iso3, type) %>%
-  # Count the number of hard and soft words for each country
   summarise(count = n(), .groups = "drop") %>%
   pivot_wider(names_from = type, values_from = count, values_fill = 0) %>%
-  # Adding a small constant to the denominator to avoid division by zero.
-  mutate(ambition_score = hard / (hard + soft + 0.001))
+  # Use a log-ratio or a centered ratio to see 'relative' hardness
+  mutate(raw_ratio = hard / (hard + soft + 0.001)) %>%
+  mutate(ambition_score = raw_ratio / mean(raw_ratio)) # Scores > 1 are 'Above Average' Hardness
 
 # Join
 final_map_df <- focus_score %>%
@@ -121,40 +122,43 @@ ndc_adaptation_leaderboard <- ggplot(leaderboard_with_vulnerability,
   theme_minimal() +
   theme(legend.position = "bottom")
 
+# Calculate medians 
+x_med <- median(final_map_df$relative_adapt_focus)
+y_med <- median(final_map_df$ambition_score)
+
 ndc_ambition_vs_focus <- ggplot(final_map_df, aes(x = relative_adapt_focus, y = ambition_score, label = iso3)) +
-  # Strategic Zones
-  annotate("rect", xmin=0.5, xmax=1.05, ymin=0.5, ymax=1.05, fill="blue", alpha=0.05) + # Potential Adaptation Leaders
-  annotate("rect", xmin=-0.05, xmax=0.5, ymin=0.5, ymax=1.05, fill="green", alpha=0.05) + # Mitigation Hardliners
+  # Quadrant Labels
+  annotate("text", x = 0.05, y = 2.2, label = "Mitigation Hardliners", 
+           alpha = 0.5, fontface = "italic", hjust = 0) +
+  annotate("text", x = 0.95, y = 0.1, label = "Aspirational Adapters", 
+           alpha = 0.5, fontface = "italic", hjust = 1) +
   
   # Data Points
-  geom_point(size = 5, color = "#2c3e50", alpha = 0.8) +
+  geom_point(aes(color = relative_adapt_focus > x_med), size = 5, alpha = 0.8) +
+  scale_color_manual(values = c("#2980b9", "#d35400"), 
+                     labels = c("Mitigation", "Adaptation"),
+                     name = "Primary Focus") +
   
-  # Smart Labeling to fix clustering
-  geom_text_repel(
-    fontface = "bold", 
-    size = 4,
-    box.padding = 0.5, 
-    point.padding = 0.5,
-    force = 15,
-    segment.color = 'grey50'
-  ) +
+  geom_text_repel(fontface = "bold", force = 10) +
   
-  # Reference Lines
-  geom_vline(xintercept = 0.5, linetype = "dashed", alpha = 0.3) +
-  geom_hline(yintercept = 0.5, linetype = "dashed", alpha = 0.3) +
-  
-  # Scales and Formatting
-  scale_x_continuous(labels = scales::percent, limits = c(0, 1.05)) +
-  scale_y_continuous(limits = c(0, 1.05)) +
+  # Reference Lines based on data medians not just 50%
+  geom_vline(xintercept = x_med, linetype = "dashed", color = "grey70") +
+  geom_hline(yintercept = y_med, linetype = "dashed", color = "grey70") +
+
+  # This ensures labels still get rendered
+  coord_cartesian(clip = "off") + 
+  scale_x_continuous(labels = scales::percent, limits = c(0, 1), expand = expansion(mult = c(0.05, 0.1))) +
+  scale_y_continuous(limits = c(0, NA), expand = expansion(mult = c(0.05, 0.2))) +
   labs(
-    title = "Climate Ambition Matrix: Lexical Hardness vs. Focus",
-    subtitle = "Triangulating NDC Strategic Intent with Mandatory vs. Aspirational Language",
-    x = "Relative Adaptation Focus (%)",
-    y = "Ambition Score (Ratio of Hard vs. Soft Language)",
+    title = "The Ambition Matrix: Lexical Hardness vs. Focus",
+    subtitle = "Dashed lines represent group medians. Above horizontal = Relatively 'Harder' language.",
+    x = "Adaptation Focus (Text %)",
+    y = "Relative Lexical Hardness (Index)"
   ) +
-  theme_minimal()
+  theme_minimal() +
+  theme(plot.margin = margin(20, 40, 20, 20))
 
-
+print(ndc_ambition_vs_focus)
 
 # Which countries got dropped from the graph?
 countries_in_graph <- final_map_df$iso3

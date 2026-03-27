@@ -13,7 +13,7 @@ FORCE_RECLEAN <- FALSE # Set to TRUE if scripts have been edited
 required_packages <- c(
   "dplyr", "httr2", "readr", "reticulate", "purrr", "stringr", 
   "tidyr", "OECD", "countrycode", "readxl", "janitor", 
-  "ggplot2", "tidytext", "ggrepel", "pdftools", "httr"
+  "ggplot2", "tidytext", "ggrepel", "pdftools", "httr", "gt", "webshot2"
 )
 
 # Only install if it isnt already installed
@@ -175,6 +175,8 @@ source("01.scripts/analyse/cpdb_evolution.R")
 
 source("01.scripts/analyse/ndc_scoring.R")
 
+source("01.scripts/analyse/cpdb_vs_ndc.R")
+
 
 
 # ==============================================================================
@@ -201,7 +203,9 @@ objects_to_keep <- c(
   "cpdb_adaptation_mix_plot",
   "ndc_adaptation_leaderboard",
   "ndc_ambition_vs_focus",
-  "global_adaptation_growth_plot"
+  "global_adaptation_growth_plot",
+  "ndc_cpdb_comparison_df",
+  "ndc_cpdb_comparison_table"
   )
 
 # Save all plots to output folder
@@ -219,6 +223,9 @@ plot_list <- list(
 for (plot_name in names(plot_list)) {
   ggsave(filename = paste0("03.output/", plot_name, ".png"), plot = plot_list[[plot_name]], width = 10, height = 6)
 }
+
+# Save the comparison table as a png
+gtsave(ndc_cpdb_comparison_table, filename = "03.output/ndc_cpdb_comparison_table.png")
 
 # Remove everything else
 rm(list = setdiff(ls(), objects_to_keep))

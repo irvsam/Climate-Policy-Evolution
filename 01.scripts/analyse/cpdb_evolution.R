@@ -40,6 +40,13 @@ cpdb_cumulative_adaptation_growth <- ggplot(adaptation_growth, aes(x = decision_
   # Adding a slight angle to the labels helps if they get crowded
   theme(axis.text.x = element_text(angle = 45, vjust = 0.5))
 
+# Add lines for the important paris agreement dates: the agreement was adopted in 2015 and came into force in 2016. 
+cpdb_cumulative_adaptation_growth <- cpdb_cumulative_adaptation_growth +
+  geom_vline(xintercept = 2015, linetype = "dashed", color = "red", size = 0.8) +
+  geom_vline(xintercept = 2016, linetype = "dashed", color = "blue", size = 0.8) +
+  annotate("text", x = 2015, y = max(adaptation_growth$cumulative_adaptation) * 0.9, label = "Paris Agreement Adopted", angle = 90, vjust = -0.5, color = "red") +
+  annotate("text", x = 2016, y = max(adaptation_growth$cumulative_adaptation) * 0.9, label = "Paris Agreement Signed", angle = 90, vjust = -0.5, color = "blue")
+
 
 # See which countries have the most adaptation policies
 
