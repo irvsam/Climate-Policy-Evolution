@@ -33,7 +33,7 @@ The project should demonstrate:
 CPDC (Climate Policy Database) is a comprehensive database of climate policies worldwide, covering over 1,000 policies across 196 countries from 1990 to 2022.
 - Database: https://climatepolicydatabase.org/
 - Access Methods: API access via Python package
-- Problem? It is a python package, but we can use reticulate in R to access it. Alternatively, we can download the dataset and process it in R.
+- It is a python package, but we can use reticulate in R to access it. 
 
 OECD CAPMF (Climate Action) provides data on climate action policies and measures implemented by OECD countries, including information on policy types, sectors, and implementation status.
 - Data Explorer: https://data-explorer.oecd.org/vis?lc=en&fs[0]=Topic%2C1%7CEnvironment%23ENV%23%7CEnvironmental%20policy%23ENV_POL%23&pg=0&fc=Topic&bp=true&snb=10&df[ds]=dsDisseminateFinalDMZ&df[id]=DSD_CAPMF%40DF_CAPMF&df[ag]=OECD.ENV.EPI&df[vs]=1.0&pd=2018%2C&dq=AUS.A.POL_STRINGENCY.LEV1_SEC%2BLEV2_SEC_E_MBI%2BLEV3_ETS_E%2BLEV4_ETS_E_PR%2BLEV4_ETS_E_GHG%2BLEV3_CARBONTAX_E%2BLEV3_FFS_E%2BLEV3_EXCISETAX_E%2BLEV3_FIT%2BLEV3_AUCTION%2BLEV3_RECS%2BLEV2_SEC_E_NMBI%2BLEV2_SEC_I_MBI%2BLEV2_SEC_I_NMBI%2BLEV2_SEC_B_MBI%2BLEV2_SEC_B_NMBI%2BLEV2_SEC_T_MBI%2BLEV2_SEC_T_NMBI%2BLEV1_CROSS_SEC%2BLEV1_INT.0_TO_10%2BPL&ly[cl]=TIME_PERIOD&to[TIME_PERIOD]=false
@@ -42,14 +42,19 @@ OECD CAPMF (Climate Action) provides data on climate action policies and measure
 - NB: this is not included in report because I decided it did not add to the story
 
 ND GAIN (Notre Dame Global Adaptation Initiative) provides data on countries' vulnerability and readiness to adapt to climate change, including indicators on exposure, sensitivity, and adaptive capacity.
-- API: there is no API, but data can be downloaded as CSV
 - Link: https://gain.nd.edu/our-work/country-index/
 - Access Methods: Download CSV and process in R
 
 UNFCCC NDCs
-- API: there is no API, but data can be downloaded as CSV from open climate data's github
+- Access Methods: there is no API, but data can be downloaded as CSV from open climate data's github
 - Link: https://github.com/openclimatedata/ndcs/blob/main/data/ndcs.csv
 - Additional data: NDC IGES (Institute for Global Environmental Strategies) provides a summarised dataset with important info about each ndc - useful for additional analysis.
+
+World Bank World Development Indicators (WDI) 
+- Access Methods: API access via R package
+- Link: https://databank.worldbank.org/source/world-development-indicators
+- Use: to get emission data
+
 
 ## Repository Structure
 

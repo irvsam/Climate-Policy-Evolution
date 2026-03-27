@@ -59,7 +59,7 @@ cpdb_df_collected <- fetch_global_time_range(2013, 2025)
 
 # =============================== world bank API =====================================================================================
 
-target_indicator <- "WB_WDI_EN_GHG_ALL_LU_MT_CE_AR5"
+target_indicator <- "WB_WDI_EN_GHG_ALL_MT_CE_AR5"
 
 message("Calculating Cumulative GGE (2013-2025)...")
 
@@ -76,6 +76,7 @@ ghg_resp <- request("https://data360api.worldbank.org/data360/data") %>%
   req_perform()
 
 ghg_content <- resp_body_json(ghg_resp, simplifyVector = TRUE)
+unique(ghg_content$value$REF_AREA)
 
 if (ghg_content$count > 0) {
   # Calculate Cumulative Sum

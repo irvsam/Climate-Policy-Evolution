@@ -13,7 +13,7 @@ FORCE_RECLEAN <- FALSE # Set to TRUE if scripts have been edited
 required_packages <- c(
   "dplyr", "httr2", "readr", "reticulate", "purrr", "stringr", 
   "tidyr", "OECD", "countrycode", "readxl", "janitor", 
-  "ggplot2", "tidytext", "ggrepel", "pdftools", "httr", "gt", "webshot2"
+  "ggplot2", "tidytext", "ggrepel", "pdftools", "httr", "gt", "webshot2", "sf", "rnaturalearth", "rnaturalearthdata"
 )
 
 # Only install if it isnt already installed
@@ -30,7 +30,7 @@ for (pkg in required_packages) {
 }
 
 # Countries and years
-TARGET_ISO3 <- c("CAN", "DEU", "JPN", "IND", "ZAF", "DNK", "GBR", "CHL", "COL", "USA", "SAU", "RWA")
+TARGET_ISO3 <- c("CAN", "DEU", "JPN", "IND", "ZAF", "DNK", "GBR", "CHL", "COL", "USA", "SAU", "RWA", "MDV")
 START_YEAR <- 2013
 END_YEAR <- 2025
 
@@ -75,6 +75,17 @@ if (!file.exists("02.data/data-raw/cpdb_raw.rds")| FORCE_RECLEAN) {
 } else {
   message("--- Loading CPDB from local RDS ---")
   cpdb_raw <- readRDS("02.data/data-raw/cpdb_raw.rds")
+}
+
+# --- World Bank GGE Data ---
+if (!file.exists("02.data/data-raw/wb_gge_raw.rds")| FORCE_RECLEAN) {
+  message("--- Fetching World Bank GGE from API ---")
+  source("01.scripts/collect/API_Connections.R")
+  saveRDS(ghg_cumulative, "02.data/data-raw/wb_gge_raw.rds")
+  ghg_cumulative <- ghg_cumulative # Load into memory for current session
+} else {
+  message("--- Loading World Bank GGE from local RDS ---")
+  ghg_cumulative <- readRDS("02.data/data-raw/wb_gge_raw.rds")
 }
 
 
@@ -177,6 +188,8 @@ source("01.scripts/analyse/ndc_scoring.R")
 
 source("01.scripts/analyse/cpdb_vs_ndc.R")
 
+source("01.scripts/analyse/selected_countries.R")
+
 
 
 # ==============================================================================
@@ -193,6 +206,7 @@ objects_to_keep <- c(
   "ndgain_final_clean", 
   "ndc_iges_final_clean",
   "ndc_extracted_text_list",
+  "ghg_cumulative",
   "TARGET_ISO3", 
   "START_YEAR", 
   "END_YEAR",
@@ -205,7 +219,8 @@ objects_to_keep <- c(
   "ndc_ambition_vs_focus",
   "global_adaptation_growth_plot",
   "ndc_cpdb_comparison_df",
-  "ndc_cpdb_comparison_table"
+  "ndc_cpdb_comparison_table",
+  "resilience_labeled_map"
   )
 
 # Save all plots to output folder
@@ -217,7 +232,8 @@ plot_list <- list(
   cpdb_adaptation_mix_plot = cpdb_adaptation_mix_plot,
   ndc_adaptation_leaderboard = ndc_adaptation_leaderboard,
   ndc_ambition_vs_focus = ndc_ambition_vs_focus,
-  global_adaptation_growth_plot = global_adaptation_growth_plot
+  global_adaptation_growth_plot = global_adaptation_growth_plot,
+  resilience_labeled_map = resilience_labeled_map
 )
 
 for (plot_name in names(plot_list)) {
