@@ -84,17 +84,17 @@ The logic is as follows:
 
 This project triangulates three distinct data sources:
 
-## NewClimate Institute’s Climate Policy Database (CPDB)
+## NewClimate Institute’s Climate Policy Database (CPDB) [2]
 
 The CPDB provides the baseline for actual policy adoption. Accessed via a Python-R bridge (reticulate), it offers broader geographic coverage than the OECD dataset that was considered as a possible source (OECD CAPMF). Its primary limitation is a "Global North bias," where data coverage is stronger. This is a gap addressed by the inclusion of NDC texts. The CPDB's provides structured policy data with policy types (mitigation, adaptation), decision dates and country codes, allowing for a quantitative analysis of policy trends over time. 
 
-## UNFCCC Nationally Determined Contributions (NDCs)
+## UNFCCC Nationally Determined Contributions (NDCs) [3]
 
 To capture strategic intent beyond formal legislation, I developed an automated pipeline to extract and analyze the most recent NDC PDFs using the pdftools package. These documents serve as primary statements of government priority. While they allow for a nuanced NLP analysis of "Lexical Hardness" (Hard vs. Soft law) as well as "Adaptation focus" (Percentage of text focused on adaptation), they represent diplomatic pledges rather than tangible enforcement. The plus side of using NDCs is that each country is able to represent themselves how they like, removing the reliance on third-party data collection and coding which may be biased or incomplete, particularly for the Global South.
 
-## ND-GAIN Index (Vulnerability Benchmarking)
+## ND-GAIN Index (Vulnerability Benchmarking) [4]
 
-The ND-GAIN Index provides the context of necessity. The ND-GAIN scores are a composition of vulnerability and readiness indicators, allowing us to benchmark countries based on their climate risk and adaptive capacity.
+The ND-GAIN Index provides the context of necessity. The ND-GAIN scores are a composition of vulnerability and readiness indicators. While the Vulnerability score measures physical exposure, the overall Index balances this against a country’s Readiness (its economic, social, and governmental capacity to deploy adaptation solutions). The overall index is therefor a perfect measure of the capacity and necessity for adaptation.
 
 # The Technical Pipeline
 
@@ -135,7 +135,9 @@ Initial analysis of climate policies in the cpdb reveals a visible acceleration 
 print(cpdb_adaptation_mix_plot)
 ```
 
-Zooming in to our chosen list of countries we are able to see the spread of each policy portfolio. What percentage of implemented policies focus on adaptation. The ND-GAIN scores have been added in order to visualize the comparison of vulnerability. There seems to be an uneven relationship between vulnerability and implementation. While some vulnerable nations like Rwanda show a high adaptation ratio, others like India lag behind. This would suggest that vulnerability may not be a driving factor in adaptation adoption. However, it is important to think about what other reasons there may be for this unclear relationship. Two problems arise here 1) the tracking of adaptation is historically complex and most often underreported, particularly for the Global South, and 2) the CPDB data has a bias towards Global North countries, meaning that the adaptation efforts of the Global South may be underrepresented. This is why I chose to supplement this analysis with an NLP-based analysis of the NDCs, which allows us to capture strategic intent and "mindshare" around adaptation that may not be reflected in the CPDB data.
+Zooming in to our chosen list of countries we are able to see the spread of each policy portfolio. What percentage of implemented policies focus on adaptation. The ND-GAIN scores have been added in order to visualize the comparison of vulnerability. While some vulnerable nations like Rwanda show a high adaptation ratio, others like India lag behind. This would suggest that vulnerability may not be a driving factor in adaptation adoption. 
+
+However, it is important to keep in mind that this data set has its limitations. Two problems 1) the tracking of adaptation is historically complex and most often under reported, particularly for the Global South and 2) the CPDB data has a bias towards Global North countries. This is why I move on to provide an NLP-based analysis of the NDCs, which allows us to capture strategic intent and "mindshare" around adaptation that may not be reflected in the CPDB data.
 
 ## Lexical Adaptation Focus in NDCs (The Responsibility Gap)
 
@@ -144,7 +146,7 @@ Zooming in to our chosen list of countries we are able to see the spread of each
 #| warning: false
 #| message: false
 #| label: fig-adaptation-leaderboard
-#| fig-cap: "Adaptation Focus in NDCs: Global South vs. Global North"
+#| fig-cap: "Adaptation Focus in NDCs"
 #| fig-width: 9
 #| fig-height: 6
 #| fig-subcap: "Adaptation Focus Score (Keyword Frequency) in NDCs, Sorted by ND-GAIN Vulnerability"
@@ -152,13 +154,13 @@ Zooming in to our chosen list of countries we are able to see the spread of each
 print(ndc_adaptation_leaderboard)
 ```
 
-By shifting to an NLP-based analysis of NDCs (Figure 4), the correlation between physical risk and strategic intent becomes obvious. High-vulnerability countries dedicate significantly more "mindshare" to adaptation in their NDCs compared to the Global North. This is the Responsibility Gap in action: the nations least responsible for historical emissions are the ones forced to prioritize survival strategies.
+By shifting to an NLP-based analysis of each Nationally Determined Contribution (NDC) (Figure 4), the correlation between physical risk and strategic intent becomes obvious. High-vulnerability countries dedicate significantly more "mindshare" to adaptation in their NDCs compared to the Global North. This is the Responsibility Gap in action: the nations least responsible for historical emissions are the ones forced to prioritize survival strategies.
 
 ![Table 1: The Ambition Audit](../03.output/ndc_cpdb_comparison_table.png){width=60%}
 
-Table 1 shows a comparison between the CPDB adaptation mix and the NDC adaptation focus. The gap between intent and policy implementation is particularly wide for the Global South, where adaptation is a critical need but resource constraints limit actual policy adoption. This brings about two important points 1) the CPDB data is likely underrepresenting the true adaptation efforts of the Global South, and 2) there is a significant gap between strategic intent (NDCs) and actual policy implementation (CPDB), particularly for adaptation in the Global South. This is the Commitment Gap: vulnerable countries are prioritizing adaptation in their strategic documents but are unable to translate this into binding policies due to resource limitations. A further understanding of this commitment gap is provided by figure 6, which maps the relative adaptation focus against the lexical hardness of the NDC language.
+Table 1 shows a comparison between the CPDB policy adaptation mix and the NDC lexical adaptation focus. The gap between intent and policy implementation is particularly wide for the Global South, where adaptation is a critical need but resource constraints and governance (readiness) may limit actual policy adoption. This is the Commitment Gap: vulnerable countries are prioritizing adaptation in their strategic documents but are unable to translate this into binding policies. A further understanding of this commitment gap is provided by figure 6, which maps the relative adaptation focus against the lexical hardness of the NDC language.
 
-## Adaptation Focus vs. Ambition in NDCs (The Commitment Gap)
+## Adaptation Focus vs. Ambition/Stringency in NDCs (The Commitment Gap)
 
 ```{r}
 #| echo: false
@@ -169,35 +171,43 @@ Table 1 shows a comparison between the CPDB adaptation mix and the NDC adaptatio
 print(ndc_ambition_vs_focus)
 ```
 
-The Ambition Matrix (Figure 6) maps the final dimension of the Commitment Gap. The Ambition Score is calculated based on the frequency of "hard" vs. "soft" language in the NDC texts, with "hard" language indicating more binding commitments. Global North countries cluster in the "low focus, high hardness" quadrant, backed by legally binding mitigation mandates. Conversely, the Global South occupies the "high focus, low hardness" zone. This reflects structural inequalities. Vulnerable countries cannot legally bind themselves to adaptation measures without guaranteed external finance.
-
-# Limitations
-A primary limitation of this project is the reliance on the CPDB for policy data, which is not exhaustive and has a bias toward Global North countries. This means that the adaptation policies of many Global South countries may be underrepresented, potentially skewing the analysis. 
-
-The NDC analysis also has limitations due to the variability in language and the challenge of quantifying qualitative commitments. The execution of the Lexical Audit was constrained by the depth of the text-mining heuristics. The current pipeline relies on a keyword-based dictionary approach which may fail to capture complex nuances. Future iterations would benefit from a more robust NLP framework to move beyond simple frequency counts and more accurately distinguish between aspirational rhetoric and enforceable domestic mandates.
+The Ambition Score reflects the relative frequency of mandatory language (e.g., shall, must, mandate) versus aspirational terms (e.g., should, aim, aspire), normalized against the group mean.While lexical hardness varies across all regions, the strategic focus remains deeply polarized. By centering the matrix on group medians, the split is visually stark: the Global South and the Global North are legislating for fundamentally different realities.
 
 # Discussion
 
-The four key findings provide empirical evidence for climate justice debates: the Global South prioritizes adaptation, but lacks the resources to codify commitments into binding law. 
+The findings discussed above provide clear evidence for climate justice debates: the Global South prioritizes adaptation, but lacks the resources to codify commitments into binding law. 
 
 The Responsibility and Commitment Gaps both provide important evidence that it is those who are most vulnerable to climate impacts (the Global South) who are thinking about adaptation the most and those who contributed the most to climate change (the Global North) who are thinking about it the least. This is a stark illustration of the injustice at the heart of climate change: those who are least responsible for causing it are the ones who suffer its worst effects and have the greatest need for adaptation measures, yet they have the least capacity to do so.
 
 The Commitment Gap finding has particular policy significance. It demonstrates that Global South adaptation priorities are substantive (evidenced by high keyword frequency and development plans explicitly linking adaptation to poverty reduction [1, p.14-15]), but these priorities are constrained by resource limitations (manifested as soft law language because commitments are conditional on international finance [1, p.14]).
 
+# Limitations
+
+The fundamental challenge of tracking adaptation in policy is perhaps this projects greatest limitation. However, every effort has been made to account for this.
+
+A primary limitation is the reliance on the CPDB for policy data, which is not exhaustive and has a bias toward Global North countries. This means that the adaptation policies of many Global South countries may be underrepresented, potentially skewing the analysis. The temporal lag of policy data is also a concern, as there may be a delay between the strategic intent expressed in NDCs and the actual implementation of policies.
+
+The NDC analysis is limited due to the variability in language and the challenge of quantifying qualitative commitments. The execution of the Lexical Audit was constrained by the depth of the text-mining heuristics. The current pipeline relies on a keyword-based dictionary approach which may fail to capture complex nuances. Future iterations would benefit from a more robust NLP framework to move beyond simple frequency counts and more accurately distinguish between aspirational rhetoric and enforceable domestic mandates.
+
 # References
-[1] Grantham Research Institute on Climate Change and the Environment, "Climate change adaptation laws and policies: Global trends and insights 2025," London School of Economics and Political Science, 2025.
+
+[1] Grantham Research Institute on Climate Change and the Environment. (2025). *Climate change adaptation laws and policies: Global trends and insights 2025*. London School of Economics and Political Science. https://www.lse.ac.uk/granthaminstitute/wp-content/uploads/2026/02/Climate-change-adaptation-laws-and-policies.pdf
+
+[2] NewClimate Institute, Wageningen University and Research, & PBL Netherlands Environmental Assessment Agency. (2024). *Climate Policy Database* [Data set]. Zenodo. https://doi.org/10.5281/zenodo.7774109
+
+[3] United Nations Framework Convention on Climate Change. (2026). *NDC Registry* [Database]. https://unfccc.int/NDCREG
+
+[4] University of Notre Dame. (2026). *Notre Dame Global Adaptation Initiative Country Index* [Data set]. https://gain.nd.edu/our-work/country-index/
 
 # LLM Declaration
 
 The following LLMs have been used in the creating of this report and project:
 
-- Gemini for technical troubleshooting, code review and idea exploration. I used Gemini throughout the coding process and also as a way to talk through my ideas. All code has been a joint effort, never a complete copy-paste but more of a back and forth discussion about best methods. I have a background in software development but have never used R before, so Gemini has helped me navigate the syntax. 
+- Gemini for technical troubleshooting, code review and idea exploration: I used Gemini throughout the coding process and also as a way to talk through my ideas. All code has been a joint effort, never a complete copy-paste but more of a back and forth discussion about best methods. I have a background in software development but have never used R before, so Gemini has helped me navigate the syntax. 
 
-- Github Copilot for code suggestions and autocompletion. I used Copilot in my R scripts to speed up coding and get suggestions for functions and methods. Again, all code has been a joint effort, with me writing the logic and Copilot suggesting syntax and functions. In some cases I have used comments to explain what I want to do and then Copilot has generated the code to accomplish that task, which I have then reviewed and edited as needed.
+- Github Copilot for code suggestions and auto completion: I used Copilot to speed up coding and get suggestions. Again, all code has been a joint effort, with me writing the logic and Copilot suggesting syntax and functions.
 
-- Scispace for help writing this report. I used Scispace to help me structure this report. I have used Scispace to help organize my thoughts and ensure that I am covering all the necessary sections and points. 
-
-
+- Scispace for help writing this report: I have used Scispace to help organize my thoughts and ensure that I am covering all the necessary sections and points. 
 
 **Word Count:** 
 

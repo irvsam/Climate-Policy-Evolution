@@ -127,17 +127,12 @@ x_med <- median(final_map_df$relative_adapt_focus)
 y_med <- median(final_map_df$ambition_score)
 
 ndc_ambition_vs_focus <- ggplot(final_map_df, aes(x = relative_adapt_focus, y = ambition_score, label = iso3)) +
-  # Quadrant Labels
-  annotate("text", x = 0.05, y = 2.2, label = "Mitigation Hardliners", 
-           alpha = 0.5, fontface = "italic", hjust = 0) +
-  annotate("text", x = 0.95, y = 0.1, label = "Aspirational Adapters", 
-           alpha = 0.5, fontface = "italic", hjust = 1) +
   
   # Data Points
   geom_point(aes(color = relative_adapt_focus > x_med), size = 5, alpha = 0.8) +
   scale_color_manual(values = c("#2980b9", "#d35400"), 
                      labels = c("Mitigation", "Adaptation"),
-                     name = "Primary Focus") +
+                     name = "Relative Focus") +
   
   geom_text_repel(fontface = "bold", force = 10) +
   
