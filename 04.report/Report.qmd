@@ -1,8 +1,8 @@
 ---
-title: "Climate Resilience: A Multi-Source Analysis of Climate Policy Evolution Pre- and Post- Paris Agreement (2013–2025)"
+title: "Climate Resilience: A Multi-Source Analysis of Climate Policy Evolution since the Paris Agreement (2013–2025)"
 author: "Samantha Irving"
 date: '26 March 2026'
-abstract: "This application report documents a data mining pipeline bringing together three separate sources of climate data: the Climate Policy Database (CPDB), the UNFCCC NDCs and the Notre Dame Global Adaptation Initiative (ND-GAIN).The exploration analyzes the evolution of climate strategies since the Paris agreement(2015), with a particular focus on the integration of adaptation measures alongside mitigation efforts."
+abstract: "This application report documents a data mining pipeline bringing together three separate sources of climate data: the Climate Policy Database (CPDB), the UNFCCC NDCs and the Notre Dame Global Adaptation Initiative (ND-GAIN). The exploration analyzes the evolution of climate strategies since the Paris agreement (2015), with a particular focus on the integration of adaptation measures alongside mitigation efforts."
 format: 
   pdf:
     header-includes: |
@@ -42,9 +42,9 @@ source(here("main.R"))
 
 Climate policy analyses have traditionally focused on mitigation, with an emphasis on the reduction of greenhouse gas emissions. However, the increasing frequency and severity of climate impacts has increased the importance of adaptation measures in national policy portfolios. The Paris Agreement (2015) marked a pivotal moment in global climate governance, with its dual focus on mitigation and adaptation.
 
-As the Grantham Research Institute notes, "unlike climate mitigation, where responses like carbon pricing and emission targets are widely tracked, adaptation laws and policies have received less systematic scrutiny" [1, p.10]. International climate databases systematically under represent adaptation policies, particularly in the Global South where adaptation is a *survival imperative* rather than a discretionary policy choice. When adaptation is invisible in the data, it becomes invisible in policy debates, climate finance allocation and accountability mechanisms. The lack of "comparative global analysis and systematic scrutiny of national adaptation legislation and policies has hampered the ability to assess progress, identify gaps, and understand effective frameworks" [1, p.10]. This project serves as a digital audit of climate ambition across our selection of countries with an aim to discover if and how countries are shifting towards adoption adaptation into the mix. 
+International climate databases systematically under represent adaptation policies, particularly in the Global South where adaptation is a *survival imperative* rather than a discretionary policy choice [1, p.10]. When adaptation is invisible in the data, it becomes invisible in policy debates, climate finance allocation and accountability mechanisms. The lack of "comparative global analysis and systematic scrutiny of national adaptation legislation and policies has hampered the ability to assess progress, identify gaps, and understand effective frameworks" [1, p.10]. This project serves as a digital audit of climate ambition across our selection of countries with an aim to discover if and how countries are shifting towards adoption adaptation into the mix. 
 
-Comparing the Global North to the Global South is a major focus of this project. The Global North have historically been responsible for the majority of emissions and have more resources to invest in both mitigation and adaptation. The Global South, whilst being less responsible for the acceleration of climate change, are the ones who bear the brunt of it.
+The Global North have historically been responsible for the majority of emissions and have more resources to invest in both mitigation and adaptation. The Global South, whilst being less responsible for the acceleration of climate change, are the ones who bear the brunt of it. The comparative analysis of the Global North and Global South is therefore critical to understanding the equity implications of climate policy evolution.
 
 # Research Question
 
@@ -58,9 +58,9 @@ Comparing the Global North to the Global South is a major focus of this project.
 
 *Boundaries:*
 
-**The Temporal Boundary (2013–2025)**
+**Temporal Boundary (2013–2025)**
 
-The temporal coverage of this analysis is limited to the years between 2013 and 2025. This allows us to capture the policy landscape leading up to the Paris Agreement, providing a baseline for comparison. The end point of 2025 ensures we have the most recent data available. 
+The temporal coverage allows us to capture the policy landscape leading up to the Paris Agreement, providing a baseline for comparison. The end point of 2025 ensures we have the most recent data available. 
 
 **Country Selection**
 
@@ -84,23 +84,21 @@ The logic is as follows:
 | Rwanda  | RWA        | South  | Low                          |
 
 
-# The Data Ecosystem
-
-This project triangulates three distinct data sources:
+# Data Sources
 
 ## NewClimate Institute’s Climate Policy Database (CPDB) [2]
 
-The CPDB provides the baseline for actual policy adoption. Accessed via a Python-R bridge (reticulate), it offers broader geographic coverage than the OECD dataset that was considered as a possible source (OECD CAPMF). Its primary limitation is a "Global North bias," where data coverage is stronger. This is a gap addressed by the inclusion of NDC texts. The CPDB's provides structured policy data with policy types (mitigation, adaptation), decision dates and country codes, allowing for a quantitative analysis of policy trends over time. 
+The CPDB provides the baseline for actual policy adoption. It offers broad geographic coverage. Its primary limitation is a "Global North bias," where data coverage is stronger. This is a gap addressed by the inclusion of NDC texts. The CPDB's provides structured policy data with policy types (mitigation, adaptation), decision dates and country codes, allowing for a quantitative analysis of policy trends over time. 
 
 ## UNFCCC Nationally Determined Contributions (NDCs) [3]
 
-To capture strategic intent beyond formal legislation, I developed an automated pipeline to extract and analyze the most recent NDC PDFs using the pdftools package. These documents serve as primary statements of government priority. While they allow for a nuanced NLP analysis of "Lexical Hardness" (Hard vs. Soft law) as well as "Adaptation focus" (Percentage of text focused on adaptation), they represent diplomatic pledges rather than tangible enforcement. The plus side of using NDCs is that each country is able to represent themselves how they like, removing the reliance on third-party data collection and coding which may be biased or incomplete, particularly for the Global South.
+These documents serve as primary statements of government priority. While they allow for a nuanced NLP analysis of "Lexical Hardness" (Hard vs. Soft law) as well as "Adaptation focus" (Percentage of text focused on adaptation), they represent diplomatic pledges rather than tangible enforcement. The plus side of using NDCs is that each country is able to represent themselves as they choose, removing the reliance on third-party data collection and coding which may be biased or incomplete, particularly for the Global South.
 
 ## ND-GAIN Index (Resilience Benchmarking) [4]
 
 The ND-GAIN Index provides the context of necessity. The ND-GAIN scores are a composition of vulnerability and readiness indicators. While the Vulnerability score measures physical exposure, the overall Index balances this against a country’s Readiness (its economic, social, and governmental capacity to deploy adaptation solutions). The overall index is therefor a measure of resilience.
 
-# The Technical Pipeline
+# Technological Approach
 
 The entire workflow is orchestrated by a single master script (`main.R`) that manages:
 
@@ -110,6 +108,17 @@ The entire workflow is orchestrated by a single master script (`main.R`) that ma
 4. **Analysis**
 5. **Output generation** (figures, tables, this report).
 6. **Environment Cleaning** (removing temporary files and data).
+
+**Data Acquisition**
+
+To implement a Multi-Source Triangulation strategy I first bridged R with Python (reticulate) to access the CPDB API, then developed a custom Scraping Pipeline for UNFCCC NDCs. This involved automated PDF downloading and text extraction via pdftools, allowing for the inclusion of primary-source data from countries often under-reported in secondary databases (e.g., Rwanda, Colombia).
+
+**Lexical Audit & Feature Engineering**
+
+NDC Strategic intent was quantified through a Keyword-Based Heuristic. I developed two distinct lexicons:
+
+- Focus Score: A ratio of adaptation-to-mitigation terminology normalized by document length.
+- Ambition Score: A "Lexical Hardness" index comparing mandatory ("shall", "must") vs. aspirational ("aim", "should") language, utilizing a smoothing constant ($+0.001$) to handle zero-count denominators in shorter documents.
 
 # Results
 
@@ -195,7 +204,7 @@ The fundamental challenge of tracking adaptation in policy is perhaps this proje
 
 A primary limitation is the reliance on the CPDB for policy data, which is not exhaustive and has a bias toward Global North countries. This means that the adaptation policies of many Global South countries may be underrepresented, potentially skewing the analysis. The temporal lag of policy data is also a concern, as there may be a delay between the strategic intent expressed in NDCs and the actual implementation of policies.
 
-The NDC analysis is limited due to the variability in language and the challenge of quantifying qualitative commitments. The execution of the Lexical Audit was constrained by the depth of the text-mining heuristics. The current pipeline relies on a keyword-based dictionary approach which may fail to capture complex nuances. Future iterations would benefit from a more robust NLP framework to move beyond simple frequency counts and more accurately distinguish between aspirational rhetoric and enforceable domestic mandates.
+The NDC analysis is limited due to the variability in language and the challenge of quantifying qualitative commitments. The execution of the Lexical Audit was constrained by the depth of the text-mining heuristics. The current Keyword-Based Heuristic assumes that word frequency correlates with political priority. While normalized for document length, this does not account for the context of mentions. Future iterations would benefit from a more robust NLP framework to move beyond simple frequency counts and more accurately distinguish between aspirational rhetoric and enforceable domestic mandates.
 
 # References
 

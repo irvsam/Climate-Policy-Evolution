@@ -63,6 +63,7 @@ UNFCCC NDCs
 - gitignore   to exclude data files and other non-code files from being tracked by git
 
 
+
 ## Reproducibility
 
 This project is designed to be fully reproducible. However, due to the lack of public APIs for certain climate indices, some manual setup is required.
@@ -74,7 +75,7 @@ This project is designed to be fully reproducible. However, due to the lack of p
 - **Required Python Packages:** `cpdb-api` (Automatically installed in main.R using `reticulate`)
 
 ### 2. Manual Data Acquisition
-Before running `main.R`, please place the following files in `02.data/data-raw/`:
+Before running `main.R`, please place the following files in `02.data/data-raw/` (you may need to create the folders yourself):
 - **ND-GAIN:** only keep `gain.csv` from the resources/gain/ folder downlaoded from [ND-GAIN Index](https://gain.nd.edu/our-work/country-index/).
 - **IGES Database:** rename to `IGESNDC.xlsx` from the [IGES NDC Database](https://www.iges.or.jp/en/pub/iges-indc-ndc-database/en).
 
