@@ -57,6 +57,45 @@ fetch_global_time_range <- function(start_year, end_year) {
 cpdb_df_collected <- fetch_global_time_range(2013, 2025)
 
 
+# =============================== world bank API =====================================================================================
+
+target_indicator <- "WB_WDI_EN_GHG_ALL_LU_MT_CE_AR5"
+
+message("Calculating Cumulative GGE (2013-2025)...")
+
+iso_string <- paste(TARGET_ISO3, collapse = ",")
+
+ghg_resp <- request("https://data360api.worldbank.org/data360/data") %>%
+  req_url_query(
+    DATABASE_ID = "WB_WDI",
+    INDICATOR = target_indicator,
+    REF_AREA = iso_string,
+    timePeriodFrom = "2013", 
+    timePeriodTo = "2025"
+  ) %>%
+  req_perform()
+
+ghg_content <- resp_body_json(ghg_resp, simplifyVector = TRUE)
+
+if (ghg_content$count > 0) {
+  # Calculate Cumulative Sum
+  ghg_cumulative <- ghg_content$value %>%
+    as_tibble() %>%
+    mutate(OBS_VALUE = as.numeric(OBS_VALUE),
+           TIME_PERIOD = as.numeric(TIME_PERIOD)) %>%
+    group_by(REF_AREA) %>%
+    # Using sum() to get the total since 2013
+    summarise(
+      cumulative_ghg = sum(OBS_VALUE, na.rm = TRUE),
+      data_points_count = n(),
+      latest_year = max(TIME_PERIOD),
+      .groups = "drop"
+    ) %>%
+    select(iso3 = REF_AREA, total_ghg = cumulative_ghg, latest_year)
+  
+  message("Cumulative data successfully calculated.")
+}
+
 message("Data collection complete.")
 
 
