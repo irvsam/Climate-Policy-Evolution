@@ -42,7 +42,7 @@ source(here("main.R"))
 
 # Introduction 
 
-Climate policy conversations have historically focused on the mitigation of climate change. However, the increasing frequency and severity of climate impacts has increased the importance of adaptation measures in national policy portfolios. The Paris Agreement (2015) marked a pivotal moment in global climate governance, with its dual focus on mitigation and adaptation.
+Climate policy conversations have historically focused on the mitigation of climate change. However, the increasing frequency and severity of climate impacts has increased the importance of adaptation measures in national policy portfolios. The Paris Agreement (2015) marked a pivotal moment in global climate governance, establishing a framework for both mitigation and adaptation efforts. 
 
 International climate databases systematically under represent adaptation policies, particularly in the Global South where adaptation is a *survival imperative*. When adaptation is invisible in the data, it becomes invisible in policy debates, climate finance allocation and accountability mechanisms. The lack of comparative global analysis and systematic scrutiny of national adaptation legislation and policies has "hampered the ability to assess progress, identify gaps, and understand effective frameworks" [1, p.10]. This project serves as a digital audit of climate ambition across the selection of countries with an aim to discover if and how countries are shifting towards adaptation adoption. 
 
@@ -80,7 +80,6 @@ The selection of 13 countries (Figure 1) is designed to provide a diverse sample
 #| fig-cap: "Selected Countries and their Global Emissions"
 print(resilience_labeled_map)
 ```
-
 
 *Note: The United States officially left the Paris Agreement (for the second time) on January 27 2026. President Donald Trump has pledged to "remove the nation from the global climate pact." *
 
@@ -192,9 +191,9 @@ print(ndc_adaptation_leaderboard)
 
 By shifting to an NLP-based analysis of each Nationally Determined Contribution (NDC) (Figure 5), the correlation between resilience and strategic intent becomes obvious. High-vulnerability countries dedicate significantly more "mindshare" to adaptation in their NDCs compared to the Global North. This is the Responsibility Gap in action: the nations least responsible for historical emissions are the ones forced to prioritize survival strategies.
 
-![Table 1: The Ambition Audit](../03.output/ndc_cpdb_comparison_table.png){width=50%}
+![The Ambition Audit](../03.output/ndc_cpdb_comparison_table.png){width=50%}
 
-Table 1 shows a comparison between the CPDB policy adaptation mix and the NDC lexical adaptation focus. The gap between intent and policy implementation seems to be particularly wide for the Global South. This is the Commitment Gap: vulnerable countries are prioritizing adaptation in their strategic documents but are not always able to translate this into binding policies. This is likely due to resource constraints, as adaptation policies often require significant investment and international finance is often conditional on the availability of domestic resources [1].
+Figure 5 shows a comparison between the CPDB policy adaptation mix and the NDC lexical adaptation focus. The gap between intent and policy implementation seems to be particularly wide for the Global South. This is the Commitment Gap: vulnerable countries are prioritizing adaptation in their strategic documents but are not always able to translate this into binding policies. This is likely due to resource constraints, as adaptation policies often require significant investment and international finance is often conditional on the availability of domestic resources [1].
 
 ## Adaptation Focus vs. Ambition/Stringency in NDCs (The Commitment Gap)
 
@@ -216,7 +215,9 @@ The Ambition Score reflects the relative frequency of mandatory language (e.g., 
 
 # Discussion
 
-Answering the question (*Has there been a shift towards climate adaptation adoption in policy portfolios after the Paris Agreement, and does this shift differ between Global North and Global South countries?*) there has been a noticeable shift towards climate adaptation adoption in policy portfolios since the Paris Agreement and this shift differs significantly between Global North and Global South countries. The Global South, which is more vulnerable to climate impacts, shows a higher focus on adaptation in their NDCs but faces significant challenges in translating this into binding policies, as evidenced by the Commitment Gap. The Global North, while having more resources, shows less focus on adaptation both in their NDCs and in actual policy implementation.
+*Has there been a shift towards climate adaptation adoption in policy portfolios after the Paris Agreement, and does this shift differ between Global North and Global South countries?* 
+
+There has been a noticeable shift towards climate adaptation adoption in policy portfolios since the Paris Agreement and this shift differs significantly between Global North and Global South countries. The Global South, which is more vulnerable to climate impacts, shows a higher focus on adaptation in their NDCs but faces significant challenges in translating this into binding policies, as evidenced by the Commitment Gap. The Global North, while having more resources, shows less focus on adaptation both in their NDCs and in actual policy implementation.
 
 The Responsibility and Commitment Gaps both provide important evidence that it is those who are most vulnerable to climate impacts (the Global South) who are spending more of their "mind share" on adaptation. This illustrates the injustice at the heart of climate change: those who are least responsible for causing it are the ones who suffer its worst effects and have the greatest need for adaptation, yet they have the least capacity to do so.
 
@@ -224,11 +225,13 @@ The Commitment Gap finding has particular significance. It demonstrates that Glo
 
 # Limitations
 
-The fundamental challenge of tracking adaptation in policy is perhaps this projects greatest limitation. However, every effort has been made to account for this.
+There are a great deal of limitations within this body of work, many of which are related to data reliability and coverage as well as simplified heuristics for tracking adaptation focus and strategic intent.
 
-The bias of CPDB means that the adaptation policies of many Global South countries may be underrepresented, potentially skewing the analysis. The use of relative ratios instead of exact counts is an effort to avoid this bias. The temporal lag of policy data is another concern, as there may be a delay between the strategic intent expressed in NDCs and the actual implementation of policies.
+The Global North bias of CPDB means that the adaptation policies of many Global South countries may be underrepresented, potentially skewing the analysis. The use of relative ratios instead of exact counts is an effort to avoid this bias. The temporal lag of policy data is another concern, as there may be a delay between the strategic intent expressed in NDCs and the actual implementation of policies.
 
-The NDC analysis is limited due to the variability in language and the challenge of quantifying qualitative commitments. The execution of the Lexical Audit was constrained by the depth of the text-mining heuristics. The current Keyword-Based Heuristic assumes that word frequency correlates with political priority. While normalized for document length, this does not account for the context of mentions *Discussed in issue #5 and issue #4*. Future iterations would benefit from a more robust NLP framework to move beyond simple frequency counts and more accurately distinguish between aspirational rhetoric and enforceable domestic mandates. 
+The NDC analysis is limited due to the variability in language and the challenge of quantifying qualitative commitments. The execution of the Lexical Audit was constrained by the depth of the text-mining heuristics. The current Keyword-Based Heuristic assumes that word frequency correlates with political priority. While normalized for document length, this does not account for the context of mentions *Discussed in issue #5 and issue #4*. 
+
+Future iterations would benefit from a more robust NLP framework to move beyond simple frequency counts and more accurately distinguish between aspirational rhetoric and enforceable domestic mandates. An interesting additional angle would be to study the impacts of this shift towards adaptation on actual climate outcomes, such as changes in vulnerability or resilience metrics over time as well as climate change impacts. Work could also be done to explore how those responsible for the greater share of emissions (the Global North) can be held accountable for the adaptation needs of the Global South, particularly in the context of international climate finance and loss and damage discussions.
 
 # References
 
@@ -244,13 +247,13 @@ The NDC analysis is limited due to the variability in language and the challenge
 
 # LLM Declaration
 
-The following LLMs have been used in the creating of this report and project:
+The following LLMs have been used in the process of this project:
 
 - Gemini for technical troubleshooting, code review and idea exploration: I used Gemini throughout the coding process and also as a way to talk through my ideas. All code has been a joint effort, never a complete copy-paste but more of a back and forth discussion about best methods. I have a background in software development but have never used R before, so Gemini has helped me navigate the syntax. 
 
 - Github Copilot for code suggestions and auto completion: I used Copilot to speed up coding and get suggestions. Again, all code has been a joint effort, with me writing the logic and Copilot suggesting syntax and functions.
 
-- Scispace for help writing this report: I have used Scispace to help organize my thoughts and ensure that I am covering all the necessary sections and points. 
+- Scispace for help writing this report: I used Scispace to help organize my thoughts and ensure that I am covering all the necessary sections and points. 
 
 
 ```{r}
