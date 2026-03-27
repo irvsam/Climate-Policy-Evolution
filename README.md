@@ -26,8 +26,7 @@ The project should demonstrate:
 
 ## Research Question
 
-*Have climate policy portfolios shifted from mitigation toward adaptation after the Paris Agreement, and does this shift differ between Global North and Global South countries?*
-
+*Has there been a shift towards climate adaptation adoption in policy portfolios after the Paris Agreement, and does this shift differ between Global North and Global South countries?*
 
 ## Data Source
 
@@ -61,8 +60,6 @@ UNFCCC NDCs
 - '04.report/'     final report (pdf or qmd file: recommended to read the pdf if you want to see the final report, but the qmd file is included for transparency and reproducibility)
 - main.R     main script to run the entire project from start to finish
 - gitignore   to exclude data files and other non-code files from being tracked by git
-
-
 
 ## Reproducibility
 
