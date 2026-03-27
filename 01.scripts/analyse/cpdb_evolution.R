@@ -42,10 +42,11 @@ cpdb_cumulative_adaptation_growth <- ggplot(adaptation_growth, aes(x = decision_
 
 # Add lines for the important paris agreement dates: the agreement was adopted in 2015 and came into force in 2016. 
 cpdb_cumulative_adaptation_growth <- cpdb_cumulative_adaptation_growth +
-  geom_vline(xintercept = 2015, linetype = "dashed", color = "red", size = 0.8) +
-  geom_vline(xintercept = 2016, linetype = "dashed", color = "blue", size = 0.8) +
-  annotate("text", x = 2015, y = max(adaptation_growth$cumulative_adaptation) * 0.9, label = "Paris Agreement Adopted", angle = 90, vjust = -0.5, color = "red") +
-  annotate("text", x = 2016, y = max(adaptation_growth$cumulative_adaptation) * 0.9, label = "Paris Agreement Signed", angle = 90, vjust = -0.5, color = "blue")
+  geom_vline(xintercept = 2015, linetype = "dashed", color = "grey", size = 0.8) +
+  geom_vline(xintercept = 2016, linetype = "dashed", color = "grey", size = 0.8) +
+  
+  annotate("text", x = 2015, y = max(adaptation_growth$cumulative_adaptation) * 0.7, label = "Paris Agreement Adopted", angle = 90, vjust = -0.5, color = "grey", size =3 ) +
+  annotate("text", x = 2016, y = max(adaptation_growth$cumulative_adaptation) * 0.7, label = "Paris Agreement Signed", angle = 90, vjust = -0.5, color = "grey", size =3)
 
 
 # See which countries have the most adaptation policies
@@ -58,7 +59,6 @@ country_totals <- cpdb_final_clean %>%
   arrange(desc(total_policies)) %>%
   # Create a rank to show the "tail" on the x-axis
   mutate(rank = row_number())
-
 
 
 # Load ND-GAIN data (only have the 2023 index)
@@ -78,9 +78,6 @@ vulnerability_report <- country_totals %>%
 
 # Maybe it's better to instead compare their adaptation mix instead of absolute count of adaptation policies
 
-# View the list
-print(vulnerability_report)
-
 # Compare the average nd gain amongst those with 3+ policies to those with 0-3
 average_vulnerability <- country_totals %>%
   left_join(ndgain_data, by = "country_iso") %>%
@@ -88,7 +85,6 @@ average_vulnerability <- country_totals %>%
   group_by(policy_group) %>%
   summarise(average_vulnerability = mean(vulnerability_index, na.rm = TRUE), .groups = 'drop')
 
-print(average_vulnerability)
 
 
 # =============== Better way of doing things? ================
@@ -110,11 +106,25 @@ adaptation_mix <- cpdb_final_clean %>%
   left_join(ndgain_data, by = "country_iso") %>%
   arrange(desc(adapt_ratio))
 
+adaptation_mix <- adaptation_mix %>%
+  mutate(resilience_tier = case_when(
+    vulnerability_index > 60 ~ "High Resilience",
+    vulnerability_index > 50 ~ "Moderate Resilience",
+    TRUE ~ "Low Resilience"
+  ))
 
-cpdb_adaptation_mix_plot <- ggplot(adaptation_mix, aes(x = reorder(country_iso, adapt_ratio), y = adapt_ratio, fill = vulnerability_index)) +
+
+resilience_palette <- c(
+  "Low Resilience" = "#d35400", 
+  "Moderate Resilience" = "#f39c12", 
+  "High Resilience" = "#2980b9"
+)
+
+
+cpdb_adaptation_mix_plot <- ggplot(adaptation_mix, aes(x = reorder(country_iso, adapt_ratio), y = adapt_ratio, fill = resilience_tier)) +
   geom_col() +
+  scale_fill_manual(values = resilience_palette, name = "Climate Resilience (ND-GAIN)") +
   coord_flip() +
-  scale_fill_viridis_c(option = "plasma", name = "Vulnerability (ND-GAIN)") +
   labs(
     title = "Climate Policy Mix: Adaptation Priority",
     subtitle = "Percentage of total policy portfolio dedicated to Adaptation",
@@ -122,4 +132,5 @@ cpdb_adaptation_mix_plot <- ggplot(adaptation_mix, aes(x = reorder(country_iso, 
     y = "Adaptation Share of Portfolio (%)"
   ) +
   theme_minimal()
+
 

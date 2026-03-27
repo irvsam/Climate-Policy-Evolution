@@ -85,33 +85,37 @@ final_map_df <- final_map_df %>%
     relative_adapt_focus = replace_na(relative_adapt_focus, 0)
   )
 
-# Verify IND is still there
-print(final_map_df %>% filter(iso3 == "IND"))
 
 # Instead of focusing on how much they are adaptation or mitigation I want to just focus on how much adaptation has been brought into their language relative to the others
 
 leaderboard_with_vulnerability <- final_map_df %>%
   left_join(ndgain_final_clean %>% filter(year == 2023), by = c("iso3" = "iso3")) %>%
-  mutate(vulnerability_tier = case_when(
-    score > 60 ~ "Low Vulnerability",
-    score > 50 ~ "Moderate Vulnerability",
-    TRUE ~ "High Vulnerability"
+  mutate(resilience_tier = case_when(
+    score > 60 ~ "High Resilience",
+    score > 50 ~ "Moderate Resilience",
+    TRUE ~ "Low Resilience"
   )) %>%
   # Handle any NAs from the join
   filter(!is.na(relative_adapt_focus))
 
 # Create Enhanced Leaderboard
+
+resilience_palette <- c(
+  "Low Resilience" = "#d35400", 
+  "Moderate Resilience" = "#f39c12", 
+  "High Resilience" = "#2980b9"
+)
+
+
 ndc_adaptation_leaderboard <- ggplot(leaderboard_with_vulnerability, 
                                         aes(x = reorder(iso3, relative_adapt_focus), 
                                             y = relative_adapt_focus, 
-                                            fill = vulnerability_tier)) +
+                                            fill = resilience_tier)) +
   geom_col() + # Use geom_col for pre-calculated values
   coord_flip() + 
   scale_y_continuous(labels = scales::percent) +
   # Using your requested color palette
-  scale_fill_manual(values = c("High Vulnerability" = "#d35400",  # Burnt Orange
-                               "Moderate Vulnerability" = "#f39c12", # Orange
-                               "Low Vulnerability" = "#2980b9")) + # Blue
+  scale_fill_manual(values = resilience_palette, name = "Climate Resilience (ND-GAIN)") +
   labs(
     title = "The Adaptation Leaderboard: Intent vs. Vulnerability",
     subtitle = "Relative Adaptation Focus (NLP) colored by ND-GAIN Vulnerability Tier",
@@ -122,39 +126,65 @@ ndc_adaptation_leaderboard <- ggplot(leaderboard_with_vulnerability,
   theme_minimal() +
   theme(legend.position = "bottom")
 
+
 # Calculate medians 
 x_med <- median(final_map_df$relative_adapt_focus)
 y_med <- median(final_map_df$ambition_score)
 
-ndc_ambition_vs_focus <- ggplot(final_map_df, aes(x = relative_adapt_focus, y = ambition_score, label = iso3)) +
-  
-  # Data Points
-  geom_point(aes(color = relative_adapt_focus > x_med), size = 5, alpha = 0.8) +
-  scale_color_manual(values = c("#2980b9", "#d35400"), 
-                     labels = c("Mitigation", "Adaptation"),
-                     name = "Relative Focus") +
-  
-  geom_text_repel(fontface = "bold", force = 10) +
-  
-  # Reference Lines based on data medians not just 50%
-  geom_vline(xintercept = x_med, linetype = "dashed", color = "grey70") +
-  geom_hline(yintercept = y_med, linetype = "dashed", color = "grey70") +
 
-  # This ensures labels still get rendered
+final_map_df <- final_map_df %>%
+  mutate(
+    focus_type = if_else(relative_adapt_focus > x_med, "Adaptation", "Mitigation"),
+    is_above_average_hardness = ambition_score > y_med
+  )
+
+
+# New Neutral Palette for the Matrix
+matrix_palette <- c("Adaptation" = "#8e44ad", "Mitigation" = "#16a085") # Purple & Teal
+
+ndc_ambition_vs_focus <- ggplot(final_map_df, aes(x = relative_adapt_focus, 
+                                                  y = ambition_score, 
+                                                  label = iso3, 
+                                                  color = focus_type)) +
+  
+  # Data Points with a slight outline for clarity
+  geom_point(size = 4, alpha = 0.7) +
+  scale_color_manual(values = matrix_palette, name = "Strategic Focus") +
+  
+  # Improve Text Repel: lower force, add box padding
+  geom_text_repel(
+    fontface = "bold", 
+    size = 3.5,
+    box.padding = 0.4, 
+    point.padding = 0.3,
+    force = 5,           # Lowered force prevents labels from flying away
+    show.legend = FALSE
+  ) +
+  
+  # Reference Lines
+  geom_vline(xintercept = x_med, linetype = "dotted", color = "grey50") +
+  geom_hline(yintercept = y_med, linetype = "dotted", color = "grey50") +
+  
+  # Layout - Fixing the Aspect Ratio
   coord_cartesian(clip = "off") + 
-  scale_x_continuous(labels = scales::percent, limits = c(0, 1), expand = expansion(mult = c(0.05, 0.1))) +
-  scale_y_continuous(limits = c(0, NA), expand = expansion(mult = c(0.05, 0.2))) +
+  scale_x_continuous(labels = scales::percent, limits = c(0, 1), 
+                     expand = expansion(mult = c(0.05, 0.1))) +
+  scale_y_continuous(limits = c(0, NA), 
+                     expand = expansion(mult = c(0.1, 0.1))) +
+  
   labs(
     title = "The Ambition Matrix: Lexical Hardness vs. Focus",
-    subtitle = "Dashed lines represent group medians. Above horizontal = Relatively 'Harder' language.",
+    subtitle = "Dashed lines represent group medians. Colored by primary focus.",
     x = "Adaptation Focus (Text %)",
     y = "Relative Lexical Hardness (Index)"
   ) +
   theme_minimal() +
-  theme(plot.margin = margin(20, 40, 20, 20))
+  theme(
+    legend.position = "bottom",
+    # This helps the plot stay 'balanced' on the PDF page
+    aspect.ratio = 0.7, 
+    plot.title = element_text(face = "bold", size = 14),
+    plot.margin = margin(20, 50, 20, 20)
+  )
 
 print(ndc_ambition_vs_focus)
-
-# Which countries got dropped from the graph?
-countries_in_graph <- final_map_df$iso3
-countries_dropped <- setdiff(TARGET_ISO3, countries_in_graph)
