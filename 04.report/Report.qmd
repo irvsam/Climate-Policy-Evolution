@@ -1,21 +1,22 @@
 ---
 title: "Climate Resilience: A Multi-Source Analysis of Climate Policy Evolution since the Paris Agreement (2013–2025)"
-author: "Samantha Irving"
-date: '26 March 2026'
+author: 
+  - name: "Samantha Irving"
+date: last-modified
+date-format: "D MMMM YYYY"
 abstract: "This application report documents a data mining pipeline bringing together multiple separate sources of climate data. The exploration analyzes the evolution of climate strategies since the Paris agreement (2015), with a particular focus on the integration of adaptation measures alongside mitigation efforts in a select group of countries from the Global North and Global South."
-format: 
+format:
   pdf:
+    toc: true
+    toc-depth: 1
+    number-sections: true
+    colorlinks: true
     header-includes: |
       \addtokomafont{disposition}{\rmfamily}
       \usepackage[english]{babel}
       \usepackage[nodayofweek]{datetime}
       \usepackage{float}
       \makeatletter \def\fps@figure{H} \makeatother
-    toc: true
-    toc-depth: 1
-    
-    number-sections: true
-    colorlinks: true
     include-before-body:
       text: |
         \newpage
