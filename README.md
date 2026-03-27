@@ -51,7 +51,7 @@ UNFCCC NDCs
 - Additional data: NDC IGES (Institute for Global Environmental Strategies) provides a summarised dataset with important info about each ndc - useful for additional analysis.
 
 World Bank World Development Indicators (WDI) 
-- Access Methods: API access via R package
+- Access Methods: API access R package `WDI`
 - Link: https://databank.worldbank.org/source/world-development-indicators
 - Use: to get emission data
 
