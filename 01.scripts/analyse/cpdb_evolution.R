@@ -131,6 +131,14 @@ cpdb_adaptation_mix_plot <- ggplot(adaptation_mix, aes(x = reorder(country_iso, 
     x = "Country",
     y = "Adaptation Share of Portfolio (%)"
   ) +
-  theme_minimal()
+  theme_minimal()+
+  theme(
+    axis.text = element_text(size = 8),    # Smaller country names and percentages
+    axis.title = element_text(size = 9),   # Slightly larger than the labels but smaller than default
+    plot.title = element_text(face = "bold", size = 12),
+    legend.title = element_text(size = 9),
+    legend.text = element_text(size = 8)
+  )
 
+print(cpdb_adaptation_mix_plot)
 

@@ -42,17 +42,17 @@ source(here("main.R"))
 
 # Introduction 
 
-Climate policy conversations are historically focused on the mitigation of climate change. However, the increasing frequency and severity of climate impacts has increased the importance of adaptation measures in national policy portfolios. The Paris Agreement (2015) marked a pivotal moment in global climate governance, with its dual focus on mitigation and adaptation.
+Climate policy conversations have historically focused on the mitigation of climate change. However, the increasing frequency and severity of climate impacts has increased the importance of adaptation measures in national policy portfolios. The Paris Agreement (2015) marked a pivotal moment in global climate governance, with its dual focus on mitigation and adaptation.
 
-International climate databases systematically under represent adaptation policies, particularly in the Global South where adaptation is a *survival imperative*. When adaptation is invisible in the data, it becomes invisible in policy debates, climate finance allocation and accountability mechanisms. The lack of comparative global analysis and systematic scrutiny of national adaptation legislation and policies has "hampered the ability to assess progress, identify gaps, and understand effective frameworks" [1, p.10]. This project serves as a digital audit of climate ambition across the selection of countries with an aim to discover if and how countries are shifting towards adoption adaptation into the mix. 
+International climate databases systematically under represent adaptation policies, particularly in the Global South where adaptation is a *survival imperative*. When adaptation is invisible in the data, it becomes invisible in policy debates, climate finance allocation and accountability mechanisms. The lack of comparative global analysis and systematic scrutiny of national adaptation legislation and policies has "hampered the ability to assess progress, identify gaps, and understand effective frameworks" [1, p.10]. This project serves as a digital audit of climate ambition across the selection of countries with an aim to discover if and how countries are shifting towards adaptation adoption. 
 
-The Global North have historically been responsible for the majority of emissions and have more resources to invest in both mitigation and adaptation. The Global South, whilst being less responsible for the acceleration of climate change, are the ones who bear the brunt of it. The comparative analysis of the Global North and Global South is therefore critical to understanding the equity implications of climate policy evolution.
+The Global North is responsible for the majority of emissions [5] and has more resources to invest in both mitigation and adaptation. Those in the Global South, whilst being less responsible for the acceleration of climate change, are the ones who bear the brunt of it [4]. The comparative analysis of the Global North and Global South is therefore critical to understanding the equity implications of climate policy evolution.
 
 # Research Question
 
 *Has there been a shift towards climate adaptation adoption in policy portfolios after the Paris Agreement, and does this shift differ between Global North and Global South countries?*
 
-*Key Terms:*
+**Key Terms:**
 
 - **Climate Policy Portfolio**: The collection of all climate-related policy strategies enacted by a country.
 - **Mitigation**: Efforts to reduce or prevent the emission of greenhouse gases to limit global warming.
@@ -60,15 +60,15 @@ The Global North have historically been responsible for the majority of emission
 
 *The terms "Global North" and "Global South" are used as broad categorizations to capture the systemic inequalities in climate responsibility and vulnerability.*
 
-*Boundaries:*
+**Boundaries:**
 
-**Temporal Boundary (2013–2025)**
+*Temporal Boundary (2013–2025)*
 
-The temporal coverage allows us to capture the policy landscape leading up to the Paris Agreement, providing a baseline for comparison. The end point of 2025 ensures we have the most recent data available. 
+The analysis will focus on the period from 2013 to 2025, allowing us to capture the policy landscape leading up to the Paris Agreement (2015) and the subsequent years. This temporal boundary provides a clear before-and-after comparison to assess the impact of the Paris Agreement on climate policy evolution.
 
-**Country Selection**
+*Country Selection*
 
-The selection of 12 countries is designed to provide a diverse sample that includes both Global North and Global South nations. 
+The selection of 13 countries (Figure 1) is designed to provide a diverse sample that represents different levels of vulnerability, responsibility, and geographic distribution. 
 
 ```{r}
 #| echo: false
@@ -108,6 +108,8 @@ The ND-GAIN Index provides the context of necessity. The ND-GAIN scores are a co
 
 The WDI provides critical contextual data on emissions responsibility (historical cumulative emissions). 
 
+*The accessing and tidying of WDI is explained in issue #16.*
+
 # Technological Approach & Challenges
 
 The entire workflow is orchestrated by a single master script (`main.R`) that manages:
@@ -121,11 +123,11 @@ The entire workflow is orchestrated by a single master script (`main.R`) that ma
 
 **Data Acquisition**
 
-To implement a Multi-Source Triangulation strategy I first bridged R with Python (reticulate) to access the CPDB API, then developed a custom Scraping Pipeline for UNFCCC NDCs. This involved automated PDF downloading and text extraction via pdftools, allowing for the inclusion of primary-source data from countries often under-reported in secondary databases (e.g., Rwanda, Colombia).
+To implement a Multi-Source Triangulation strategy I first bridged R with Python (reticulate) to access the CPDB API, then developed a custom Scraping Pipeline for UNFCCC NDCs. This involved automated PDF downloading and text extraction via pdftools, allowing for the inclusion of primary-source data from countries often under-reported in secondary databases (e.g., Rwanda, Colombia). The context data from ND-GAIN and World Bank WDI was simpler to access and clean but provide critical context for the analysis.
 
 *Key challenge:*
 
-I had initially planned to focus my analysis on the OECD CAPMF database which provides stringency scores for climate policies. This is an extremely detailed and useful source of data which required extensive cleaning in order to create a structured data frame. However I subsequently realized that the CAPMF data only covers a subset of the countries in my sample and is also mainly a database for mitigation policies, so I made the decision to shift my focus towards the CPDB which has a broader coverage of both countries and policy types. 
+I had initially planned to focus my analysis on the OECD CAPMF database which provides stringency scores for climate policies. This is an extremely detailed source of data which required extensive cleaning in order to create a structured data frame. However I subsequently realized that the CAPMF data only covers a subset of the countries in my sample and is also mainly a database for mitigation policies, so I made the decision to shift my focus towards the CPDB which has a broader coverage of both countries and policy types. 
 
 *Discussed in Issue #2*
 
