@@ -1,10 +1,10 @@
 ---
-title: "Climate Resilience: A Multi-Source Analysis of Climate Policy Evolution since the Paris Agreement (2013–2025)"
+title: "Climate Resilience: A Multi-Source Analysis of Climate Policy Evolution (2013–2025)"
 author: 
   - name: "Samantha Irving"
 date: last-modified
 date-format: "D MMMM YYYY"
-abstract: "This application report documents a data mining pipeline bringing together multiple separate sources of climate data. The exploration analyzes the evolution of climate strategies since the Paris agreement (2015), with a particular focus on the integration of adaptation measures alongside mitigation efforts in a select group of countries from the Global North and Global South."
+abstract: "This report documents a data mining pipeline bringing together multiple separate sources of climate data. The exploration analyzes the evolution of climate strategies since the Paris agreement (2015), with a particular focus on the integration of adaptation measures alongside mitigation efforts in a select group of countries."
 format:
   pdf:
     toc: true
@@ -42,13 +42,13 @@ source(here("main.R"))
 
 Climate policy conversations have historically focused on the mitigation of climate change. However, the increasing frequency and severity of climate impacts has increased the importance of adaptation measures in national policy portfolios. The Paris Agreement (2015) marked a pivotal moment in global climate governance, establishing a framework for both mitigation and adaptation efforts. 
 
-International climate databases systematically under represent adaptation policies, particularly in the Global South where adaptation is a *survival imperative*. When adaptation is invisible in the data, it becomes invisible in policy debates, climate finance allocation and accountability mechanisms. The lack of comparative global analysis and systematic scrutiny of national adaptation legislation and policies has "hampered the ability to assess progress, identify gaps, and understand effective frameworks" [1, p.10]. This project serves as a digital audit of climate ambition across the selection of countries with an aim to discover if and how countries are shifting towards adaptation adoption. 
+Importantly, international climate databases systematically under represent adaptation policies, particularly in the Global South where adaptation is a *survival imperative*. When adaptation is invisible in the data, it becomes invisible in policy debates, climate finance allocation and accountability mechanisms. The lack of comparative global analysis and systematic scrutiny of national adaptation legislation and policies has "hampered the ability to assess progress, identify gaps, and understand effective frameworks" [1]. This project serves as a digital audit of climate ambition across the selection of countries with an aim to discover if and how countries are shifting towards adaptation adoption. 
 
-The Global North is responsible for the majority of emissions [5] and has more resources to invest in both mitigation and adaptation. Those in the Global South, whilst being less responsible for the acceleration of climate change, are the ones who bear the brunt of it [4]. The comparative analysis of the Global North and Global South is therefore critical to understanding the equity implications of climate policy evolution.
+The comparative analysis of the Global North and Global South is critical to understanding the equity implications of climate policy evolution. The Global North is responsible for the majority of emissions [5] and has more resources to invest in both mitigation and adaptation. Those in the Global South, whilst being less responsible for the acceleration of climate change, are the ones who bear the brunt of it [4]. 
 
 # Research Question
 
-*Has there been a shift towards climate adaptation adoption in policy portfolios after the Paris Agreement, and does this shift differ between Global North and Global South countries?*
+*Has there been a shift towards climate adaptation adoption in policy portfolios after the Paris Agreement, and to what degree does this shift differ between Global North and Global South countries?*
 
 **Key Terms:**
 
@@ -56,13 +56,13 @@ The Global North is responsible for the majority of emissions [5] and has more r
 - **Mitigation**: Efforts to reduce or prevent the emission of greenhouse gases to limit global warming.
 - **Adaptation**: Efforts to adjust to actual or expected climate change and its effects.
 
-*The terms "Global North" and "Global South" are used as broad categorizations to capture the systemic inequalities in climate responsibility and vulnerability.*
+*Note: The terms "Global North" and "Global South" are used as broad categorizations to capture the systemic inequalities in climate responsibility and vulnerability.*
 
 **Boundaries:**
 
 *Temporal Boundary (2013–2025)*
 
-The analysis will focus on the period from 2013 to 2025, allowing us to capture the policy landscape leading up to the Paris Agreement (2015) and the subsequent years. This temporal boundary provides a clear before-and-after comparison to assess the impact of the Paris Agreement on climate policy evolution.
+The analysis will focus on the period from 2013 to 2025 in order to capture the policy landscape leading up to the Paris Agreement (2015) and the subsequent years. This temporal boundary provides a clear before-and-after comparison to assess the impact of the Paris Agreement on climate policy evolution.
 
 *Country Selection*
 
@@ -79,15 +79,15 @@ The selection of 13 countries (Figure 1) is designed to provide a diverse sample
 print(resilience_labeled_map)
 ```
 
-*Note: The United States officially left the Paris Agreement (for the second time) on January 27 2026. President Donald Trump has pledged to "remove the nation from the global climate pact." *
+*Note: The United States officially left the Paris Agreement (for the second time) on January 27 2026" *
 
 # Data Sources
 
 ## NewClimate Institute’s Climate Policy Database (CPDB) [2]
 
-The CPDB provides the baseline for actual policy adoption. It offers broad geographic coverage. Its primary limitation is a "Global North bias," where data coverage is stronger. This is a gap addressed by the inclusion of NDC texts. The CPDB's provides structured policy data with policy types (mitigation, adaptation), decision dates and country codes, allowing for a quantitative analysis of policy trends over time. 
+The CPDB provides the baseline for policy adoption with broad geographic coverage. The CPDB's provides structured policy data with policy types (mitigation, adaptation), decision dates and country codes, allowing for a quantitative analysis of policy trends over time. Its primary limitation is a "Global North bias," where data coverage is stronger (This is a gap addressed by the inclusion of NDC texts).
 
-*The cleaning and processing of the CPDB data is explained in issue #7.*
+*The cleaning and processing of the CPDB data is explained in Github issue #7.*
 
 ## UNFCCC Nationally Determined Contributions (NDCs) [3]
 
@@ -113,31 +113,31 @@ The entire workflow is orchestrated by a single master script (`main.R`) that ma
 
 1. **Dependency installation**
 2. **Data acquisition** 
-3. **Data processing** (cleaning, merging, feature engineering).
+3. **Data processing** (cleaning, feature engineering).
 4. **Analysis**
 5. **Output generation** (figures, tables, this report).
 6. **Environment Cleaning** (removing temporary files and data).
 
 **Data Acquisition**
 
-To implement a Multi-Source Triangulation strategy I first bridged R with Python (reticulate) to access the CPDB API, then developed a custom Scraping Pipeline for UNFCCC NDCs. This involved automated PDF downloading and text extraction via pdftools, allowing for the inclusion of primary-source data from countries often under-reported in secondary databases (e.g., Rwanda, Colombia). The context data from ND-GAIN and World Bank WDI was simpler to access and clean but provide critical context for the analysis.
+To implement a multi source triangulation strategy I first bridged R with Python (reticulate) to access the CPDB API, then developed a custom scraping pipeline for UNFCCC NDCs. This involved automated PDF downloading and text extraction via pdftools. The context data from ND-GAIN and World Bank WDI was simpler to access and clean but provide critical context for the analysis.
 
 *Key challenge:*
 
-I had initially planned to focus my analysis on the OECD CAPMF database which provides stringency scores for climate policies. This is an extremely detailed source of data which required extensive cleaning in order to create a structured data frame. However I subsequently realized that the CAPMF data only covers a subset of the countries in my sample and is also mainly a database for mitigation policies, so I made the decision to shift my focus towards the CPDB which has a broader coverage of both countries and policy types. 
+I had initially planned to focus my analysis on the OECD CAPMF database which provides stringency scores for climate policies. This is an extremely detailed source of data which required extensive cleaning in order to create a structured data frame. However I subsequently realized that the CAPMF data only covers a subset of the countries in my sample and mainly covers mitigation policies, so I made the decision to shift my focus towards the CPDB which has a broader coverage of both countries and policy types. 
 
 *Discussed in Issue #2*
 
 **Adaptation tracking**
 
-To track the evolution of adaptation policies in the CPDB I developed a Keyword-Based Heuristic to classify policies as "adaptation", "mitigation" or "both" (based on a more complex policy intent label included in the dataset). It is important to note that for my analysis I have looked at any policy that includes adaptation as an "adaptation policy" even if it also includes mitigation. This is because I am interested in the shift towards adaptation, so I want to capture any policy that includes adaptation in its language. The CPDB data has a bias towards Global North countries, so I have focused on relative ratios instead of absolute counts in order to get a clearer picture of the adaptation focus of each country. *Discussed in issue #1*
+To track the evolution of adaptation policies in the CPDB I developed a Keyword-Based Heuristic to classify policies as "adaptation", "mitigation" or "both" (based on a more complex policy intent label included in the data set). It is important to note that for my analysis I have looked at any policy that includes adaptation even if it also includes mitigation. This is because I am interested in the shift towards adaptation, so I want to capture any policy that includes adaptation in its language. The CPDB data has a bias towards Global North countries, so I have focused on relative ratios instead of absolute counts in order to get a clearer picture of the adaptation focus of each country. *Discussed in issue #1*
 
 **Lexical Audit & Feature Engineering**
 
 NDC Strategic intent was quantified through a Keyword-Based Heuristic. I developed two distinct lexicons:
 
 - Focus Score: A ratio of adaptation-to-mitigation terminology normalized by document length.
-- Ambition Score: A "Lexical Hardness" index comparing mandatory ("legally", "must", "mandatory") vs. aspirational ("aim", "seek", "aspire") language, utilizing a smoothing constant ($+0.001$) to handle zero-count denominators in shorter documents.
+- Ambition Score: A "Lexical Hardness" index comparing mandatory ("legally", "must") vs. aspirational ("aim", "seek", "aspire") language, utilizing a smoothing constant ($+0.001$) to handle zero-count denominators in shorter documents.
 
 *These are discussed in issue #15, #5 and #4.*
 
@@ -152,11 +152,11 @@ NDC Strategic intent was quantified through a Keyword-Based Heuristic. I develop
 #| label: fig-global-adaptation-growth
 #| fig-width: 9
 #| fig-height: 6
-#| fig-cap: "Global Cumulative Growth of Adaptation Policies (2013-2025)"
+#| fig-cap: "Global Cumulative Growth of Adaptation Policies (2013-2025) (CPDB)"
 print(cpdb_cumulative_adaptation_growth)
 ```
 
-Initial analysis of climate policies in the cpdb reveals a visible acceleration in global adaptation policy adoption following the 2015 Paris Agreement. This is the starting point for our analysis, confirming that the Paris Agreement did indeed catalyze a shift in policy focus. This already answers the first part of our research question (*Has there been a shift towards climate adaptation adoption in policy portfolios after the Paris Agreement?*).
+Initial analysis of climate policies in the CPDB reveals a visible acceleration in global adaptation policy adoption starting around 2015 (the same year as the Paris Agreement). This is the starting point for our analysis, confirming that the Paris Agreement did indeed catalyze a shift in policy focus.
 
 ## Policy Implementation per Country (The Adaptation Mix)
 
@@ -169,11 +169,11 @@ Initial analysis of climate policies in the cpdb reveals a visible acceleration 
 print(cpdb_adaptation_mix_plot)
 ```
 
-Zooming in to our chosen list of countries (Figure 3) we are able to see the spread of each policy portfolio. What percentage of implemented policies focus on adaptation. The ND-GAIN scores have been added in order to visualize the comparison of vulnerability. While some vulnerable nations like Rwanda show a high adaptation ratio, others like India lag behind. This would suggest that vulnerability may not be a driving factor in adaptation policy adoption. 
+Zooming in to our chosen list of countries (Figure 3) we are able to see the spread of each policy portfolio. The ND-GAIN scores have been added in order to visualize the comparison of vulnerability. While some vulnerable nations like Rwanda show a high adaptation ratio, others like India lag behind. This would suggest that vulnerability may not be a driving factor in adaptation policy adoption. 
 
-However, it is important to keep in mind that this data set has its limitations (Global North bias, temporal lag, adaptation tracking difficulty).
+However, it is important to keep in mind that this data set has its limitations (Global North bias, temporal lag, adaptation tracking difficulty) which may be skewing the analysis.
 
-## Lexical Adaptation Focus in NDC text (The Responsibility Gap)
+## Lexical Adaptation Focus in NDC text (Responsibility Gap)
 
 ```{r}
 #| echo: false
@@ -187,13 +187,13 @@ However, it is important to keep in mind that this data set has its limitations 
 print(ndc_adaptation_leaderboard)
 ```
 
-By shifting to an NLP-based analysis of each Nationally Determined Contribution (NDC) (Figure 5), the correlation between resilience and strategic intent becomes obvious. High-vulnerability countries dedicate significantly more "mindshare" to adaptation in their NDCs compared to the Global North. This is the Responsibility Gap in action: the nations least responsible for historical emissions are the ones forced to prioritize survival strategies. 
+By shifting to an NLP-based analysis of each Nationally Determined Contribution (NDC) (Figure 5), the correlation between resilience and strategic intent becomes obvious. High-vulnerability countries dedicate significantly more "mind share" to adaptation in their NDCs compared to the Global North. This is the Responsibility Gap in action: the nations least responsible for historical emissions are the ones forced to prioritize survival strategies. 
 
-![The Ambition Audit](../03.output/ndc_cpdb_comparison_table.png){width=50%}
+![The Commitment Gap](../03.output/ndc_cpdb_comparison_table.png){width=50%}
 
-Figure 5 shows a comparison between the CPDB policy adaptation mix and the NDC lexical adaptation focus. The gap between intent and policy implementation seems to be particularly wide for the Global South. This is the Commitment Gap: vulnerable countries are prioritizing adaptation in their strategic documents but are not always able to translate this into binding policies. This is likely due to resource constraints, as adaptation policies often require significant investment and international finance is often conditional on the availability of domestic resources [1].
+Figure 5 shows a comparison between the CPDB policy adaptation mix and the NDC lexical adaptation focus. The gap between intent and policy implementation seems to be particularly wide for the Global South. This is the Commitment Gap: vulnerable countries are prioritizing adaptation in their strategic documents but are not always able to translate this into binding policies. This is likely due to resource constraints as adaptation policies often require significant investment and international finance is often conditional on the availability of domestic resources [1].
 
-## Adaptation Focus vs. Ambition/Stringency in NDCs (The Commitment Gap)
+## Adaptation Focus vs. Ambition/Stringency in NDCs (Commitment Gap)
 
 ```{r}
 #| echo: false
@@ -213,13 +213,13 @@ The Ambition Score reflects the relative frequency of mandatory language (e.g., 
 
 # Discussion
 
-*Has there been a shift towards climate adaptation adoption in policy portfolios after the Paris Agreement, and does this shift differ between Global North and Global South countries?* 
+*Has there been a shift towards climate adaptation adoption in policy portfolios after the Paris Agreement, and to what extent does this shift differ between Global North and Global South countries?* 
 
 There has been a noticeable shift towards climate adaptation adoption in policy portfolios since the Paris Agreement and this shift differs significantly between Global North and Global South countries. The Global South, which is more vulnerable to climate impacts, shows a higher focus on adaptation in their NDCs but faces significant challenges in translating this into binding policies, as evidenced by the Commitment Gap. The Global North, while having more resources, shows less focus on adaptation both in their NDCs and in actual policy implementation.
 
-The Responsibility and Commitment Gaps both provide important evidence that it is those who are most vulnerable to climate impacts (the Global South) who are spending more of their "mind share" on adaptation. This illustrates the injustice at the heart of climate change: those who are least responsible for causing it are the ones who suffer its worst effects and have the greatest need for adaptation, yet they have the least capacity to do so.
+The Responsibility Gap and the Commitment Gap both illustrate the injustice at the heart of climate change: those who are least responsible for causing it are the ones who suffer its worst effects and have the greatest need for adaptation, yet they have the least capacity to do so.
 
-The Commitment Gap finding has particular significance. It demonstrates that Global South adaptation priorities are substantive (evidenced by high keyword frequency and development plans explicitly linking adaptation to poverty reduction [1, p.14-15]), but these priorities are constrained by resource limitations (manifested as soft law language because commitments are conditional on international finance [1, p.14]).
+The Commitment Gap finding has particular significance. It demonstrates that Global South adaptation priorities are substantive (evidenced by high keyword frequency), but these priorities are constrained by resource limitations (manifested as soft law language because commitments are conditional on international finance [1]).
 
 # Limitations
 
