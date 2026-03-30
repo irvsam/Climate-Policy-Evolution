@@ -128,8 +128,6 @@ if (!file.exists(cpdb_clean_path)| FORCE_RECLEAN) {
   cpdb_final_clean <- readRDS(cpdb_clean_path)
 }
 
-message("--- Main Pipeline Finished ---")
-
 
 # --- NDGAIN CLEANING ---
 ndgain_clean_path <- "02.data/data-preprocessed/ndgain_clean.rds"

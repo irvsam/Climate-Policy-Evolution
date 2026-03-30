@@ -1,6 +1,6 @@
 # Climate Policy Evolution
 
-Climate Resilience: Comparing the Evolution of Integrated Climate Policies in 12 Selected Nations (2013–2025)
+Climate Resilience: Comparing the Evolution of Integrated Climate Policies in 13 Selected Nations (2013–2025)
 
 This repository contains the code for a small data mining project developed as part of the course:
 
@@ -46,7 +46,7 @@ ND GAIN (Notre Dame Global Adaptation Initiative) provides data on countries' vu
 - Access Methods: Download CSV and process in R
 
 UNFCCC NDCs
-- Access Methods: there is no API, but data can be downloaded as CSV from open climate data's github
+- Access Methods: there is no API, but data can be downloaded as CSV from open climate data's github... this is done automatically in main.R.
 - Link: https://github.com/openclimatedata/ndcs/blob/main/data/ndcs.csv
 - Additional data: NDC IGES (Institute for Global Environmental Strategies) provides a summarised dataset with important info about each ndc - useful for additional analysis.
 
@@ -68,23 +68,28 @@ World Bank World Development Indicators (WDI)
 
 ## Reproducibility
 
-This project is designed to be fully reproducible. However, due to the lack of public APIs for certain climate indices, some manual setup is required.
+This project is designed to be fully reproducible. However, some manual setup is required.
 
 ### 1. Technical Environment
 - **R Version:** 4.x
 - **Python Version:** 3.9+ (Required for `reticulate` to access CPDB)
-- **Required R Packages:** listed in main.R (Install via `install.packages()`)
-- **Required Python Packages:** `cpdb-api` (Automatically installed in main.R using `reticulate`)
+- **Required R Packages:** listed in main.R - should be automatically installed when you run the script, but you can also install them manually using `install.packages()`. 
+- **Required Python Packages:** `cpdb-api` (Automatically installed in main.R)
 
 ### 2. Manual Data Acquisition
-Before running `main.R`, please place the following files in `02.data/data-raw/` (you may need to create the folders yourself):
-- **ND-GAIN:** only keep `gain.csv` from the resources/gain/ folder downlaoded from [ND-GAIN Index](https://gain.nd.edu/our-work/country-index/).
-- **IGES Database:** rename to `IGESNDC.xlsx` from the [IGES NDC Database](https://www.iges.or.jp/en/pub/iges-indc-ndc-database/en).
+Before running `main.R`, place the following files in `02.data/data-raw/` (you may need to create the folders yourself (or run the first setup lines in main.R and they will be created for you)):
+- **ND-GAIN:** only keep `gain.csv` from the resources/gain/ folder downloaded from [ND-GAIN Index](https://gain.nd.edu/our-work/country-index/ ).
+- **NDC IGES Database:** rename to `IGESNDC.xlsx` from the [IGES NDC Database](https://www.iges.or.jp/en/pub/iges-indc-ndc-database/en ).
 
 ### 3. Execution
 Run `main.R`. 
-This script will automatically fetch data from the APIs, process all datasets, and generate the final outputs
+This script will automatically set up any folder structure that may be missing, fetch data from the APIs, process all datasets and environment variables and generate the final outputs.
 `main.R` has a section where it cleans up your environment by removing all objects and detaching packages at the end, so you can run it multiple times without worrying about leftover variables or loaded libraries.If you want to inspect the intermediate datasets or objects, you can comment out the cleanup section at the end of `main.R`.
+
+### 4. Outputs
+The final outputs (tables, figures, and the report) will be saved in the `03.output/` and `04.report/` folders. 
+You can open the report PDF to see the final analysis and results. The qmd folder is included and can be re rendered (if you need to re render the report be sure to run main.R first to generate the outputs and variables that the report relies on).
+
 
 
 

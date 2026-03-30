@@ -23,18 +23,15 @@ format:
 ---
 
 ```{r "knitr config", include=FALSE}
-# Chunk 1: JUST SET THE DIRECTORY
-# This must be its own chunk with no other code
+# Setting directory
 library(knitr)
-# This finds your project root automatically
+# Finding project root
 knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
 ```
 
 
 ```{r setup, include=FALSE}
-# Load libraries and runmaster pipeline
-# Make sure main.R is in the project root (one level up)
-
+# Load libraries and run master pipeline
 
 library(here)
 source(here("main.R"))
@@ -78,7 +75,7 @@ The selection of 13 countries (Figure 1) is designed to provide a diverse sample
 #| label: fig-country-selection
 #| fig-width: 9
 #| fig-height: 6
-#| fig-cap: "Selected Countries and their Global Emissions"
+#| fig-cap: "Selected Countries and their Emissions (Metric Tons)"
 print(resilience_labeled_map)
 ```
 
@@ -140,7 +137,7 @@ To track the evolution of adaptation policies in the CPDB I developed a Keyword-
 NDC Strategic intent was quantified through a Keyword-Based Heuristic. I developed two distinct lexicons:
 
 - Focus Score: A ratio of adaptation-to-mitigation terminology normalized by document length.
-- Ambition Score: A "Lexical Hardness" index comparing mandatory ("shall", "must") vs. aspirational ("aim", "should") language, utilizing a smoothing constant ($+0.001$) to handle zero-count denominators in shorter documents.
+- Ambition Score: A "Lexical Hardness" index comparing mandatory ("legally", "must", "mandatory") vs. aspirational ("aim", "seek", "aspire") language, utilizing a smoothing constant ($+0.001$) to handle zero-count denominators in shorter documents.
 
 *These are discussed in issue #15, #5 and #4.*
 
@@ -168,7 +165,7 @@ Initial analysis of climate policies in the cpdb reveals a visible acceleration 
 #| warning: false
 #| message: false
 #| label: fig-adaptation-mix
-#| fig-cap: "The Adaptation Mix: Percentage of Portfolio focusing on Adaptation"
+#| fig-cap: "The Adaptation Mix: Percentage of Portfolio focusing on Adaptation (CPDB)"
 print(cpdb_adaptation_mix_plot)
 ```
 
@@ -190,7 +187,7 @@ However, it is important to keep in mind that this data set has its limitations 
 print(ndc_adaptation_leaderboard)
 ```
 
-By shifting to an NLP-based analysis of each Nationally Determined Contribution (NDC) (Figure 5), the correlation between resilience and strategic intent becomes obvious. High-vulnerability countries dedicate significantly more "mindshare" to adaptation in their NDCs compared to the Global North. This is the Responsibility Gap in action: the nations least responsible for historical emissions are the ones forced to prioritize survival strategies.
+By shifting to an NLP-based analysis of each Nationally Determined Contribution (NDC) (Figure 5), the correlation between resilience and strategic intent becomes obvious. High-vulnerability countries dedicate significantly more "mindshare" to adaptation in their NDCs compared to the Global North. This is the Responsibility Gap in action: the nations least responsible for historical emissions are the ones forced to prioritize survival strategies. 
 
 ![The Ambition Audit](../03.output/ndc_cpdb_comparison_table.png){width=50%}
 
