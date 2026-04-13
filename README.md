@@ -88,7 +88,7 @@ This script will automatically set up any folder structure that may be missing, 
 
 ### 4. Outputs
 The final outputs (tables, figures, and the report) will be saved in the `03.output/` and `04.report/` folders. 
-You can open the report PDF to see the final analysis and results. The qmd folder is included and can be re rendered (if you need to re render the report be sure to run main.R first to generate the outputs and variables that the report relies on).
+You can open the report PDF to see the final analysis and results. The qmd folder is included and can be re renderedcv (if you need to re render the report be sure to run main.R first to generate the outputs and variables that the report relies on).
 
 
 

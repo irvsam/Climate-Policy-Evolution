@@ -4,7 +4,7 @@ author:
   - name: "Samantha Irving"
 date: last-modified
 date-format: "D MMMM YYYY"
-abstract: "This report documents a data mining pipeline bringing together multiple separate sources of climate data. The exploration analyzes the evolution of climate strategies since the Paris agreement (2015), with a particular focus on the integration of adaptation measures alongside mitigation efforts in a select group of countries."
+abstract: "This report documents a data mining pipeline bringing together multiple separate sources of climate data. The exploration analyzes the evolution of climate strategies since the Paris agreement (2015), with a particular focus on the integration of adaptation measures alongside mitigation efforts in a select group of 13 countries."
 format:
   pdf:
     toc: true
@@ -66,7 +66,7 @@ The analysis will focus on the period from 2013 to 2025 in order to capture the 
 
 *Country Selection*
 
-The selection of 13 countries (Figure 1) is designed to provide a diverse sample that represents different levels of vulnerability, responsibility, and geographic distribution. 
+The selection of 13 countries (Figure 1) is designed to provide a diverse sample that represents different levels of vulnerability, responsibility and geographic distribution. Below (Figure 1) is a map with the selected countries highlighted along with their cumulative global GHG emissions since 2013. 
 
 ```{r}
 #| echo: false
@@ -85,7 +85,7 @@ print(resilience_labeled_map)
 
 ## NewClimate Institute’s Climate Policy Database (CPDB) [2]
 
-The CPDB provides the baseline for policy adoption with broad geographic coverage. The CPDB's provides structured policy data with policy types (mitigation, adaptation), decision dates and country codes, allowing for a quantitative analysis of policy trends over time. Its primary limitation is a "Global North bias," where data coverage is stronger (This is a gap addressed by the inclusion of NDC texts).
+The CPDB provides a baseline for policy adoption with broad geographic coverage. The CPDB provides structured policy data with policy types (mitigation, adaptation), decision dates and country codes, allowing for a quantitative analysis of policy trends over time. Its primary limitation is a "Global North bias," where data coverage is stronger (This is a gap addressed by the inclusion of NDC texts).
 
 *The cleaning and processing of the CPDB data is explained in Github issue #7.*
 
@@ -233,7 +233,9 @@ Future iterations would benefit from a more robust NLP framework to move beyond 
 
 # References
 
-[1] Grantham Research Institute on Climate Change and the Environment. (2025). *Climate change adaptation laws and policies: Global trends and insights 2025*. London School of Economics and Political Science. https://www.lse.ac.uk/granthaminstitute/wp-content/uploads/2026/02/Climate-change-adaptation-laws-and-policies.pdf
+[1] Chan T, Mehryar S, Podestà M and Beswick A (2026). *Climate change adaptation laws and
+policies: a review of trends, gaps and opportunities in 35 countries*. London: Grantham Research Institute on
+Climate Change and the Environment, London School of Economics and Political Science. https://www.lse.ac.uk/granthaminstitute/wp-content/uploads/2026/02/Climate-change-adaptation-laws-and-policies.pdf
 
 [2] NewClimate Institute, Wageningen University and Research, & PBL Netherlands Environmental Assessment Agency. (2024). *Climate Policy Database* [Data set]. Zenodo. https://doi.org/10.5281/zenodo.7774109
 
